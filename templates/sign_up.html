@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block title %} Sign Up {% endblock %}
 {% block content %}
-<h2>Home</h2>
-<p>Welcome to the homepage.</p>
-<p>This is Python.</p>
-<p>Well, actually, this is HTML.</p>
-<p class="largeText boldText">We use Jinja to mix the two.</p>
+<h1 class="title">Sign up for Betsy</h1>
+<form method="post">
+    <label for="username">Username</label>
+    <input id="username" type="text" name="username">
+    <label for="password">Password</label>
+    <input id="password" type="text" name="password">
+    <input type="submit" value="Create Account">
+</form>
 {% endblock content %}

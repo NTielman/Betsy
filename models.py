@@ -1,8 +1,7 @@
 from peewee import *
 from datetime import date
 
-# db = SqliteDatabase('betsy.db')
-db = SqliteDatabase(':memory:')
+db = SqliteDatabase('betsy.db')
 
 class BaseModel(Model):
     class Meta:
@@ -39,3 +38,5 @@ class Order(BaseModel):
 def create_tables():
     with db:
         db.create_tables([User, Product, Order])
+
+create_tables()

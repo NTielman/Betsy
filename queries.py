@@ -1,6 +1,16 @@
 __winc_id__ = "d7b474e9b3a54d23bca54879a4f1855b"
 __human_name__ = "Betsy Webshop"
 
+from models import User, Product, Order
+import peewee
+
+def get_user_password(user_name):
+    '''finds username and returns user passwords from database'''
+    try:
+        user = User.get(User.username == user_name)
+        return user.password
+    except peewee.DoesNotExist:
+        return False
 
 def search(term):
     ...
