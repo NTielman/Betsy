@@ -12,6 +12,15 @@ def get_user_password(user_name):
     except peewee.DoesNotExist:
         return False
 
+def create_user(user_name, user_full_name, user_address, user_bio, user_avatar, user_password):
+    '''adds a user to database'''
+    try:
+        return User.create(
+            username=user_name, full_name=user_full_name, address=user_address, bio=user_bio, avatar_url=user_avatar, password=user_password 
+        )
+    except peewee.PeeweeException:
+        return False
+
 def search(term):
     ...
 

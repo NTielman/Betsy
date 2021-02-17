@@ -1,6 +1,6 @@
 import os
 from flask import Flask, redirect, render_template, request, session, url_for, flash
-from helpers import verify_password
+from helpers import verify_password, verify_user
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -34,8 +34,23 @@ def login():
 
 @app.route('/sign_up/', methods=['GET', 'POST'])
 def sign_up():
-#     if request.method == "POST":
-    return render_template("sign_up.html")
+    if request.method == "POST":
+        username = request.form["username"]
+        fullname = request.form["full_name"]
+        address = request.form["address"]
+        bio = request.form["bio"]
+        avatar_url = request.form["avatar_url"]
+        password = request.form["password"]
+        user_created_succesfully = verify_user(username, fullname, address, bio, avatar_url, password)
+        if user_created_succesfully:
+            session["user"] = username
+            return redirect(url_for("frontpage"))
+        else:
+            return redirect(url_for('sign_up'))
+    else:
+        if "user" in session:
+            return redirect(url_for("frontpage"))
+        return render_template("sign_up.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

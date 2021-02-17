@@ -8,13 +8,13 @@ class BaseModel(Model):
         database = db
 
 class User(BaseModel):
-    username = CharField(unique=True)
-    full_name = CharField()
-    adress = CharField()
-    bio = TextField()
-    avatar_url = CharField()
     user_id = AutoField()
     password = CharField()
+    username = CharField(unique=True)
+    full_name = CharField()
+    address = CharField()
+    bio = TextField(default="Hi, i'm a happy Betsy user.")
+    avatar_url = CharField(default="https://www.pngitem.com/pimgs/m/146-1468843_profile-icon-orange-png-transparent-png.png")
 
 class Product(BaseModel):
     title = CharField()

@@ -1,12 +1,33 @@
 {% extends "base.html" %}
 {% block title %} Sign Up {% endblock %}
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+            <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 <h1 class="title">Sign up for Betsy</h1>
 <form method="post">
     <label for="username">Username</label>
-    <input id="username" type="text" name="username">
+    <input id="username" type="text" placeholder="AgentBetsy007" name="username">
+
+    <label for="full_name">Name</label>
+    <input id="full_name" type="text" placeholder="Betsy Johnson" name="full_name">
+
+    <label for="address">Address</label>
+    <input id="address" type="text" placeholder="Betsybackstreet 67" name="address">
+
+    <label for="bio">Bio description</label>
+    <input id="bio" type="text" placeholder="Hi, i'm a happy Betsy user." name="bio">
+
+    <label for="avatar_url">Avatar Url</label>
+    <input id="avatar_url" type="text" name="avatar_url">
+
     <label for="password">Password</label>
-    <input id="password" type="text" name="password">
+    <input id="password" type="password" name="password">
+    
     <input type="submit" value="Create Account">
 </form>
 {% endblock content %}
