@@ -72,5 +72,28 @@ def user_profile():
     else:
         return redirect(url_for('login'))
 
+@app.route('/user_profile/add_product/', methods=['GET', 'POST'])
+def add_product():
+    if "user" in session: #check if user is logged in
+        if request.method == "POST":
+            title = request.form["title"]
+            description = request.form["description"]
+            price = request.form["price"]
+            qty = request.form["qty"]
+            user = session["user"]
+
+            #try create product
+            user_is_valid = verify_user(username, fullname, address, bio, avatar_url, password)
+            if user_is_valid:
+                user = get_user(username)
+                session["user"] = user
+                return redirect(url_for("frontpage"))
+            else:
+                return redirect(url_for('sign_up'))
+        else:  #method is GET
+            return render_template("add_product.html") #create html and form
+    else:
+        return redirect(url_for('login'))
+
 if __name__ == "__main__":
     app.run(debug=True)
