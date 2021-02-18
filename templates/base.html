@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
     <title>Betsy |{% block title %}{% endblock %}</title>
 </head>
 
@@ -35,7 +35,11 @@
 
     <footer class="footer">
         <h3 class="is-size-4 mb-4">Betsy</h3>
-        <a href="{{ url_for('sign_up') }}">Become a vendor</a>
+        {% if user %}
+            <a href="{{ url_for('user_profile') }}">My profile</a>
+        {% else %}
+            <a href="{{ url_for('sign_up') }}">Become a vendor</a>
+        {% endif %}
     </footer>
 </body>
 

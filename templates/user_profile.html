@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %} My Profile {% endblock %}
+{% block content %}
+<img src="{{ user.avatar_url }}" alt="user avatar">
+<h1>{{ user.full_name }}</h1>
+<button class="button is-dark">Edit Profile</button>
+<p>{{ user.address }}</p>
+<p>{{ user.bio }}</p>
+<!-- user orders and user products using backref -->
+{% endblock content %}

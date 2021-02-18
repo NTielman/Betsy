@@ -8,12 +8,17 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-<h1 class="title">Log In</h1>
+<h2 class="title">Log In</h2>
 <form method="post">
     <label for="username">Username</label>
-    <input id="username" type="text" name="username">
+    <input id="username" type="text" name="username" required>
     <label for="password">Password</label>
-    <input id="password" type="password" name="password">
-    <input type="submit" value="Login">
+    <input id="password" type="password" name="password" required>
+
+    <div class="field">
+        <div class="control">
+            <input type="submit" class="button is-dark" value="Login">
+        </div>
+    </div>
 </form>
 {% endblock content %}

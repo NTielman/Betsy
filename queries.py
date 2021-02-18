@@ -3,6 +3,7 @@ __human_name__ = "Betsy Webshop"
 
 from models import User, Product, Order
 import peewee
+from playhouse.shortcuts import model_to_dict
 
 def get_user_password(user_name):
     '''finds username and returns user passwords from database'''
@@ -20,6 +21,11 @@ def create_user(user_name, user_full_name, user_address, user_bio, user_avatar, 
         )
     except peewee.PeeweeException:
         return False
+
+def get_user(user_name):
+    '''finds and returns a user object from database'''
+    user = User.get(User.username == user_name)
+    return model_to_dict(user) #converts DB user to dictionary
 
 def search(term):
     ...

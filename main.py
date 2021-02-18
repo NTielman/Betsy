@@ -1,6 +1,7 @@
 import os
 from flask import Flask, redirect, render_template, request, session, url_for, flash
 from helpers import verify_password, verify_user
+from queries import get_user
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -9,8 +10,10 @@ app = Flask(__name__)
 app.secret_key = os.urandom(16)
 
 @app.route('/')
-def frontpage():
-    return render_template("home_page.html")
+def frontpage(user=False):
+    if "user" in session:
+        user = session["user"]
+    return render_template("home_page.html", user=user)
 
 @app.route('/home/')
 def home():
@@ -23,7 +26,8 @@ def login():
         password = request.form["password"]
         login_succesfull = verify_password(username, password)
         if login_succesfull:
-            session["user"] = username
+            user = get_user(username)
+            session["user"] = user
             return redirect(url_for("frontpage"))
         else:
             return redirect(url_for('login'))
@@ -41,9 +45,10 @@ def sign_up():
         bio = request.form["bio"]
         avatar_url = request.form["avatar_url"]
         password = request.form["password"]
-        user_created_succesfully = verify_user(username, fullname, address, bio, avatar_url, password)
-        if user_created_succesfully:
-            session["user"] = username
+        user_is_valid = verify_user(username, fullname, address, bio, avatar_url, password)
+        if user_is_valid:
+            user = get_user(username)
+            session["user"] = user
             return redirect(url_for("frontpage"))
         else:
             return redirect(url_for('sign_up'))
@@ -51,6 +56,14 @@ def sign_up():
         if "user" in session:
             return redirect(url_for("frontpage"))
         return render_template("sign_up.html")
+
+@app.route('/user_profile/')
+def user_profile():
+    if "user" in session:
+        user = session["user"]
+        return render_template('user_profile.html', user=user)
+    else:
+        return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
