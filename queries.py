@@ -25,15 +25,15 @@ def create_user(user_name, user_full_name, user_address, user_bio, user_avatar, 
 def get_user(user_name):
     '''finds and returns a user object from database'''
     user = User.get(User.username == user_name)
-    return model_to_dict(user) #converts DB user to dictionary
+    return model_to_dict(user, backrefs=True)  #converts DB user to dictionary
 
 def search(term):
     ...
 
-
-def list_user_products(user_id):
-    ...
-
+# def list_user_products(user_id):
+#     '''this function is replaced by get_user()'''
+#add a readme to instructors, i know this was supposed to be a backend assignment but i wanted to challenge myself and turn it into a semi-fully functioning marketplace. 
+#as per the assignment requirements, add a product by using username Alice, password alice, navigate to my profile,/ products/ add or edit product
 
 def list_products_per_tag(tag_id):
     ...

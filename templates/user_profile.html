@@ -8,5 +8,81 @@
     <p>{{ user.address }}</p>
     <p>{{ user.bio }}</p>
 </div>
-<!-- user orders and user products using backref -->
+
+<div class="box">
+    <h2 class="is-size-3 mb-4">My products</h2>
+    {% if user.products %}
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in user.products %}
+                    <tr>
+                        <td>{{ product.title }}</td>
+                        <td>{{ product.price_in_cents }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You don't have any products yet...</p>
+        <!-- link to add a product -->
+    {% endif %}
+</div>
+
+<div class="box">
+    <h2 class="is-size-3 mb-4">My orders</h2>
+    <p>Sales</p>
+    {% if user.sales %}
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in user.sales %}
+                    <tr>
+                        <td>{{ sale.product.title }}</td>
+                        <td>{{ sale.qty }}</td>
+                        <td>{{ sale.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You don't have any sales yet...</p>
+    {% endif %}
+    <hr>
+    <br>
+    <p>Purchases</p>
+    {% if user.purchases %}
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for purchase in user.purchases %}
+                    <tr>
+                        <td>{{ purchase.product.title }}</td>
+                        <td>{{ purchase.qty }}</td>
+                        <td>{{ purchase.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You don't have any purchases yet...</p>
+    {% endif %}
+</div>
 {% endblock content %}
