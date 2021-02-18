@@ -36,6 +36,13 @@ def login():
             return redirect(url_for("frontpage"))
         return render_template('log_in.html')
 
+@app.route('/logout/')
+def logout():
+    if "user" in session:
+        session.pop("user", None)
+        flash("You have been logged out", 'info')
+    return redirect(url_for("frontpage"))
+
 @app.route('/sign_up/', methods=['GET', 'POST'])
 def sign_up():
     if request.method == "POST":
