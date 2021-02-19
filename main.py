@@ -1,7 +1,7 @@
 import os
 from flask import Flask, redirect, render_template, request, session, url_for, flash
 from helpers import verify_password, verify_user
-from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases
+from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases, add_images_to_product, add_product_tags
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -79,6 +79,8 @@ def user_profile():
 def add_product():
     if "user" in session: #check if user is logged in
         if request.method == "POST":
+
+            #create product instance
             title = request.form["title"]
             description = request.form["description"]
             price = request.form["price"]
@@ -93,42 +95,34 @@ def add_product():
                 "user": user
             }
 
-            product_added_succesfully = add_product_to_catalog(product)
-            if product_added_succesfully:
-                return redirect(url_for('add_images'))
+            product_id = add_product_to_catalog(product)
+
+            if product_id:
+                # add product images
+                image_1 = request.form["image_1"]
+                image_2 = request.form["image_2"]
+                image_3 = request.form["image_3"]
+                image_4 = request.form["image_4"]
+                image_5 = request.form["image_5"]
+                images = [image_1, image_2, image_3, image_4, image_5]
+
+                if images: # if image list isn't empty
+                    add_images_to_product(product_id, images)
+
+                #add product tags
+                tags = request.form["tags"]
+                tag_list = tags.split(", ")
+                
+                if tag_list:
+                    add_product_tags(product_id, tag_list)
+
+                # return redirect to /product_page/<prod_id>
+                return redirect(url_for('user_profile'))
             else:
                 flash("Could not add product", 'error')
                 return redirect(url_for('add_product'))
         else:  #method is GET
             return render_template("add_product.html")
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/user_profile/add_product/images/')
-def add_images():
-    if "user" in session: #check if user is logged in
-        # if request.method == "POST":
-        #     title = request.form["title"]
-        #     description = request.form["description"]
-        #     price = request.form["price"]
-        #     qty = request.form["qty"]
-        #     user = session["user"]
-
-        #     product = {
-        #         "title": title,
-        #         "description": description,
-        #         "price_in_cents": price * 100, #convert price to cents 
-        #         "qty": qty,
-        #     }
-
-        #     product_added_succesfully = add_product_to_catalog(user.user_id, product)
-        #     if product_added_succesfully:
-        #         return redirect(url_for('add_images'))
-        #     else:
-        #         flash("Could not add product", 'error')
-        #         return redirect(url_for('add_product'))
-        # else:  #method is GET
-        return render_template("add_images.html")
     else:
         return redirect(url_for('login'))
 

@@ -11,6 +11,9 @@
 
 <div class="box">
     <h2 class="is-size-3 mb-4">My products</h2>
+
+    <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
+
     {% if products %}
         <table class="table is-fullwidth">
             <thead>
@@ -83,7 +86,7 @@
             </tbody>
         </table>
     {% else %}
-        <p>You don't have any purchases yet...</p>
+        <p>You haven't made any purchases yet...</p>
     {% endif %}
 </div>
 {% endblock content %}

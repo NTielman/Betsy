@@ -1,7 +1,7 @@
 __winc_id__ = "d7b474e9b3a54d23bca54879a4f1855b"
 __human_name__ = "Betsy Webshop"
 
-from models import User, Product, Order
+from models import User, Product, Order, Product_image, Tag
 import peewee
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
@@ -55,9 +55,27 @@ def add_product_to_catalog(product_info):
     '''creates and adds a product to user's profile'''
     try:
         product = dict_to_model(Product, product_info)
-        return product.save()
+        product.save()
+        return product.prod_id
     except peewee.PeeweeException:
         return False
+
+def add_images_to_product(product_id, image_list):
+    '''adds images to a product'''
+    product = Product.get(Product.prod_id == product_id)
+
+    for image_url in image_list:
+        if image_url:  #if image field wasn't empty
+            prod_image = Product_image(product=product, image_url=image_url)
+            prod_image.save()
+
+def add_product_tags(product_id, tag_list):
+    '''adds tags to a product'''
+    product = Product.get(Product.prod_id == product_id)
+
+    for tag in tag_list:
+        product_tag, created = Tag.get_or_create(name=tag.lower())
+        product.tags.add(Tag.get(Tag.name == tag.lower()))
 
 # def update_stock(product_id, new_quantity):
 #     ...

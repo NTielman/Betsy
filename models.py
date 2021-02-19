@@ -40,7 +40,7 @@ class Product_image(BaseModel):
     image_url = CharField(null=True)
 
 class Tag(BaseModel):
-    name = CharField(max_length=50)
+    name = CharField(max_length=50) #unique=True
     products = ManyToManyField(Product, backref='tags')
 
 ProductTag = Tag.products.get_through_model()
