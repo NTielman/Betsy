@@ -2,3 +2,11 @@
     font-size: large;
     color: coral;
 }
+
+.product-list-item .box .subtitle {
+    margin-bottom: 0;
+}
+
+.product-list-item .box .price {
+    color: dimgrey;
+}

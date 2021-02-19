@@ -23,12 +23,18 @@ def create_user(user_name, user_full_name, user_address, user_bio, user_avatar, 
         return False
 
 def get_user(user_name):
-    '''finds and returns a user object from database'''
+    '''finds and returns a user dictionary from database'''
     user = User.get(User.username == user_name)
     return model_to_dict(user)  #converts DB user to dictionary
 
-# def search(term):
-#     ...
+def get_newest_products():
+    '''returns all products in database sorted by date added'''
+    query = (Product
+             .select()
+             .order_by(Product.date_added.desc())
+             .limit(10))
+    products = [model_to_dict(product) for product in query]
+    return products
 
 def list_user_products(user_id):
     '''returns a list of products a user is selling'''
@@ -48,9 +54,6 @@ def list_user_purchases(user_id):
     purchases = [model_to_dict(purchase) for purchase in user.purchases]
     return purchases
 
-# def list_products_per_tag(tag_id):
-#     ...
-
 def add_product_to_catalog(product_info):
     '''creates and adds a product to user's profile'''
     try:
@@ -64,6 +67,7 @@ def add_images_to_product(product_id, image_list):
     '''adds images to a product'''
     product = Product.get(Product.prod_id == product_id)
 
+    #add first image as product thumbnail. image_list[0]
     for image_url in image_list:
         if image_url:  #if image field wasn't empty
             prod_image = Product_image(product=product, image_url=image_url)
@@ -80,10 +84,14 @@ def add_product_tags(product_id, tag_list):
 # def update_stock(product_id, new_quantity):
 #     ...
 
+# def list_products_per_tag(tag_id):
+#     ...
 
 # def purchase_product(product_id, buyer_id, quantity):
 #     ...
 
-
 # def remove_product(product_id):
+#     ...
+
+# def search(term):
 #     ...

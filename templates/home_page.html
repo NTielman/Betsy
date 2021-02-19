@@ -8,6 +8,36 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-<!-- if user, welcome back fullname -->
-<h2>Home</h2>
+
+    {% if user %}
+        <h1>Welcome back, {{ user.username }}!</h1>
+    {% else %}
+        <h1>Home</h1>
+    {% endif %}
+
+    {% if products %}
+        <div class="columns is-multiline mb-6">
+            <div class="column is-12 has-text-centered mt-6 mb-6">
+                <h2 class="is-size-3">Newest products</h2>
+            </div>
+        </div>
+        
+        {% for product in products %}
+            <div class="column is-3 product-list-item">
+                <div class="box">
+                    <figure class="image is-4by3 mb-4">
+                        <img src="" alt="product thumbnail">
+                        <!-- insert image thumbnail -->
+                    </figure>
+                    <h2 class="subtitle">{{ product.title }}</h2>
+                    <h3 class="price is-size-6 mb-5">${{ product.price_in_cents/100 }}</h3>
+                    <hr>
+                    <a href="#" class="button is-dark">View Product</a>
+                </div>
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p>There are no products yet...</p>
+    {% endif %}
 {% endblock content %}

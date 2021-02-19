@@ -1,7 +1,7 @@
 import os
 from flask import Flask, redirect, render_template, request, session, url_for, flash
 from helpers import verify_password, verify_user
-from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases, add_images_to_product, add_product_tags
+from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases, add_images_to_product, add_product_tags, get_newest_products
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -13,7 +13,8 @@ app.secret_key = os.urandom(16)
 def frontpage(user=False):
     if "user" in session:
         user = session["user"]
-    return render_template("home_page.html", user=user)
+    featured_products = get_newest_products()
+    return render_template("home_page.html", user=user, products=featured_products)
 
 @app.route('/home/')
 def home():
