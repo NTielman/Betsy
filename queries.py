@@ -3,7 +3,7 @@ __human_name__ = "Betsy Webshop"
 
 from models import User, Product, Order
 import peewee
-from playhouse.shortcuts import model_to_dict
+from playhouse.shortcuts import model_to_dict, dict_to_model
 
 def get_user_password(user_name):
     '''finds username and returns user passwords from database'''
@@ -25,31 +25,47 @@ def create_user(user_name, user_full_name, user_address, user_bio, user_avatar, 
 def get_user(user_name):
     '''finds and returns a user object from database'''
     user = User.get(User.username == user_name)
-    return model_to_dict(user, backrefs=True)  #converts DB user to dictionary
+    return model_to_dict(user)  #converts DB user to dictionary
 
-def search(term):
-    ...
+# def search(term):
+#     ...
 
-# def list_user_products(user_id):
-#     '''this function is replaced by get_user()'''
-#add a readme to instructors, i know this was supposed to be a backend assignment but i wanted to challenge myself and turn it into a semi-fully functioning marketplace. 
-#as per the assignment requirements, add a product by using username Alice, password alice, navigate to my profile,/ products/ add or edit product
+def list_user_products(user_id):
+    '''returns a list of products a user is selling'''
+    user = User.get(User.user_id == user_id)
+    products = [model_to_dict(product) for product in user.products]
+    return products
 
-def list_products_per_tag(tag_id):
-    ...
+def list_user_sales(user_id):
+    '''returns a list of sales for a given user'''
+    user = User.get(User.user_id == user_id)
+    sales = [model_to_dict(sale) for sale in user.sales]
+    return sales
+
+def list_user_purchases(user_id):
+    '''returns a list of purchases made by a given user'''
+    user = User.get(User.user_id == user_id)
+    purchases = [model_to_dict(purchase) for purchase in user.purchases]
+    return purchases
+
+# def list_products_per_tag(tag_id):
+#     ...
+
+def add_product_to_catalog(product_info):
+    '''creates and adds a product to user's profile'''
+    try:
+        product = dict_to_model(Product, product_info)
+        return product.save()
+    except peewee.PeeweeException:
+        return False
+
+# def update_stock(product_id, new_quantity):
+#     ...
 
 
-def add_product_to_catalog(user_id, product):
-    ...
+# def purchase_product(product_id, buyer_id, quantity):
+#     ...
 
 
-def update_stock(product_id, new_quantity):
-    ...
-
-
-def purchase_product(product_id, buyer_id, quantity):
-    ...
-
-
-def remove_product(product_id):
-    ...
+# def remove_product(product_id):
+#     ...

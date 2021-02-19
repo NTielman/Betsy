@@ -1,15 +1,8 @@
 {% extends "base.html" %}
-{% block title %} Add Product {% endblock %}
+{% block title %} Add Images {% endblock %}
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
-            <p>{{msg}}</p>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-<h2 class="title">Add product info</h2>
-<form method="post">
+<h2 class="title">Add product images</h2>
+<!-- <form method="post">
     <label for="title">Title</label>
     <input id="title" type="text" placeholder="Hand-Painted Wall Tapestry" name="title" required>
 
@@ -27,5 +20,5 @@
             <input type="submit" class="button is-dark" value="Next: Add Images">
         </div>
     </div>
-</form>
+</form> -->
 {% endblock content %}

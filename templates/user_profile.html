@@ -11,7 +11,7 @@
 
 <div class="box">
     <h2 class="is-size-3 mb-4">My products</h2>
-    {% if user.products %}
+    {% if products %}
         <table class="table is-fullwidth">
             <thead>
                 <tr>
@@ -20,10 +20,11 @@
                 </tr>
             </thead>
             <tbody>
-                {% for product in user.products %}
+                {% for product in products %}
                     <tr>
                         <td>{{ product.title }}</td>
-                        <td>{{ product.price_in_cents }}</td>
+                        <td>${{ product.price_in_cents/100 }}</td>
+                        <!-- divide by 100 to get price in dollars -->
                     </tr>
                 {% endfor %}
             </tbody>
@@ -37,7 +38,7 @@
 <div class="box">
     <h2 class="is-size-3 mb-4">My orders</h2>
     <p>Sales</p>
-    {% if user.sales %}
+    {% if sales %}
         <table class="table is-fullwidth">
             <thead>
                 <tr>
@@ -47,7 +48,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for sale in user.sales %}
+                {% for sale in sales %}
                     <tr>
                         <td>{{ sale.product.title }}</td>
                         <td>{{ sale.qty }}</td>
@@ -62,7 +63,7 @@
     <hr>
     <br>
     <p>Purchases</p>
-    {% if user.purchases %}
+    {% if purchases %}
         <table class="table is-fullwidth">
             <thead>
                 <tr>
@@ -72,7 +73,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for purchase in user.purchases %}
+                {% for purchase in purchases %}
                     <tr>
                         <td>{{ purchase.product.title }}</td>
                         <td>{{ purchase.qty }}</td>

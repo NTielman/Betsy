@@ -1,7 +1,7 @@
 import os
 from flask import Flask, redirect, render_template, request, session, url_for, flash
 from helpers import verify_password, verify_user
-from queries import get_user
+from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -68,7 +68,10 @@ def sign_up():
 def user_profile():
     if "user" in session:
         user = session["user"]
-        return render_template('user_profile.html', user=user)
+        user_products = list_user_products(user["user_id"])
+        user_sales = list_user_sales(user["user_id"])
+        user_purchases = list_user_purchases(user["user_id"])
+        return render_template('user_profile.html', user=user, products=user_products, sales=user_sales, purchases=user_purchases)
     else:
         return redirect(url_for('login'))
 
@@ -82,16 +85,50 @@ def add_product():
             qty = request.form["qty"]
             user = session["user"]
 
-            #try create product
-            user_is_valid = verify_user(username, fullname, address, bio, avatar_url, password)
-            if user_is_valid:
-                user = get_user(username)
-                session["user"] = user
-                return redirect(url_for("frontpage"))
+            product = {
+                "title": title,
+                "description": description,
+                "price_in_cents": float(price) * 100, #convert price to cents 
+                "qty": qty,
+                "user": user
+            }
+
+            product_added_succesfully = add_product_to_catalog(product)
+            if product_added_succesfully:
+                return redirect(url_for('add_images'))
             else:
-                return redirect(url_for('sign_up'))
+                flash("Could not add product", 'error')
+                return redirect(url_for('add_product'))
         else:  #method is GET
-            return render_template("add_product.html") #create html and form
+            return render_template("add_product.html")
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/user_profile/add_product/images/')
+def add_images():
+    if "user" in session: #check if user is logged in
+        # if request.method == "POST":
+        #     title = request.form["title"]
+        #     description = request.form["description"]
+        #     price = request.form["price"]
+        #     qty = request.form["qty"]
+        #     user = session["user"]
+
+        #     product = {
+        #         "title": title,
+        #         "description": description,
+        #         "price_in_cents": price * 100, #convert price to cents 
+        #         "qty": qty,
+        #     }
+
+        #     product_added_succesfully = add_product_to_catalog(user.user_id, product)
+        #     if product_added_succesfully:
+        #         return redirect(url_for('add_images'))
+        #     else:
+        #         flash("Could not add product", 'error')
+        #         return redirect(url_for('add_product'))
+        # else:  #method is GET
+        return render_template("add_images.html")
     else:
         return redirect(url_for('login'))
 
