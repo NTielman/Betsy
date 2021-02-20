@@ -32,7 +32,7 @@
                     <h2 class="subtitle">{{ product.title }}</h2>
                     <h3 class="price is-size-6 mb-5">${{ product.price_in_cents/100 }}</h3>
                     <hr>
-                    <a href="#" class="button is-dark">View Product</a>
+                    <a href="/product_page/{{ product.prod_id }}" class="button is-dark">View Product</a>
                 </div>
             </div>
         {% endfor %}
@@ -40,4 +40,4 @@
     {% else %}
         <p>There are no products yet...</p>
     {% endif %}
-{% endblock content %}
+{% endblock %}

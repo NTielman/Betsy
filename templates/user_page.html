@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %} {{ other_user.username }} Profile {% endblock %}
+{% block content %}
+<div class="box">
+    <img src="{{ other_user.avatar_url }}" alt="user avatar">
+    <h1>{{ other_user.full_name }}</h1>
+    <p>{{ other_user.address }}</p>
+    <p>{{ other_user.bio }}</p>
+</div>
+
+<div class="box">
+    <h2 class="is-size-3 mb-4">{{ other_user.username }}'s products</h2>
+    <!-- view all button that links to all users products -->
+
+    {% if products %}
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.title }}</td>
+                        <td>${{ product.price_in_cents/100 }}</td>
+                        <!-- divide by 100 to get price in dollars -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>{{ other_user.username }} doesn't have any products yet...</p>
+    {% endif %}
+</div>
+{% endblock %}

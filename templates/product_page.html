@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %} {{ product.title }} {% endblock %}
+{% block content %}
+    {% if product_images %}
+        <!-- show large first image -->
+        {% for image in product_images %}
+            <!-- show image thumbnails -->
+        {% endfor %}
+        {% else %}
+        <!-- placeholder images -->
+    {% endif %}
+
+    <p class="mb-6">
+        <span class="tag">{{ product.user.username }}</span>
+    </p>
+    <h1 class="title">{{ product.title }}</h1>
+    <h2>${{ product.price_in_cents/100 }}</h2>
+    <span>{{ product.qty }} in stock</span>
+
+    <h3>Description</h3>
+    <p>{{ product.description }}</p>
+
+    <h3>Explore related tags</h3>
+    {% if product_tags %}
+        {% for tag in product_tags %}
+        <a href="#" class="button is-dark">{{ tag.name }}</a>
+        {% endfor %}
+        {% else %}
+        <p>no tags associated with {{ product.title }}</p>
+    {% endif %}
+{% endblock %}

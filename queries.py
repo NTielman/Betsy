@@ -24,11 +24,22 @@ def create_user(user_name, user_full_name, user_address, user_bio, user_avatar, 
 
 def get_user(user_name):
     '''finds and returns a user dictionary from database'''
-    user = User.get(User.username == user_name)
-    return model_to_dict(user)  #converts DB user to dictionary
+    try: 
+        user = User.get(User.username == user_name)
+        return model_to_dict(user)  #converts DB user to dictionary
+    except peewee.DoesNotExist:
+        return False
+
+def get_product(product_id):
+    '''finds and returns a product dictionary from database'''
+    try:
+        product = Product.get_by_id(product_id)
+        return model_to_dict(product)
+    except peewee.DoesNotExist:
+        return False
 
 def get_newest_products():
-    '''returns all products in database sorted by date added'''
+    '''returns 10 products in database sorted by date added'''
     query = (Product
              .select()
              .order_by(Product.date_added.desc())
@@ -38,19 +49,19 @@ def get_newest_products():
 
 def list_user_products(user_id):
     '''returns a list of products a user is selling'''
-    user = User.get(User.user_id == user_id)
+    user = User.get_by_id(user_id)
     products = [model_to_dict(product) for product in user.products]
     return products
 
 def list_user_sales(user_id):
     '''returns a list of sales for a given user'''
-    user = User.get(User.user_id == user_id)
+    user = User.get_by_id(user_id)
     sales = [model_to_dict(sale) for sale in user.sales]
     return sales
 
 def list_user_purchases(user_id):
     '''returns a list of purchases made by a given user'''
-    user = User.get(User.user_id == user_id)
+    user = User.get_by_id(user_id)
     purchases = [model_to_dict(purchase) for purchase in user.purchases]
     return purchases
 
@@ -65,7 +76,7 @@ def add_product_to_catalog(product_info):
 
 def add_images_to_product(product_id, image_list):
     '''adds images to a product'''
-    product = Product.get(Product.prod_id == product_id)
+    product = Product.get_by_id(product_id)
 
     #add first image as product thumbnail. image_list[0]
     for image_url in image_list:
@@ -75,7 +86,7 @@ def add_images_to_product(product_id, image_list):
 
 def add_product_tags(product_id, tag_list):
     '''adds tags to a product'''
-    product = Product.get(Product.prod_id == product_id)
+    product = Product.get_by_id(product_id)
 
     for tag in tag_list:
         product_tag, created = Tag.get_or_create(name=tag.lower())

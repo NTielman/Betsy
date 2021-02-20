@@ -1,7 +1,7 @@
 import os
-from flask import Flask, redirect, render_template, request, session, url_for, flash
+from flask import Flask, redirect, render_template, request, session, url_for, flash, abort
 from helpers import verify_password, verify_user
-from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases, add_images_to_product, add_product_tags, get_newest_products
+from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases, add_images_to_product, add_product_tags, get_newest_products, get_product
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -65,18 +65,18 @@ def sign_up():
             return redirect(url_for("frontpage"))
         return render_template("sign_up.html")
 
-@app.route('/user_profile/')
-def user_profile():
+@app.route('/my_profile/')
+def my_profile():
     if "user" in session:
         user = session["user"]
         user_products = list_user_products(user["user_id"])
         user_sales = list_user_sales(user["user_id"])
         user_purchases = list_user_purchases(user["user_id"])
-        return render_template('user_profile.html', user=user, products=user_products, sales=user_sales, purchases=user_purchases)
+        return render_template('my_profile.html', user=user, products=user_products, sales=user_sales, purchases=user_purchases)
     else:
         return redirect(url_for('login'))
 
-@app.route('/user_profile/add_product/', methods=['GET', 'POST'])
+@app.route('/my_profile/add_product/', methods=['GET', 'POST'])
 def add_product():
     if "user" in session: #check if user is logged in
         if request.method == "POST":
@@ -118,7 +118,7 @@ def add_product():
                     add_product_tags(product_id, tag_list)
 
                 # return redirect to /product_page/<prod_id>
-                return redirect(url_for('user_profile'))
+                return redirect(url_for('my_profile'))
             else:
                 flash("Could not add product", 'error')
                 return redirect(url_for('add_product'))
@@ -126,6 +126,32 @@ def add_product():
             return render_template("add_product.html")
     else:
         return redirect(url_for('login'))
+
+@app.route('/product_page/<product_id>')
+def product_page(product_id):
+    product = get_product(product_id)
+    if product:
+        #fetch product tags backrefs?
+        #fetch product images
+        return render_template("product_page.html", product=product)
+    else:
+        abort(404)
+
+@app.route('/user_page/<username>')
+def user_page(username):
+    '''renders a user profile of a user who is not the logged in session user'''
+    other_user = get_user(username)
+    if other_user:
+        user_products = list_user_products(other_user.user_id)
+        return render_template("user_page.html", other_user=other_user, products=user_products)
+    else:
+        abort(404)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+# my products - list all my products. (possible to edit), user products- list all users products
 
 if __name__ == "__main__":
     app.run(debug=True)
