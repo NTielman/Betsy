@@ -2,12 +2,18 @@
 {% block title %} {{ product.title }} {% endblock %}
 {% block content %}
     {% if product_images %}
-        <!-- show large first image -->
-        {% for image in product_images %}
-            <!-- show image thumbnails -->
+        <figure class="image mb-6">
+            <img src="{{ product_images[0] }}" alt="product image">
+        </figure>
+        {% for image_url in product_images %}
+            <figure class="image is-2by2 mb-6">
+                <img src="{{ image_url }}" alt="product thumbnail">
+            </figure>
         {% endfor %}
         {% else %}
-        <!-- placeholder images -->
+        <figure class="image is-2by2 mb-6">
+            <img src="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616" alt="product thumbnail">
+        </figure>
     {% endif %}
 
     <p class="mb-6">
@@ -20,12 +26,14 @@
     <h3>Description</h3>
     <p>{{ product.description }}</p>
 
+    <br>
+    <hr>
     <h3>Explore related tags</h3>
     {% if product_tags %}
         {% for tag in product_tags %}
-        <a href="#" class="button is-dark">{{ tag.name }}</a>
+        <a href="#" class="button is-dark">{{ tag }}</a>
         {% endfor %}
-        {% else %}
+    {% else %}
         <p>no tags associated with {{ product.title }}</p>
     {% endif %}
 {% endblock %}

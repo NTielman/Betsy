@@ -1,7 +1,7 @@
 import os
 from flask import Flask, redirect, render_template, request, session, url_for, flash, abort
 from helpers import verify_password, verify_user
-from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases, add_images_to_product, add_product_tags, get_newest_products, get_product
+from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases, add_images_to_product, add_product_tags, get_newest_products, get_product, get_product_images, get_product_tags
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -131,9 +131,9 @@ def add_product():
 def product_page(product_id):
     product = get_product(product_id)
     if product:
-        #fetch product tags backrefs?
-        #fetch product images
-        return render_template("product_page.html", product=product)
+        product_tags = get_product_tags(product_id)
+        product_images = get_product_images(product_id)
+        return render_template("product_page.html", product=product, product_images=product_images, product_tags=product_tags)
     else:
         abort(404)
 

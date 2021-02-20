@@ -34,9 +34,21 @@ def get_product(product_id):
     '''finds and returns a product dictionary from database'''
     try:
         product = Product.get_by_id(product_id)
-        return model_to_dict(product)
+        return model_to_dict(product, backrefs=True)
     except peewee.DoesNotExist:
         return False
+
+def get_product_images(product_id):
+    '''returns a list of product_images if any'''
+    product = Product.get_by_id(product_id)
+    images = [image.image_url for image in product.images ] 
+    return images
+
+def get_product_tags(product_id):
+    '''returns a list of tags associated to a product if any'''
+    product = Product.get_by_id(product_id)
+    tags = [tag.name for tag in product.tags ] 
+    return tags
 
 def get_newest_products():
     '''returns 10 products in database sorted by date added'''
