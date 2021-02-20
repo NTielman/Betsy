@@ -1,7 +1,7 @@
 import os
 from flask import Flask, redirect, render_template, request, session, url_for, flash, abort
 from helpers import verify_password, verify_user
-from queries import get_user, list_user_products, add_product_to_catalog, list_user_sales, list_user_purchases, add_images_to_product, add_product_tags, get_newest_products, get_product, get_product_images, get_product_tags
+from queries import *
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -144,6 +144,15 @@ def user_page(username):
     if other_user:
         user_products = list_user_products(other_user.user_id)
         return render_template("user_page.html", other_user=other_user, products=user_products)
+    else:
+        abort(404)
+
+@app.route('/products/<tag>')
+def products_by_tag(tag):
+    '''returns all products associated with a given tag'''
+    tagged_products = list_products_per_tag(tag)
+    if tagged_products:
+        return render_template("products_page.html", tag=tag, products=tagged_products)
     else:
         abort(404)
 

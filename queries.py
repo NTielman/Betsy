@@ -104,10 +104,13 @@ def add_product_tags(product_id, tag_list):
         product_tag, created = Tag.get_or_create(name=tag.lower())
         product.tags.add(Tag.get(Tag.name == tag.lower()))
 
-# def update_stock(product_id, new_quantity):
-#     ...
+def list_products_per_tag(tag_name):
+    '''returns a list of products associated with a given tag'''
+    tag = Tag.get(Tag.name == tag_name)
+    products = [model_to_dict(product) for product in tag.products]
+    return products
 
-# def list_products_per_tag(tag_id):
+# def update_stock(product_id, new_quantity):
 #     ...
 
 # def purchase_product(product_id, buyer_id, quantity):

@@ -31,7 +31,7 @@
     <h3>Explore related tags</h3>
     {% if product_tags %}
         {% for tag in product_tags %}
-        <a href="#" class="button is-dark">{{ tag }}</a>
+        <a href="/products/{{ tag }}" class="button is-dark">{{ tag }}</a>
         {% endfor %}
     {% else %}
         <p>no tags associated with {{ product.title }}</p>
