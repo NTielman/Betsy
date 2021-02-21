@@ -3,6 +3,7 @@ __human_name__ = "Betsy Webshop"
 
 from models import User, Product, Order, Product_image, Tag
 import peewee
+from peewee import fn
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 def get_user_password(user_name):
@@ -110,6 +111,15 @@ def list_products_per_tag(tag_name):
     products = [model_to_dict(product) for product in tag.products]
     return products
 
+def search(term):
+    '''returns a list of products whose name or description contains a given term'''
+    search_term = term.lower()
+    query = (Product
+             .select()
+             .where(fn.Lower(Product.title).contains(search_term) | fn.Lower(Product.description).contains(search_term)))
+    products = [model_to_dict(product) for product in query]
+    return products
+
 # def update_stock(product_id, new_quantity):
 #     ...
 
@@ -117,7 +127,4 @@ def list_products_per_tag(tag_name):
 #     ...
 
 # def remove_product(product_id):
-#     ...
-
-# def search(term):
 #     ...

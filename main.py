@@ -148,13 +148,16 @@ def user_page(username):
         abort(404)
 
 @app.route('/products/<tag>')
-def products_by_tag(tag):
+def search_products_by_tag(tag):
     '''returns all products associated with a given tag'''
     tagged_products = list_products_per_tag(tag)
-    if tagged_products:
-        return render_template("products_page.html", tag=tag, products=tagged_products)
-    else:
-        abort(404)
+    return render_template("products_page.html", tag=tag, products=tagged_products)
+
+@app.route('/search/')
+def search_products():
+    query = request.args.get("query")
+    products = search(query)
+    return render_template("search.html", query=query, products=products)
 
 @app.errorhandler(404)
 def page_not_found(e):

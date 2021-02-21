@@ -21,7 +21,20 @@
         </div>
 
         <div class="navbar-menu" id="main-navbar">
-            <div class="navbar-end">
+            <div class="navbar-start">
+                <div class="navbar-item">
+                    <form method="get" action="{{ url_for('search_products') }}">
+                        <div class="field has-addons">
+                            <div class="control">
+                                <input type="text" class="input" placeholder="Search for anything" name="query">
+                            </div>
+                            <div class="control">
+                                <button class="button is-dark">Search</button>
+                                <!-- use fontawesome icon instead -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </nav>

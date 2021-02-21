@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} {{ tag }} {% endblock %}
+{% block title %} {{ query }} {% endblock %}
 {% block content %}
 
     {% if products %}
@@ -18,6 +18,6 @@
             </div>
         {% endfor %}
     {% else %}
-        <p>No products found for tag "{{ tag }}"...</p>
+        <p>No products found for your search "{{ query }}"...</p>
     {% endif %}
 {% endblock %}
