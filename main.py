@@ -132,6 +132,15 @@ def add_product():
 def view_cart():
     #if "user" in session: #sino redirect to login page
     cart = Cart(session)
+
+    remove_product_id = request.args.get('remove_from_cart', '')
+
+    if remove_product_id:
+        user_cart = cart.remove_product(remove_product_id)  #returns a cart dict
+        session['cart'] = user_cart
+        session.modified = True
+        return redirect(url_for('view_cart'))
+
     return render_template('cart.html', cart=cart)
 
 @app.route('/product_page/<product_id>', methods=['GET', 'POST'])
