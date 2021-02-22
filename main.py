@@ -2,6 +2,7 @@ import os
 from flask import Flask, redirect, render_template, request, session, url_for, flash, abort
 from helpers import verify_password, verify_user
 from queries import *
+from cart import Cart
 
 __winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
 __human_name__ = 'templates'
@@ -127,9 +128,17 @@ def add_product():
     else:
         return redirect(url_for('login'))
 
-@app.route('/product_page/<product_id>')
+@app.route('/product_page/<product_id>', methods=['GET', 'POST'])
 def product_page(product_id):
+    user_cart = Cart(session)
     product = get_product(product_id)
+
+    if request.method == "POST":
+        quantity = request.form["quantity"]
+        user_cart.add_product(product_id, quantity, False)
+        flash("Item added to cart", 'info')
+        return redirect(url_for("product_page", product_id=product_id, _method='GET'))
+
     if product:
         product_tags = get_product_tags(product_id)
         product_images = get_product_images(product_id)
@@ -139,7 +148,6 @@ def product_page(product_id):
 
 @app.route('/user_page/<username>')
 def user_page(username):
-    '''renders a user profile of a user who is not the logged in session user'''
     other_user = get_user(username)
     if other_user:
         user_products = list_user_products(other_user.user_id)
@@ -149,7 +157,6 @@ def user_page(username):
 
 @app.route('/products/<tag>')
 def search_products_by_tag(tag):
-    '''returns all products associated with a given tag'''
     tagged_products = list_products_per_tag(tag)
     return render_template("products_page.html", tag=tag, products=tagged_products)
 

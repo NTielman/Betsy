@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %} {{ product.title }} {% endblock %}
 {% block content %}
+
     {% if product_images %}
         <figure class="image mb-6">
             <img src="{{ product_images[0] }}" alt="product image">
@@ -27,7 +28,25 @@
     <p>{{ product.description }}</p>
 
     <br>
+    <form method="post">
+        <div class="control">
+            <input type="number" name="quantity" value="1" class="input" min="1" max="{{ product.qty }}">
+        </div>
+
+        <div class="control">
+            <button class="button is-dark">Add to cart</button>
+        </div>
+    </form>
+    <br>
     <hr>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+            <div class="notification is-success is-toast">{{msg}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <h3>Explore related tags</h3>
     {% if product_tags %}
         {% for tag in product_tags %}
