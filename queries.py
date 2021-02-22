@@ -120,10 +120,23 @@ def search(term):
     products = [model_to_dict(product) for product in query]
     return products
 
-# def update_stock(product_id, new_quantity):
-#     ...
-
 # def purchase_product(product_id, buyer_id, quantity):
+def checkout(buyer_id, cart):
+    '''adds purchase info to orders database'''
+    try: 
+        buyer = User.get_by_id(buyer_id)
+        for item in cart:
+            product = Product.get_by_id(item['id'])
+            vendor = product.user
+            # change to product.vendor
+            Order.create(
+                vendor=vendor, buyer=buyer, product=product, qty=item['quantity']
+            )
+        return True
+    except peewee.PeeweeException:
+        return False 
+
+# def update_stock(product_id, new_quantity):
 #     ...
 
 # def remove_product(product_id):

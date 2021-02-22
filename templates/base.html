@@ -55,7 +55,7 @@
     <footer class="footer">
         <h3 class="is-size-4 mb-4">Betsy</h3>
         {% if user %}
-            <a href="{{ url_for('user_profile') }}">My profile</a>
+            <a href="{{ url_for('my_profile') }}">My profile</a>
             <a href="{{ url_for('logout') }}">Log out</a>
         {% else %}
             <a href="{{ url_for('sign_up') }}">Become a vendor</a>

@@ -23,11 +23,11 @@ class Product(BaseModel):
     price_in_cents = IntegerField(constraints=[Check('price_in_cents >= 0')])
     qty = IntegerField(constraints=[Check('qty >= 0')])
     prod_id = AutoField()
-    user = ForeignKeyField(User, backref='products', on_delete='CASCADE')
+    user = ForeignKeyField(User, backref='products', on_delete='CASCADE') #change name to 'vendor'
     date_added = DateField(default=date.today())
     # thumbnail = CharField(null=True, default="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616")
 
-class Order(BaseModel):
+class Order(BaseModel): #change table name to transactions (order ta reserved keyword)
     vendor = ForeignKeyField(User, backref='sales')
     buyer = ForeignKeyField(User, backref='purchases')
     product = ForeignKeyField(Product, backref='orders')

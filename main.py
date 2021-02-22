@@ -128,28 +128,46 @@ def add_product():
     else:
         return redirect(url_for('login'))
 
-@app.route('/view_cart/')
+@app.route('/view_cart/', methods=['GET', 'POST'])
 def view_cart():
-    #if "user" in session: #sino redirect to login page
-    cart = Cart(session)
+    if "user" in session:
+        cart = Cart(session)
 
-    remove_product_id = request.args.get('remove_from_cart', '')
-    changed_product_qty = request.args.get('change_quantity', '')
-    quantity = int(request.args.get('quantity', 0))
+        if request.method == "POST":
+            buyer_id = session["user"]['user_id']
+            order = checkout(buyer_id, cart)
+            if order:
+                session.pop("cart", None)
+                return redirect(url_for('success'))
+            else:
+                flash("Something went wrong, could not place your order", 'error')
+                return redirect(url_for('view_cart'))
 
-    if remove_product_id:
-        user_cart = cart.remove_product(remove_product_id)  #returns a cart dict
-        session['cart'] = user_cart
-        session.modified = True
-        return redirect(url_for('view_cart'))
+        else: # request.method == GET
+            remove_product_id = request.args.get('remove_from_cart', '')
+            changed_product_qty = request.args.get('change_quantity', '')
+            quantity = int(request.args.get('quantity', 0))
 
-    if changed_product_qty:
-        user_cart = cart.add_product(changed_product_qty, quantity)
-        session['cart'] = user_cart
-        session.modified = True
-        return redirect(url_for('view_cart'))
+            if remove_product_id:
+                user_cart = cart.remove_product(remove_product_id)  #returns a cart dict
+                session['cart'] = user_cart
+                session.modified = True
+                return redirect(url_for('view_cart'))
 
-    return render_template('cart.html', cart=cart)
+            if changed_product_qty:
+                user_cart = cart.add_product(changed_product_qty, quantity)
+                session['cart'] = user_cart
+                session.modified = True
+                return redirect(url_for('view_cart'))
+
+            return render_template('cart.html', cart=cart)
+    else:
+        flash("you must be logged in to view your cart", 'error')
+        return redirect(url_for('login'))
+
+@app.route('/checkout/success/')
+def success():
+    return render_template('success.html')
 
 @app.route('/product_page/<product_id>', methods=['GET', 'POST'])
 def product_page(product_id):
@@ -198,6 +216,8 @@ def page_not_found(e):
     return render_template("404.html"), 404
 
 # my products - list all my products. (possible to edit), user products- list all users products
+# view all my sales
+#view all my purchases
 
 if __name__ == "__main__":
     app.run(debug=True)

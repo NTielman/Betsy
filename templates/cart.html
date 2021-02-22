@@ -26,7 +26,6 @@
                                     <a href="/product_page/{{ item.product.prod_id }}">{{ item.product.title }}</a>
                                 </td>
                                 <td>{{ item.quantity }}
-                                    <!-- could change this to input field number max = item.product.quantity on checkout nos ta get e total uiteindelijke quantity -->
                                     <a href="?change_quantity={{ item.id }}&quantity=-1">-</a>
                                     <a href="?change_quantity={{ item.id }}&quantity=1">+</a>
                                 </td>
@@ -51,11 +50,22 @@
         </div>
 
         <h2 class="subtitle">Payment information</h2>
-        <div class="field">
-            <div class="control">
-                <button class="button is-dark mt-4">Checkout</button>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                <div class="notification is-danger">{{msg}}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="post" id="payment-form">
+            <div class="field">
+                <div class="control">
+                    <button class="button is-dark mt-4">Checkout</button>
+                </div>
             </div>
-        </div>
+        </form>
     {% else %}
     <p>You don't have any items in your cart!</p>
     {% endif %}
