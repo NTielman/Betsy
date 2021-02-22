@@ -18,6 +18,9 @@
             </div>
         {% endfor %}
     {% else %}
+    <!-- no products found for: "{{tag or query}}" -->
         <p>No products found for tag "{{ tag }}"...</p>
     {% endif %}
 {% endblock %}
+
+<!-- merge this ku search.html. change tag/ query to filter_by -->

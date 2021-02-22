@@ -5,18 +5,25 @@ class Cart(object):
     def __init__(self, session):
         '''checks if a cart already exists in session
         and initializes cart'''
-        self.session = session
-        cart = self.session.get('cart')
+        # self.session = session
+        # cart = self.session.get('cart')
+        if 'cart' in session:
+            cart = session['cart']
+        # cart = session.get('cart')
+        else:
+            cart = {}
         
-        if not cart:
-            cart = self.session['cart'] = {}
+        # check session if cart exists else, create an empty dict and pass it to session as cart
+        # if not cart:
+        #     # cart = self.session['cart'] = {}
+        #     cart = {}
         self.cart = cart
 
     def __iter__(self):
         for product_id in self.cart.keys():
-            self.cart[str(product_id)]['product'] =  get_product(product_id)
+            self.cart[str(product_id)]['product'] = get_product(product_id)
         for cart_item in self.cart.values():
-            cart_item['total_price'] = cart_item['product'].price_in_cents * cart_item['quantity']
+            cart_item['total_price'] = cart_item['product']['price_in_cents'] * cart_item['quantity']
             yield cart_item
 
     def __len__(self):
@@ -35,24 +42,28 @@ class Cart(object):
             if self.cart[product_id]['quantity'] == 0:
                 self.remove(product_id)
 
-        self.save_cart()
+        # self.save_cart()
+        return self.cart
 
     def remove_product(self, product_id):
         '''removes cart item(s)'''
         if product_id in self.cart:
             del self.cart[product_id]
-            self.save_cart()
+            # self.save_cart()
+            return self.cart
 
-    def save_cart(self):
-        '''saves the cart to session'''
-        self.session['cart'] = self.cart
-        self.session.modified = True
+    # def save_cart(self):
+    #     '''saves the cart to session'''
+    #     # self.session['cart'] = self.cart
+    #     session['cart'] = self.cart
+    #     # self.session.modified = True
+    #     session.modified = True
 
     def get_total_cost(self):
         '''returns the total cost for all items in the cart'''
         for product_id in self.cart.keys():
             self.cart[str(product_id)]['product'] = get_product(product_id)
-        return sum(cart_item['quantity'] * cart_item['product'].price_in_cents for cart_item in self.cart.values())
+        return sum(cart_item['quantity'] * cart_item['product']['price_in_cents'] for cart_item in self.cart.values())
 
 '''{
                 prod_id1:{

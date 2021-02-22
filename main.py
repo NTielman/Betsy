@@ -128,14 +128,22 @@ def add_product():
     else:
         return redirect(url_for('login'))
 
+@app.route('/view_cart/')
+def view_cart():
+    #if "user" in session: #sino redirect to login page
+    cart = Cart(session)
+    return render_template('cart.html', cart=cart)
+
 @app.route('/product_page/<product_id>', methods=['GET', 'POST'])
 def product_page(product_id):
-    user_cart = Cart(session)
+    cart = Cart(session)
     product = get_product(product_id)
 
     if request.method == "POST":
-        quantity = request.form["quantity"]
-        user_cart.add_product(product_id, quantity, False)
+        quantity = int(request.form["quantity"])
+        user_cart = cart.add_product(product_id, quantity, False) #returns a cart dict
+        session['cart'] = user_cart
+        session.modified = True
         flash("Item added to cart", 'info')
         return redirect(url_for("product_page", product_id=product_id, _method='GET'))
 
@@ -165,6 +173,8 @@ def search_products():
     query = request.args.get("query")
     products = search(query)
     return render_template("search.html", query=query, products=products)
+
+# view products ^ returns product page showing all products in database
 
 @app.errorhandler(404)
 def page_not_found(e):

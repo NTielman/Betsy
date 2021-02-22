@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %} Cart {% endblock %}
+{% block content %}
+    <h1 class="title">Cart</h1>
+    {% if cart %}
+        <div class="box mb-6">
+            <div class="table">
+                <table class="table is-fullwidth is-striped">
+                    <thead>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                            <tr>
+                                <td>
+                                    <figure class="image is-64x64">
+                                        <!-- get product thumbnail -->
+                                        <img src="" alt="product thumbnail">
+                                    </figure>
+                                </td>
+                                <td>
+                                    <a href="/product_page/{{ item.product.prod_id }}">{{ item.product.title }}</a>
+                                </td>
+                                <td>{{ item.quantity }}
+                                    <!-- could change this to input field number max = item.product.quantity on checkout nos ta get e total uiteindelijke quantity -->
+                                    <a href="?change_quantity={{ item.id }}&quantity=-1">-</a>
+                                    <a href="?change_quantity={{ item.id }}&quantity=1">+</a>
+                                </td>
+                                <td>${{ item.total_price/100 }}</td>
+                                <td>
+                                    <a href="?remove_from_cart={{ item.id }}" class="delete">Remove</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td><strong>Total cost</strong></td>
+                            <td><strong>{{ cart|length }}</strong></td>
+                            <td colspan="2"><strong>${{ cart.get_total_cost()/100 }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <h2 class="subtitle">Payment information</h2>
+        <div class="field">
+            <div class="control">
+                <button class="button is-dark mt-4">Checkout</button>
+            </div>
+        </div>
+    {% else %}
+    <p>You don't have any items in your cart!</p>
+    {% endif %}
+{% endblock %}

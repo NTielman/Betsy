@@ -36,6 +36,12 @@
                     </form>
                 </div>
             </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <a href="{{ url_for('view_cart') }}" class="button is-dark">Cart{% if user_cart %} ({{ cart|length }}){% endif %}</a>
+                    <!-- can i add e length method to the session cart dict? -->
+                </div>
+            </div>
         </div>
     </nav>
 
