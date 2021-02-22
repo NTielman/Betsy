@@ -134,9 +134,17 @@ def view_cart():
     cart = Cart(session)
 
     remove_product_id = request.args.get('remove_from_cart', '')
+    changed_product_qty = request.args.get('change_quantity', '')
+    quantity = int(request.args.get('quantity', 0))
 
     if remove_product_id:
         user_cart = cart.remove_product(remove_product_id)  #returns a cart dict
+        session['cart'] = user_cart
+        session.modified = True
+        return redirect(url_for('view_cart'))
+
+    if changed_product_qty:
+        user_cart = cart.add_product(changed_product_qty, quantity)
         session['cart'] = user_cart
         session.modified = True
         return redirect(url_for('view_cart'))
@@ -150,7 +158,7 @@ def product_page(product_id):
 
     if request.method == "POST":
         quantity = int(request.form["quantity"])
-        user_cart = cart.add_product(product_id, quantity, False) #returns a cart dict
+        user_cart = cart.add_product(product_id, quantity) #returns a cart dict
         session['cart'] = user_cart
         session.modified = True
         flash("Item added to cart", 'info')

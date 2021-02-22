@@ -29,18 +29,17 @@ class Cart(object):
     def __len__(self):
         return sum(cart_item['quantity'] for cart_item in self.cart.values())
 
-    def add_product(self, product_id, quantity=1, update_quantity=False):
+    def add_product(self, product_id, quantity=1):
         '''adds a product to cart'''
         product_id = str(product_id)
 
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': quantity, 'id': product_id}
-
-        if update_quantity: #isn't this gwn an else statement? if product already in acrt and they added it again gwn increment e quantity?
+        else:
             self.cart[product_id]['quantity'] += int(quantity)
 
             if self.cart[product_id]['quantity'] == 0:
-                self.remove(product_id)
+                self.remove_product(product_id)
 
         # self.save_cart()
         return self.cart
