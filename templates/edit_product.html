@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %} Edit Product {% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+            <div class="notification is-danger">{{msg}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h1 class="title">Edit Product</h1>
+    <form method="post">
+        <label for="title">Title</label>
+        <input id="title" type="text" placeholder="{{ product.title }}" name="title">
+
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="{{ product.description }}" name="description"></textarea>
+
+        <label for="price">Price $</label>
+        <input id="price" placeholder="{{ product.price_in_cents/100 }}" type="number" min="0.00" step="0.01" name="price">
+
+        <label for="qty">Quantity available</label>
+        <input id="qty" placeholder="{{ product.qty }}" type="number" min="1" name="qty">
+
+        <label for="thumbnail">Thumbnail url</label>
+        <input id="thumbnail" type="url" placeholder="{{ product.thumbnail }}" name="thumbnail">
+        
+        <div class="field">
+            <div class="control">
+                <input type="submit" class="button is-dark" value="Add Product">
+            </div>
+        </div>
+    </form>
+{% endblock %}

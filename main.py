@@ -8,7 +8,7 @@ from playhouse.flask_utils import object_list
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
-create_tables()  #when if you make a py file to make fake accounrs add this line to the start of that file
+create_tables()  #if you make a py file to make fake accounrs add this line to the start of that file
 # in readme to docenten when first running to initialise betsy db and create some fake users to test site functionality with the file run the make fake accounts file. and then run main.py
 
 @app.route('/')
@@ -96,6 +96,32 @@ def edit_profile():
 
         else:  #method = "GET"
             return render_template("edit_profile.html", user=user)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/my_profile/edit_product/<product_id>', methods=['GET', 'POST'])
+def edit_product(product_id):
+    if "user" in session:
+        if request.method == "POST":
+            title = request.form["title"]
+            description = request.form["description"]
+            price = float(request.form["price"]) * 100
+            qty = int(request.form["qty"])
+            thumbnail = request.form["thumbnail"]
+
+            edit_successful = edit_product(product_id, title, description, price, qty, thumbnail)
+
+            if edit_successful:
+                return redirect(url_for("my_products"))
+            else:
+                flash("Something went wrong. Couldn't update product", 'error')
+                return redirect(url_for("edit_product", product_id=product_id, _method='GET'))
+        else:  #method = "GET"
+            product = get_product(product_id)
+            if product:
+                return render_template("edit_product.html", product=product)
+            else:
+                abort(404)
     else:
         return redirect(url_for('login'))
 
@@ -266,7 +292,7 @@ def page_not_found(e):
 # view all my sales
 #view all my purchases
 # make a login_required decorator
-# controleer ora bo modify session pa add modified=True su tras. if it's first time adding , or just removing an item hoeft niet.
+# remove a product
 
 if __name__ == "__main__":
     app.run(debug=True)

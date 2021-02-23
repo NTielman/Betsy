@@ -14,8 +14,7 @@
                     <h3 class="price is-size-6 mb-5">${{ product.price_in_cents/100 }}</h3>
                     <hr>
                     <a href="/product_page/{{ product.prod_id }}" class="button is-dark">View</a>
-                    <a href="#" class="button is-info">Edit</a>
-                    <!-- add link to edit product page -->
+                    <a href="{{ url_for('edit_product', product_id=product.prod_id) }}" class="button is-info">Edit</a>
                     <a href="#" class="button is-danger">Remove</a>
                     <!-- add link to remove a product -->
                 </div>
