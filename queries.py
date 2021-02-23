@@ -80,6 +80,11 @@ def get_newest_products():
     products = [model_to_dict(product) for product in query]
     return products
 
+def get_all_products():
+    '''returns all products from database'''
+    all_products = Product.select()
+    return all_products
+
 def list_user_products(user_id):
     '''returns a list of products a user is selling'''
     user = User.get_by_id(user_id)
@@ -163,10 +168,29 @@ def checkout(buyer_id, cart):
     except peewee.PeeweeException:
         return False 
 
-# def update_stock(product_id, new_quantity):
-#     will this get called when a sale is made? -2
+def edit_product(product_id, title, description, price, qty, thumbnail):
+    '''modifies and updates a product info'''
+    #note to docent: this function replaces the update_stock function from the Winc assignment
+    try:
+        product = Product.get_by_id(product_id)
 
-# def edit_product(product_id)
+        if title:
+            product.title = title
+        if description:
+            product.description = description
+        if price:
+            product.price_in_cents = price
+        if qty:
+            product.qty = qty
+        if thumbnail:
+            product.thumbnail = thumbnail
 
-# def remove_product(product_id):
-#     ...
+        product.save()
+        return model_to_dict(product)
+    except peewee.PeeweeException:
+        return False
+
+def remove_product(product_id):
+    '''removes a product from database'''
+    product = Product.get_by_id(product_id)
+    return product.delete_instance()

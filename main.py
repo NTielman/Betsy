@@ -4,6 +4,7 @@ from flask import Flask, redirect, render_template, request, session, url_for, f
 from helpers import verify_password, verify_user
 from queries import *
 from cart import Cart
+from playhouse.flask_utils import object_list
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -19,7 +20,7 @@ def frontpage():
 def home():
     return redirect(url_for("frontpage"))
 
-@app.route('/login/', methods=['GET', 'POST'])
+@app.route('/sign_in/', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
         username = request.form["username"]
@@ -36,7 +37,7 @@ def login():
             return redirect(url_for("frontpage"))
         return render_template('log_in.html')
 
-@app.route('/logout/')
+@app.route('/sign_out/')
 def logout():
     if "user" in session:
         session.pop("user", None)
@@ -204,9 +205,6 @@ def product_page(product_id):
         if product:
             product_tags = get_product_tags(product_id)
             product_images = get_product_images(product_id)
-            # if product_images
-            #set session['image to be the first image ]
-            # session.modified=True
             return render_template("product_page.html", product=product, product_images=product_images, product_tags=product_tags)
         else:
             abort(404)
@@ -239,10 +237,21 @@ def user_products(username):
     else:
         abort(404)
 
+@app.route('/products/')
+def all_products():
+    products = get_all_products()
+    return object_list("products_page.html", products, paginate_by=20)
+
+# BACKUP
+# @app.route('/products/')
+# def all_products(): 
+#     products = get_all_products() #change in queries to return a model to dict
+#     return render_template("products.html", query='All Products', products=products)
+
 @app.route('/products/tag=<tag>')
 def search_products_by_tag(tag):
     tagged_products = list_products_per_tag(tag)
-    return render_template("products_page.html", query=tag, products=tagged_products)
+    return render_template("products.html", query=tag, products=tagged_products)
 
 @app.route('/products/search')
 def search_products():
@@ -254,7 +263,6 @@ def search_products():
 def page_not_found(e):
     return render_template("404.html"), 404
 
-# view products ^ returns product page showing all products in database
 # view all my sales
 #view all my purchases
 # make a login_required decorator

@@ -3,10 +3,6 @@
 
 {% block content %}
     {% if product_images %}
-        <figure class="image mb-6">
-            <!-- if 'image in session use image here' -->
-            <img src="{{ product_images[0] }}" alt="product image">
-        </figure>
         {% for image_url in product_images %}
             <figure class="image is-2by2 mb-6">
                 <img src="{{ image_url }}" alt="product thumbnail">
@@ -19,8 +15,7 @@
     {% endif %}
 
     <p class="mb-6">
-        <span class="tag">{{ product.user.username }}</span>
-        <!-- chnages to product vendor + add a link to vendor profile -->
+        <a href="/user_page/{{ product.vendor.username }}">{{ product.vendor.username }}</a>
     </p>
     <h1 class="title">{{ product.title }}</h1>
     <h2>${{ product.price_in_cents/100 }}</h2>
