@@ -18,7 +18,7 @@
             </div>
         {% endfor %}
     {% else %}
-    <!-- no products found for: "{{tag or query}}" -->
+    <!-- no products found for: "query= tag query=query tag or query or user" -->
         <p>No products found for tag "{{ tag }}"...</p>
     {% endif %}
 {% endblock %}

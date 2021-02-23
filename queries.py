@@ -156,7 +156,9 @@ def checkout(buyer_id, cart):
         return False 
 
 # def update_stock(product_id, new_quantity):
-#     ...
+#     will this get called when a sale is made? -2
+
+# def edit_product(product_id)
 
 # def remove_product(product_id):
 #     ...

@@ -10,9 +10,9 @@
 
 <div class="box">
     <h2 class="is-size-3 mb-4">{{ other_user.username }}'s products</h2>
-    <!-- view all button that links to all users products -->
 
     {% if products %}
+    <a href="/user_page/{{ other_user.username }}/products/" class="button is-dark">View products</a>
         <table class="table is-fullwidth">
             <thead>
                 <tr>
@@ -22,6 +22,7 @@
             </thead>
             <tbody>
                 {% for product in products %}
+                <!-- limit to showing only 8 products on userpage -->
                     <tr>
                         <td>{{ product.title }}</td>
                         <td>${{ product.price_in_cents/100 }}</td>

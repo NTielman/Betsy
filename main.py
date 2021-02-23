@@ -216,8 +216,18 @@ def product_page(product_id):
 def user_page(username):
     other_user = get_user(username)
     if other_user:
-        user_products = list_user_products(other_user.user_id)
+        user_products = list_user_products(other_user['user_id'])
         return render_template("user_page.html", other_user=other_user, products=user_products)
+    else:
+        abort(404)
+
+@app.route('/user_page/<username>/products/')
+def user_products(username):
+    other_user = get_user(username)
+    if other_user:
+        user_products = list_user_products(other_user['user_id'])
+        tag = f"{username}'s products"
+        return render_template("products_page.html", tag=tag, products=user_products)
     else:
         abort(404)
 
