@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %} Home {% endblock %}
+
 {% block content %}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -9,8 +10,8 @@
         {% endif %}
     {% endwith %}
 
-    {% if user %}
-        <h1>Welcome back, {{ user.username }}!</h1>
+    {% if "user" in session %}
+        <h1>Welcome back, {{ session['user']['username'] }}!</h1>
     {% else %}
         <h1>Home</h1>
     {% endif %}
@@ -26,8 +27,7 @@
             <div class="column is-3 product-list-item">
                 <div class="box">
                     <figure class="image is-4by3 mb-4">
-                        <img src="" alt="product thumbnail">
-                        <!-- insert image thumbnail -->
+                        <img src="{{ product.thumbnail }}" alt="product thumbnail">
                     </figure>
                     <h2 class="subtitle">{{ product.title }}</h2>
                     <h3 class="price is-size-6 mb-5">${{ product.price_in_cents/100 }}</h3>

@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block title %} {{ query }} {% endblock %}
+{% block title %} My Products {% endblock %}
 
 {% block content %}
+    <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
     {% if products %}
         {% for product in products %}
             <div class="column is-3 product-list-item">
@@ -12,11 +13,16 @@
                     <h2 class="subtitle">{{ product.title }}</h2>
                     <h3 class="price is-size-6 mb-5">${{ product.price_in_cents/100 }}</h3>
                     <hr>
-                    <a href="/product_page/{{ product.prod_id }}" class="button is-dark">View Product</a>
+                    <a href="/product_page/{{ product.prod_id }}" class="button is-dark">View</a>
+                    <a href="#" class="button is-info">Edit</a>
+                    <!-- add link to edit product page -->
+                    <a href="#" class="button is-danger">Remove</a>
+                    <!-- add link to remove a product -->
                 </div>
             </div>
         {% endfor %}
     {% else %}
-        <p>No products found for "{{ query }}"...</p>
+        <p>You don't have any products yet...</p>
+        <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
     {% endif %}
 {% endblock %}

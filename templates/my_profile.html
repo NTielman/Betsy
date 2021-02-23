@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %} My Profile {% endblock %}
+
 {% block content %}
 <div class="box">
     <img src="{{ user.avatar_url }}" alt="user avatar">
     <h1>{{ user.full_name }}</h1>
-    <button class="button is-dark">Edit Profile</button>
     <p>{{ user.address }}</p>
     <p>{{ user.bio }}</p>
     <a href="{{ url_for('edit_profile') }}" class="button is-info">Edit profile</a>
@@ -16,19 +16,28 @@
     <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
 
     {% if products %}
+        <a href="{{ url_for('my_products') }}" class="button is-dark">View products</a>
+
         <table class="table is-fullwidth">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Title</th>
-                    <th>Price</th>
+                    <th>In stock</th>
                 </tr>
             </thead>
             <tbody>
                 {% for product in products %}
                     <tr>
-                        <td>{{ product.title }}</td>
-                        <td>${{ product.price_in_cents/100 }}</td>
-                        <!-- divide by 100 to get price in dollars -->
+                        <td>
+                            <figure class="image is-64x64">
+                                <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                            </figure>
+                        </td>
+                        <td>
+                            <a href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
+                        </td>
+                        <td>{{ product.qty }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -42,6 +51,9 @@
     <h2 class="is-size-3 mb-4">My orders</h2>
     <p>Sales</p>
     {% if sales %}
+        <a href="#" class="button is-dark">View all sales</a>
+        <!-- insert url to view all sales -->
+
         <table class="table is-fullwidth">
             <thead>
                 <tr>
@@ -67,6 +79,9 @@
     <br>
     <p>Purchases</p>
     {% if purchases %}
+    <a href="#" class="button is-dark">View all purchases</a>
+        <!-- insert url to view all purchases -->
+        
         <table class="table is-fullwidth">
             <thead>
                 <tr>

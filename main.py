@@ -1,21 +1,19 @@
 import os
+from models import create_tables
 from flask import Flask, redirect, render_template, request, session, url_for, flash, abort
 from helpers import verify_password, verify_user
 from queries import *
 from cart import Cart
 
-__winc_id__ = '9263bbfddbeb4a0397de231a1e33240a'
-__human_name__ = 'templates'
-
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
+create_tables()  #when if you make a py file to make fake accounrs add this line to the start of that file
+# in readme to docenten when first running to initialise betsy db and create some fake users to test site functionality with the file run the make fake accounts file. and then run main.py
 
 @app.route('/')
-def frontpage(user=False):
-    if "user" in session:
-        user = session["user"]
+def frontpage():
     featured_products = get_newest_products()
-    return render_template("home_page.html", user=user, products=featured_products)
+    return render_template("home_page.html", products=featured_products)
 
 @app.route('/home/')
 def home():
@@ -73,11 +71,11 @@ def my_profile():
         user_products = list_user_products(user["user_id"])
         user_sales = list_user_sales(user["user_id"])
         user_purchases = list_user_purchases(user["user_id"])
-        return render_template('my_profile.html', user=user, products=user_products, sales=user_sales, purchases=user_purchases)
+        return render_template('my_profile.html', user=user, products=user_products[:7], sales=user_sales[:7], purchases=user_purchases[:7])
     else:
         return redirect(url_for('login'))
 
-@app.route('/edit_profile/', methods=['GET', 'POST'])
+@app.route('/my_profile/edit_profile/', methods=['GET', 'POST'])
 def edit_profile():
     if "user" in session:
         user = session["user"]
@@ -102,10 +100,9 @@ def edit_profile():
 
 @app.route('/my_profile/add_product/', methods=['GET', 'POST'])
 def add_product():
-    if "user" in session: #check if user is logged in
+    if "user" in session:
         if request.method == "POST":
 
-            #create product instance
             title = request.form["title"]
             description = request.form["description"]
             price = request.form["price"]
@@ -116,11 +113,11 @@ def add_product():
                 "title": title,
                 "description": description,
                 "price_in_cents": float(price) * 100, #convert price to cents 
-                "qty": qty,
+                "qty": int(qty),
                 "user": user
             }
 
-            product_id = add_product_to_catalog(product)
+            product_id = add_product_to_catalog(product) #if succesfull returns a product_id
 
             if product_id:
                 # add product images
@@ -141,8 +138,7 @@ def add_product():
                 if tag_list:
                     add_product_tags(product_id, tag_list)
 
-                # return redirect to /product_page/<prod_id>
-                return redirect(url_for('my_profile'))
+                return redirect(url_for("product_page", product_id=product_id, _method='GET'))
             else:
                 flash("Could not add product", 'error')
                 return redirect(url_for('add_product'))
@@ -159,6 +155,7 @@ def view_cart():
         if request.method == "POST":
             buyer_id = session["user"]['user_id']
             order = checkout(buyer_id, cart)
+
             if order:
                 session.pop("cart", None)
                 return redirect(url_for('success'))
@@ -166,13 +163,13 @@ def view_cart():
                 flash("Something went wrong, could not place your order", 'error')
                 return redirect(url_for('view_cart'))
 
-        else: # request.method == GET
+        else: # request = GET
             remove_product_id = request.args.get('remove_from_cart', '')
             changed_product_qty = request.args.get('change_quantity', '')
             quantity = int(request.args.get('quantity', 0))
 
             if remove_product_id:
-                user_cart = cart.remove_product(remove_product_id)  #returns a cart dict
+                user_cart = cart.remove_product(remove_product_id)
                 session['cart'] = user_cart
                 session.modified = True
                 return redirect(url_for('view_cart'))
@@ -194,63 +191,74 @@ def success():
 
 @app.route('/product_page/<product_id>', methods=['GET', 'POST'])
 def product_page(product_id):
-    cart = Cart(session)
-    product = get_product(product_id)
-
     if request.method == "POST":
+        cart = Cart(session)
         quantity = int(request.form["quantity"])
-        user_cart = cart.add_product(product_id, quantity) #returns a cart dict
+        user_cart = cart.add_product(product_id, quantity)
         session['cart'] = user_cart
         session.modified = True
         flash("Item added to cart", 'info')
         return redirect(url_for("product_page", product_id=product_id, _method='GET'))
-
-    if product:
-        product_tags = get_product_tags(product_id)
-        product_images = get_product_images(product_id)
-        return render_template("product_page.html", product=product, product_images=product_images, product_tags=product_tags)
-    else:
-        abort(404)
+    else: # GET request
+        product = get_product(product_id)
+        if product:
+            product_tags = get_product_tags(product_id)
+            product_images = get_product_images(product_id)
+            # if product_images
+            #set session['image to be the first image ]
+            # session.modified=True
+            return render_template("product_page.html", product=product, product_images=product_images, product_tags=product_tags)
+        else:
+            abort(404)
 
 @app.route('/user_page/<username>')
 def user_page(username):
-    other_user = get_user(username)
-    if other_user:
-        user_products = list_user_products(other_user['user_id'])
-        return render_template("user_page.html", other_user=other_user, products=user_products)
+    betsy_user = get_user(username)
+    if betsy_user:
+        user_products = list_user_products(betsy_user['user_id'])
+        return render_template("user_page.html", betsy_user=betsy_user, products=user_products[:7])
     else:
         abort(404)
 
+@app.route('/my_profile/my_products/')
+def my_products():
+    if "user" in session:
+        user = session["user"]
+        products = list_user_products(user["user_id"])
+        return render_template("my_products.html", products=products)
+    else:
+        return redirect(url_for('login'))
+
 @app.route('/user_page/<username>/products/')
 def user_products(username):
-    other_user = get_user(username)
-    if other_user:
-        user_products = list_user_products(other_user['user_id'])
+    betsy_user = get_user(username)
+    if betsy_user:
+        user_products = list_user_products(betsy_user['user_id'])
         tag = f"{username}'s products"
         return render_template("products_page.html", tag=tag, products=user_products)
     else:
         abort(404)
 
-@app.route('/products/<tag>')
+@app.route('/products/tag=<tag>')
 def search_products_by_tag(tag):
     tagged_products = list_products_per_tag(tag)
-    return render_template("products_page.html", tag=tag, products=tagged_products)
+    return render_template("products_page.html", query=tag, products=tagged_products)
 
-@app.route('/search/')
+@app.route('/products/search')
 def search_products():
     query = request.args.get("query")
     products = search(query)
-    return render_template("search.html", query=query, products=products)
-
-# view products ^ returns product page showing all products in database
+    return render_template("products_page.html", query=query, products=products)
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
 
-# my products - list all my products. (possible to edit), user products- list all users products
+# view products ^ returns product page showing all products in database
 # view all my sales
 #view all my purchases
+# make a login_required decorator
+# controleer ora bo modify session pa add modified=True su tras. if it's first time adding , or just removing an item hoeft niet.
 
 if __name__ == "__main__":
     app.run(debug=True)

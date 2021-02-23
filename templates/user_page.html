@@ -1,38 +1,46 @@
 {% extends "base.html" %}
-{% block title %} {{ other_user.username }} Profile {% endblock %}
+{% block title %} {{ betsy_user.username }} Profile {% endblock %}
+
 {% block content %}
 <div class="box">
-    <img src="{{ other_user.avatar_url }}" alt="user avatar">
-    <h1>{{ other_user.full_name }}</h1>
-    <p>{{ other_user.address }}</p>
-    <p>{{ other_user.bio }}</p>
+    <img src="{{ betsy_user.avatar_url }}" alt="user avatar">
+    <h1>{{ betsy_user.full_name }}</h1>
+    <p>{{ betsy_user.address }}</p>
+    <p>{{ betsy_user.bio }}</p>
 </div>
 
 <div class="box">
-    <h2 class="is-size-3 mb-4">{{ other_user.username }}'s products</h2>
+    <h2 class="is-size-3 mb-4">{{ betsy_user.username }}'s products</h2>
 
     {% if products %}
-    <a href="/user_page/{{ other_user.username }}/products/" class="button is-dark">View products</a>
+        <a href="/user_page/{{ betsy_user.username }}/products/" class="button is-dark">View products</a>
+
         <table class="table is-fullwidth">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Title</th>
                     <th>Price</th>
                 </tr>
             </thead>
             <tbody>
                 {% for product in products %}
-                <!-- limit to showing only 8 products on userpage -->
                     <tr>
-                        <td>{{ product.title }}</td>
+                        <td>
+                            <figure class="image is-64x64">
+                                <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                            </figure>
+                        </td>
+                        <td>
+                            <a href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
+                        </td>
                         <td>${{ product.price_in_cents/100 }}</td>
-                        <!-- divide by 100 to get price in dollars -->
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>{{ other_user.username }} doesn't have any products yet...</p>
+        <p>{{ betsy_user.username }} doesn't have any products yet...</p>
     {% endif %}
 </div>
 {% endblock %}

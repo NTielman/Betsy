@@ -25,8 +25,7 @@ def verify_password(user_name, password):
     user_password = get_user_password(user_name)
     entered_password = hash_password(password)
 
-    if user_password:
-        #user exists check if password correct
+    if user_password: #user exists 
         if entered_password == user_password:
             flash("You are logged in", 'info')
             return True

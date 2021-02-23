@@ -1,9 +1,13 @@
 from peewee import *
+import os
 from datetime import date
 
-# create betsy db in same folder file using os
+# Ensure database "betsy.db" is created in current folder
+full_path = os.path.realpath(__file__)
+file_dir = os.path.dirname(full_path)
+db_path = os.path.join(file_dir, 'betsy.db')
 
-db = SqliteDatabase('betsy.db', pragmas={'foreign_keys': 1})
+db = SqliteDatabase(db_path, pragmas={'foreign_keys': 1})
 # Ensure foreign-key constraints are enforced.
 
 class BaseModel(Model):
@@ -25,31 +29,29 @@ class Product(BaseModel):
     price_in_cents = IntegerField(constraints=[Check('price_in_cents >= 0')])
     qty = IntegerField(constraints=[Check('qty >= 0')])
     prod_id = AutoField()
-    user = ForeignKeyField(User, backref='products', on_delete='CASCADE') #change name to 'vendor'
+    vendor = ForeignKeyField(User, backref='products', on_delete='CASCADE')
     date_added = DateField(default=date.today())
-    # thumbnail = CharField(null=True, default="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616")
+    thumbnail = CharField(null=True, default="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616")
 
-class Order(BaseModel): #change table name to transactions (order ta reserved keyword)
+class Transaction(BaseModel):
     vendor = ForeignKeyField(User, backref='sales')
     buyer = ForeignKeyField(User, backref='purchases')
     product = ForeignKeyField(Product, backref='orders')
     qty = IntegerField(constraints=[Check('qty > 0')])
     date = DateField(default=date.today())
-    order_id = AutoField()
+    trans_id = AutoField()
 
-class Product_image(BaseModel):
-    image_id = AutoField()
+class ProductImage(BaseModel):
+    img_id = AutoField()
     product = ForeignKeyField(Product, backref='images', on_delete='CASCADE')
-    image_url = CharField(null=True)
+    image_url = CharField()
 
 class Tag(BaseModel):
-    name = CharField(max_length=50) #unique=True
+    name = CharField(max_length=50, unique=True)
     products = ManyToManyField(Product, backref='tags')
 
 ProductTag = Tag.products.get_through_model()
 
 def create_tables():
     with db:
-        db.create_tables([User, Product, Order, Product_image, Tag, ProductTag])
-
-create_tables()
+        db.create_tables([User, Product, Transaction, ProductImage, Tag, ProductTag])

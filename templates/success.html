@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block title %} Success {% endblock %}
+
 {% block content %}
-    <h1 class="title">Thank you for your order!</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+            <div class="notification is-danger">{{msg}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <h1 class="title">Thank you!</h1>
+    <p>your order has been placed</p>
 {% endblock %}

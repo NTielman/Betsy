@@ -4,6 +4,7 @@ __human_name__ = "Betsy Webshop"
 from models import User, Product, Order, Product_image, Tag
 import peewee
 from peewee import fn
+from flask import flash
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 def get_user_password(user_name):
@@ -110,10 +111,13 @@ def add_images_to_product(product_id, image_list):
     '''adds images to a product'''
     product = Product.get_by_id(product_id)
 
-    #add first image as product thumbnail. image_list[0]
+    #set first image as product thumbnail
+    product.thumbnail = image_list[0]
+    product.save()
+    
     for image_url in image_list:
-        if image_url:  #if image field wasn't empty
-            prod_image = Product_image(product=product, image_url=image_url)
+        if image_url:  #if image field isn't empty
+            prod_image = ProductImage(product=product, image_url=image_url)
             prod_image.save()
 
 def add_product_tags(product_id, tag_list):
@@ -139,18 +143,22 @@ def search(term):
     products = [model_to_dict(product) for product in query]
     return products
 
-# def purchase_product(product_id, buyer_id, quantity):
 def checkout(buyer_id, cart):
     '''adds purchase info to orders database'''
+    #note to docent: this function replaces the purchase_product function from the Winc assignment
     try: 
         buyer = User.get_by_id(buyer_id)
         for item in cart:
+            quantity = item['quantity']
             product = Product.get_by_id(item['id'])
-            vendor = product.user
-            # change to product.vendor
-            Order.create(
-                vendor=vendor, buyer=buyer, product=product, qty=item['quantity']
-            )
+            vendor = product.vendor
+
+            if product.qty > quantity:
+                Transaction.create(vendor=vendor, buyer=buyer, product=product, qty=quantity)
+                product.qty -= quantity
+                product.save()
+            else:
+                flash(f"Could not order '{product.title}'. Not enough in stock", 'error')
         return True
     except peewee.PeeweeException:
         return False 

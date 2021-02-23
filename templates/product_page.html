@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %} {{ product.title }} {% endblock %}
-{% block content %}
 
+{% block content %}
     {% if product_images %}
         <figure class="image mb-6">
+            <!-- if 'image in session use image here' -->
             <img src="{{ product_images[0] }}" alt="product image">
         </figure>
         {% for image_url in product_images %}
@@ -11,7 +12,7 @@
                 <img src="{{ image_url }}" alt="product thumbnail">
             </figure>
         {% endfor %}
-        {% else %}
+    {% else %}
         <figure class="image is-2by2 mb-6">
             <img src="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616" alt="product thumbnail">
         </figure>
@@ -19,6 +20,7 @@
 
     <p class="mb-6">
         <span class="tag">{{ product.user.username }}</span>
+        <!-- chnages to product vendor + add a link to vendor profile -->
     </p>
     <h1 class="title">{{ product.title }}</h1>
     <h2>${{ product.price_in_cents/100 }}</h2>

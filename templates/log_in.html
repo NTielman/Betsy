@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %} Sign In {% endblock %}
+
 {% block content %}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -8,7 +9,9 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+
 <h2 class="title">Sign In</h2>
+
 <form method="post">
     <label for="username">Username</label>
     <input id="username" type="text" name="username" required>

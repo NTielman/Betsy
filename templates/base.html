@@ -46,8 +46,7 @@
                 </div>
 
                 <div class="navbar-item">
-                    <a href="{{ url_for('view_cart') }}">Cart{% if user_cart %} ({{ cart|length }}){% endif %}</a>
-                    <!-- can i add e length method to the session cart dict? -->
+                    <a href="{{ url_for('view_cart') }}">Cart{% if 'cart' in session and session['cart']|length > 0 %} (*){% endif %}</a>
                 </div>
             </div>
         </div>

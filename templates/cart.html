@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %} Cart {% endblock %}
+
 {% block content %}
     <h1 class="title">Cart</h1>
     {% if cart %}
@@ -18,8 +19,7 @@
                             <tr>
                                 <td>
                                     <figure class="image is-64x64">
-                                        <!-- get product thumbnail -->
-                                        <img src="" alt="product thumbnail">
+                                        <img src="{{ item.product.thumbnail }}" alt="product thumbnail">
                                     </figure>
                                 </td>
                                 <td>
@@ -67,6 +67,6 @@
             </div>
         </form>
     {% else %}
-    <p>You don't have any items in your cart!</p>
+        <p>You don't have any items in your cart!</p>
     {% endif %}
 {% endblock %}
