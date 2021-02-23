@@ -31,6 +31,25 @@ def get_user(user_name):
     except peewee.DoesNotExist:
         return False
 
+def edit_user(user_id, name, address, bio, avatar_url):
+    '''modifies and updates a user info'''
+    try:
+        user = User.get_by_id(user_id)
+
+        if name:
+            user.full_name = name
+        if address:
+            user.address = address
+        if bio:
+            user.bio = bio
+        if avatar_url:
+            user.avatar_url = avatar_url
+
+        user.save()
+        return model_to_dict(user)
+    except peewee.PeeweeException:
+        return False
+
 def get_product(product_id):
     '''finds and returns a product dictionary from database'''
     try:

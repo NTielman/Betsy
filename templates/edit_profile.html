@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %} Edit Profile {% endblock %}
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+            <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h1 class="title">Edit Profile</h1>
+    <form method="post">
+        <label for="full_name">Name</label>
+        <input id="full_name" type="text" placeholder="{{ user.full_name }}" name="full_name">
+
+        <label for="address">Address</label>
+        <input id="address" type="text" placeholder="{{ user.address }}" name="address">
+
+        <label for="bio">Bio description</label>
+        <textarea id="bio" placeholder="{{ user.bio }}" name="bio"></textarea>
+
+        <label for="avatar_url">Avatar Url</label>
+        <input id="avatar_url" type="url" name="avatar_url">
+
+        <div class="field">
+            <div class="control">
+                <input type="submit" class="button is-dark" value="Save changes">
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,6 +1,8 @@
 from peewee import *
 from datetime import date
 
+# create betsy db in same folder file using os
+
 db = SqliteDatabase('betsy.db', pragmas={'foreign_keys': 1})
 # Ensure foreign-key constraints are enforced.
 

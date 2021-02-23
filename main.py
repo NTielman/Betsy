@@ -77,6 +77,29 @@ def my_profile():
     else:
         return redirect(url_for('login'))
 
+@app.route('/edit_profile/', methods=['GET', 'POST'])
+def edit_profile():
+    if "user" in session:
+        user = session["user"]
+        if request.method == "POST":
+            name = request.form["full_name"]
+            address = request.form["address"]
+            bio = request.form["bio"]
+            avatar_url = request.form["avatar_url"]
+            edit_successful = edit_user(user["user_id"], name, address, bio, avatar_url)
+
+            if edit_successful:
+                session["user"] = edit_successful
+                return redirect(url_for('my_profile'))
+            else:
+                flash("Something went wrong. Couldn't update your profile", 'error')
+                return redirect(url_for('edit_profile'))
+
+        else:  #method = "GET"
+            return render_template("edit_profile.html", user=user)
+    else:
+        return redirect(url_for('login'))
+
 @app.route('/my_profile/add_product/', methods=['GET', 'POST'])
 def add_product():
     if "user" in session: #check if user is logged in
