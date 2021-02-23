@@ -46,20 +46,3 @@ class Cart(object):
         for product_id in self.cart.keys():
             self.cart[str(product_id)]['product'] = get_product(product_id)
         return sum(cart_item['quantity'] * cart_item['product']['price_in_cents'] for cart_item in self.cart.values())
-
-'''{
-                prod_id1:{
-                    product: Product(obj)
-                    quantity: 5
-                    total_price: 250 (korda /100 pa get price in dollars ipv cents)
-                }
-                prod_id2:{
-                    product: Product(obj)
-                    quantity: 2
-                }
-                prod_id3:{
-                    product: Product(obj)
-                    quantity: 8
-                    'id': prod_id
-                }
-            }'''

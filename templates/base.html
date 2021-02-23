@@ -10,7 +10,6 @@
 </head>
 
 <body>
-    <!-- place login option te aribe den navbar, if user in session this changes to logout -->
     <nav class="navbar">
         <div class="navbar-brand">
             <a href="/" class="navbar-item" id="logo">Betsy</a>
@@ -39,7 +38,15 @@
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <a href="{{ url_for('view_cart') }}" class="button is-dark">Cart{% if user_cart %} ({{ cart|length }}){% endif %}</a>
+                    {% if "user" in session %}
+                    <a href="{{ url_for('logout') }}">Sign out</a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}">Sign in</a>
+                    {% endif %}
+                </div>
+
+                <div class="navbar-item">
+                    <a href="{{ url_for('view_cart') }}">Cart{% if user_cart %} ({{ cart|length }}){% endif %}</a>
                     <!-- can i add e length method to the session cart dict? -->
                 </div>
             </div>
@@ -55,11 +62,10 @@
 
     <footer class="footer">
         <h3 class="is-size-4 mb-4">Betsy</h3>
-        {% if user %}
+        {% if "user" in session %}
             <a href="{{ url_for('my_profile') }}">My profile</a>
-            <a href="{{ url_for('logout') }}">Log out</a>
         {% else %}
-            <a href="{{ url_for('sign_up') }}">Become a vendor</a>
+            <a href="{{ url_for('sign_up') }}">Sign up for Betsy</a>
         {% endif %}
     </footer>
 </body>

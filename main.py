@@ -42,7 +42,7 @@ def login():
 def logout():
     if "user" in session:
         session.pop("user", None)
-        flash("You have been logged out", 'info')
+        flash("You have been signed out", 'info')
     return redirect(url_for("frontpage"))
 
 @app.route('/sign_up/', methods=['GET', 'POST'])

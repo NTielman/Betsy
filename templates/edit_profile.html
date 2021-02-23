@@ -4,7 +4,7 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for msg in messages %}
-            <p>{{msg}}</p>
+            <div class="notification is-danger">{{msg}}</div>
             {% endfor %}
         {% endif %}
     {% endwith %}

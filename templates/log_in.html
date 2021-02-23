@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% block title %} Log In {% endblock %}
+{% block title %} Sign In {% endblock %}
 {% block content %}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for msg in messages %}
-            <p>{{msg}}</p>
+            <div class="notification is-danger">{{msg}}</div>
             {% endfor %}
         {% endif %}
     {% endwith %}
-<h2 class="title">Log In</h2>
+<h2 class="title">Sign In</h2>
 <form method="post">
     <label for="username">Username</label>
     <input id="username" type="text" name="username" required>
@@ -17,7 +17,7 @@
 
     <div class="field">
         <div class="control">
-            <input type="submit" class="button is-dark" value="Login">
+            <input type="submit" class="button is-dark" value="Sign in">
         </div>
     </div>
 </form>
