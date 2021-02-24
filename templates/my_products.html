@@ -10,6 +10,7 @@
         {% endif %}
     {% endwith %}
     <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
+    <div class="columns">
     {% if products %}
         {% for product in products %}
             <div class="column is-3 product-list-item">
@@ -30,4 +31,5 @@
         <p>You don't have any products yet...</p>
         <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
     {% endif %}
+    </div>
 {% endblock %}

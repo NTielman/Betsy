@@ -44,12 +44,16 @@
         {% endif %}
     {% endwith %}
 
-    <h3>Explore related tags</h3>
-    {% if product_tags %}
-        {% for tag in product_tags %}
-        <a href="/products/{{ tag }}" class="button is-dark">{{ tag }}</a>
-        {% endfor %}
-    {% else %}
-        <p>no tags associated with {{ product.title }}</p>
-    {% endif %}
+    <div class="block">
+        <h3>Explore related tags</h3>
+        <div class="box">
+            {% if product_tags %}
+                {% for tag in product_tags %}
+                <a href="/products/{{ tag }}" class="button is-dark">{{ tag }}</a>
+                {% endfor %}
+            {% else %}
+                <p>no tags associated with {{ product.title }}</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

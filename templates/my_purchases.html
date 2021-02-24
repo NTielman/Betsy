@@ -2,6 +2,7 @@
 {% block title %} My Purchases {% endblock %}
 
 {% block content %}
+<div class="columns">
     {% if purchases %}
         {% for purchase in purchases %}
             <div class="column is-3 product-list-item">
@@ -35,4 +36,5 @@
     {% else %}
         <p>You don't have any purchases yet...</p>
     {% endif %}
+</div>
 {% endblock %}

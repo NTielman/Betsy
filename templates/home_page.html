@@ -17,12 +17,9 @@
     {% endif %}
 
     {% if products %}
-        <div class="columns is-multiline mb-6">
-            <div class="column is-12 has-text-centered mt-6 mb-6">
-                <h2 class="is-size-3">Newest products</h2>
-            </div>
-        </div>
-        
+        <h2 class="is-size-3">Newest products</h2>
+
+        <div class="columns">
         {% for product in products %}
             <div class="column is-3 product-list-item">
                 <div class="box">
@@ -36,7 +33,8 @@
                 </div>
             </div>
         {% endfor %}
-
+        </div>
+        
         <a href="{{ url_for('all_products') }}" class="button is-dark">Explore Products</a>
     {% else %}
         <p>There are no products yet...</p>

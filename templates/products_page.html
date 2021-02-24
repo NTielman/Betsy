@@ -2,6 +2,7 @@
 {% block title %} {{ query }} {% endblock %}
 
 {% block content %}
+<div class="columns">
     {% if products %}
         {% for product in products %}
             <div class="column is-3 product-list-item">
@@ -19,4 +20,5 @@
     {% else %}
         <p>No products found for "{{ query }}"...</p>
     {% endif %}
+</div>
 {% endblock %}
