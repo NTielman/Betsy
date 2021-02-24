@@ -2,6 +2,13 @@
 {% block title %} My Products {% endblock %}
 
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+            <div class="notification is-danger">{{msg}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
     {% if products %}
         {% for product in products %}

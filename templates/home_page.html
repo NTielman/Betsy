@@ -37,6 +37,7 @@
             </div>
         {% endfor %}
 
+        <a href="{{ url_for('all_products') }}" class="button is-dark">Explore Products</a>
     {% else %}
         <p>There are no products yet...</p>
     {% endif %}

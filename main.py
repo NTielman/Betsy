@@ -7,7 +7,7 @@ from cart import Cart
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
-create_tables()  #if you make a py file to make fake accounrs add this line to the start of that file
+# create_tables()  #if you make a py file to make fake accounrs add this line to the start of that file
 # in readme to docenten when first running to initialise betsy db and create some fake users to test site functionality with the file run the make fake accounts file. and then run main.py
 
 @app.route('/')
@@ -296,7 +296,7 @@ def user_products(username):
 @app.route('/products/')
 def all_products(): 
     products = queries.get_all_products()
-    return render_template("products.html", query='All Products', products=products)
+    return render_template("products_page.html", query='All Products', products=products)
 
 @app.route('/products/<tag>')
 def search_products_by_tag(tag):
