@@ -7,13 +7,25 @@
             <div class="column is-3 product-list-item">
                 <div class="box">
                     <figure class="image is-4by3 mb-4">
-                        <img src="{{ purchase.product.thumbnail }}" alt="product thumbnail">
+                        {% if purchase.product %}
+                            <img src="{{ purchase.product.thumbnail }}" alt="product thumbnail">
+                        {% else %}
+                            <img src="{{ purchase.product_thumb_url }}" alt="product thumbnail">
+                        {% endif %}
                     </figure>
                     <h2 class="subtitle">
-                        <a href="/product_page/{{ purchase.product.prod_id }}">{{ purchase.product.title }}</a>
+                        {% if purchase.product %}
+                            <a href="/product_page/{{ purchase.product.prod_id }}">{{ purchase.product.title }}</a>
+                        {% else %}
+                            {{ purchase.prod_title }}
+                        {% endif %}
                     </h2>
                     <h3 class="is-size-6 mb-5">Vendor: 
-                        <a href="/user_page/{{ purchase.vendor.username }}">{{ purchase.vendor.username }}</a>
+                        {% if purchase.vendor %}
+                            <a href="/user_page/{{ purchase.vendor.username }}">{{ purchase.vendor.username }}</a>
+                        {% else %}
+                            {{ purchase.vendor_name }}
+                        {% endif %}
                     </h3>
                     <h3 class="is-size-6 mb-5">Qty: {{ purchase.qty }}</h3>
                     <h3 class="is-size-6 mb-5">Purchased on: {{ purchase.date }}</h3>

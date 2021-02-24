@@ -151,7 +151,7 @@ def search(term):
     return products
 
 def checkout(buyer_id, cart):
-    '''adds purchase info to orders database'''
+    '''adds purchase info to transactions database'''
     #note to docent: this function replaces the purchase_product function from the Winc assignment
     try: 
         buyer = User.get_by_id(buyer_id)
@@ -161,7 +161,7 @@ def checkout(buyer_id, cart):
             vendor = product.vendor
 
             if product.qty > quantity:
-                Transaction.create(vendor=vendor, buyer=buyer, product=product, qty=quantity)
+                Transaction.create(vendor=vendor, buyer=buyer, product=product, qty=quantity, product_thumb_url=product.thumbnail, prod_title=product.title, buyer_name=buyer.username, vendor_name=vendor.username)
                 product.qty -= quantity
                 product.save()
             else:

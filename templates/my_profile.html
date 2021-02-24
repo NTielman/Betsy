@@ -64,7 +64,11 @@
             <tbody>
                 {% for sale in sales %}
                     <tr>
-                        <td>{{ sale.product.title }}</td>
+                        {% if sale.product %}
+                            <td>{{ sale.product.title }}</td>
+                        {% else %}
+                            <td>{{ sale.prod_title }}</td>
+                        {% endif %}
                         <td>{{ sale.qty }}</td>
                         <td>{{ sale.date }}</td>
                     </tr>
@@ -91,7 +95,11 @@
             <tbody>
                 {% for purchase in purchases %}
                     <tr>
-                        <td>{{ purchase.product.title }}</td>
+                        {% if purchase.product %}
+                            <td>{{ purchase.product.title }}</td>
+                        {% else %}
+                            <td>{{ purchase.prod_title }}</td>
+                        {% endif %}
                         <td>{{ purchase.qty }}</td>
                         <td>{{ purchase.date }}</td>
                     </tr>

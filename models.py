@@ -21,7 +21,7 @@ class User(BaseModel):
     full_name = CharField()
     address = CharField()
     bio = TextField(null=True, default="Hi, i'm a happy Betsy user.")
-    avatar_url = CharField(null=True, default="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?b=1&k=6&m=1223671392&s=612x612&w=0&h=5VMcL3a_1Ni5rRHX0LkaA25lD_0vkhFsb1iVm1HKVSQ=")
+    avatar_url = CharField(null=True)
 
 class Product(BaseModel):
     title = CharField(max_length=100)
@@ -31,16 +31,22 @@ class Product(BaseModel):
     prod_id = AutoField()
     vendor = ForeignKeyField(User, backref='products', on_delete='CASCADE')
     date_added = DateField(default=date.today())
-    thumbnail = CharField(null=True, default="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616")
+    thumbnail = CharField(null=True)
 
-#when a product or user is deleted the transaction should still be able to access the prod title vendor username even if they dont exist anymore
 class Transaction(BaseModel):
-    vendor = ForeignKeyField(User, backref='sales') #on_delete='SET NULL' null=True
-    buyer = ForeignKeyField(User, backref='purchases') #on_delete='SET NULL' null=True
-    product = ForeignKeyField(Product, backref='orders') #on_delete='SET NULL' null=True
+    vendor = ForeignKeyField(User, backref='sales', on_delete='SET NULL', null=True) 
+    buyer = ForeignKeyField(User, backref='purchases', on_delete='SET NULL', null=True)
+    product = ForeignKeyField(Product, backref='orders', on_delete='SET NULL', null=True)
     qty = IntegerField(constraints=[Check('qty > 0')])
     date = DateField(default=date.today())
     trans_id = AutoField()
+    # if product or user is modified or deleted from db we should still 
+    # be able to view some of their info in (existing) orders 
+    # by storing them as order details (below)
+    product_thumb_url = CharField(null=True) 
+    prod_title = CharField(max_length=100)
+    buyer_name = CharField(max_length=100)
+    vendor_name = CharField(max_length=100)
 
 class ProductImage(BaseModel):
     img_id = AutoField()
