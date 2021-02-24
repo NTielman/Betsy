@@ -1,6 +1,6 @@
 #logo {
-    font-size: large;
     color: coral;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .product-list-item .box .subtitle {
@@ -16,6 +16,13 @@
     20% {bottom: 50px;}
     80% {bottom: 50px;}
     100% {bottom: -100%;}
+}
+
+.dot {
+    height: 20px;
+    width: 20px;
+    background-color: rgb(243, 114, 67);
+    border-radius: 50%;
 }
 
 .notification.is-toast {

@@ -11,9 +11,67 @@
     {% endwith %}
 
     {% if "user" in session %}
-        <h1>Welcome back, {{ session['user']['username'] }}!</h1>
+        <h1 class="title">Welcome back, {{ session['user']['username'] }}!</h1>
     {% else %}
-        <h1>Home</h1>
+        <section class="hero is-warning">
+            <div class="hero-body">
+                <h1 class="title has-text-centered has-text-weight-light">
+                    Find things you'll love. Support independent sellers. Only on Betsy.
+                </h1>
+                <h2 class="subtitle has-text-centered">Everyday finds</h2>
+
+                <nav class="level">
+                    <a href="#" class="level-item">
+                        <figure class="image is-128x128">
+                            <img width="128" height="128" class="is-rounded" src="./static/hero_images/beauty.jpg">
+                            <figcaption class="has-text-centered">Beauty
+                                <i class="fas fa-arrow-right"></i>
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="level-item">
+                        <figure class="image is-128x128">
+                            <img width="128" height="128" class="is-rounded" src="./static/hero_images/office.jpg">
+                            <figcaption class="has-text-centered">Office
+                                <i class="fas fa-arrow-right"></i>
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="level-item">
+                        <figure class="image is-128x128">
+                            <img class="is-rounded" src="./static/hero_images/plant.jpg">
+                            <figcaption class="has-text-centered">Garden
+                                <i class="fas fa-arrow-right"></i>
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="level-item">
+                        <figure class="image is-128x128">
+                            <img class="is-rounded" src="https://images.unsplash.com/photo-1535157412991-2ef801c1748b?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1100&q=80">
+                            <figcaption class="has-text-centered">Tech
+                                <i class="fas fa-arrow-right"></i>
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="level-item">
+                        <figure class="image is-128x128">
+                            <img class="is-rounded" src="./static/hero_images/jewelry.jpg">
+                            <figcaption class="has-text-centered">Jewelry
+                                <i class="fas fa-arrow-right"></i>
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="level-item">
+                        <figure class="image is-128x128">
+                            <img class="is-rounded" src="./static/hero_images/food.jpg">
+                            <figcaption class="has-text-centered">Kitchen
+                                <i class="fas fa-arrow-right"></i>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </nav>
+            </div>
+        </section>
     {% endif %}
 
     {% if products %}

@@ -4,68 +4,129 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <link has-text-dark rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.1/css/all.css">
+    <link has-text-dark rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link has-text-dark rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
     <title>Betsy |{% block title %}{% endblock %}</title>
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="navbar-brand">
-            <a href="/" class="navbar-item" id="logo">Betsy</a>
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
+    <header class="header">
+        <nav class="navbar is-spaced">
+            <div class="navbar-brand">
+                <a href="/" class="navbar-item is-size-2" style="font-family: Georgia; color: rgb(243, 114, 67);">Betsy</a>
 
-        <div class="navbar-menu" id="main-navbar">
-            <div class="navbar-start">
-                <div class="navbar-item">
-                    <form method="get" action="{{ url_for('search_products') }}">
-                        <div class="field has-addons">
-                            <div class="control">
-                                <input type="text" class="input" placeholder="Search for anything" name="query">
-                            </div>
-                            <div class="control">
-                                <button class="button is-dark">Search</button>
-                                <!-- use fontawesome search icon instead -->
+                {% if "user" in session %}
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="navbar-menu" id="main-navbar">
+                <div class="navbar-start">
+                    <div class="navbar-item">
+                        <div class="field">
+                            <div class="control has-icons-right">
+                                <form method="get" action="{{ url_for('search_products') }}">
+                                    <input type="text" class="input is-medium is-rounded " placeholder="Search for anything"
+                                        name="query">
+                                    <span class="icon is-small is-right has-text-dark">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
+                <div class="navbar-end">
                     {% if "user" in session %}
-                    <a href="{{ url_for('logout') }}">Sign out</a>
+                    <a class="has-text-dark has-text-weight-semibold navbar-item" href="{{ url_for('logout') }}">Sign out</a>
                     {% else %}
-                    <a href="{{ url_for('login') }}">Sign in</a>
+                    <a class="has-text-dark has-text-weight-semibold navbar-item" href="{{ url_for('login') }}">Sign in</a>
                     {% endif %}
-                </div>
 
-                <div class="navbar-item">
-                    <a href="{{ url_for('view_cart') }}">Cart{% if 'cart' in session and session['cart']|length > 0 %} (*){% endif %}</a>
+                    <a class="has-text-dark has-text-weight-semibold navbar-item" href="{{ url_for('view_cart') }}">
+                        {% if 'cart' in session and session['cart']|length > 0 %}
+                            <i class="fas fa-cart-plus"></i>   
+                        {% else %}
+                            <i class="fas fa-shopping-cart"></i>
+                        {% endif %}
+                    </a>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <section class="section">
-        <div class="container">
-            {% block content %}
-            {% endblock %}
-        </div>
-    </section>
+        <nav class="level pb-2">
+            <p class="level-item has-text-centered">
+                <a class="link has-text-dark">Jewelry & Accesories</a>
+            </p>
+            <p class="level-item has-text-centered">
+                <a class="link has-text-dark">Clothing & Shoes</a>
+            </p>
+            <p class="level-item has-text-centered">
+                <a class="link has-text-dark">Home & Living</a>
+            </p>
+            <p class="level-item has-text-centered">
+                <a class="link has-text-dark">Wedding & Party</a>
+            </p>
+            <p class="level-item has-text-centered">
+                <a class="link has-text-dark">Toys & Entertainment</a>
+            </p>
+            <p class="level-item has-text-centered">
+                <a class="link has-text-dark">Art & Collectibles</a>
+            </p>
+            <p class="level-item has-text-centered">
+                <a class="link has-text-dark">Craft Supplies & Tools</a>
+            </p>
+            <p class="level-item has-text-centered">
+            <a class="link has-text-dark">Vintage</a>
+            </p>
+        </nav>
+    </header>
 
-    <footer class="footer">
+    {% block content %}{% endblock %}
+
+    <footer class="footer has-background-dark">
         <h3 class="is-size-4 mb-4">Betsy</h3>
         {% if "user" in session %}
-            <a href="{{ url_for('my_profile') }}">My profile</a>
+        <a href="{{ url_for('my_profile') }}">My profile</a>
         {% else %}
-            <a href="{{ url_for('sign_up') }}">Sign up for Betsy</a>
+        <a href="{{ url_for('sign_up') }}">Sign up for Betsy</a>
         {% endif %}
+
+        <!-- Main container -->
+        <nav class="level">
+            <!-- Left side -->
+            <div class="level-left">
+                <div class="level-item">
+                    <p class="has-text-white">
+                        &#x1F1F3;&#x1F1F1; The Netherlands |
+                    </p>
+                </div>
+                <div class="level-item">
+                    <p class="has-text-white">
+                    English (US) |
+                    </p>
+                </div>
+                <div class="level-item">
+                    <p class="has-text-white">
+                    $(USD)
+                    </p>
+                </div>
+            </div>
+        
+            <!-- Right side -->
+            <div class="level-right">
+            <p class="level-item has-text-white">&copy2021 Betsy, Inc.</p>
+            <p class="level-item"><a class="has-text-white">Terms of Use</a></p>
+            <p class="level-item"><a class="has-text-white">Privacy</a></p>
+            <p class="level-item"><a class="has-text-white">Cookies</a></p>
+            <p class="level-item"><a class="has-text-white">Interest-based ads</a></p>
+            </div>
+        </nav>
     </footer>
 
     <script src="{{ url_for('static', filename='index.js') }}"></script>
