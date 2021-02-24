@@ -11,14 +11,17 @@
     {% endwith %}
 
     {% if "user" in session %}
-        <h1 class="title">Welcome back, {{ session['user']['username'] }}!</h1>
+    <hr>
+    <div class="section py-1">
+        <h1 class="is-size-3" style="font-family: Georgia;">Welcome back, {{ session['user']['username'] }}!</h1>
+    </div>
     {% else %}
         <section class="hero is-warning">
             <div class="hero-body">
                 <h1 class="title has-text-centered has-text-weight-light">
                     Find things you'll love. Support independent sellers. Only on Betsy.
                 </h1>
-                <h2 class="subtitle has-text-centered">Everyday finds</h2>
+                <h2 class="subtitle has-text-centered has-text-weight-semibold">Everyday finds</h2>
 
                 <nav class="level">
                     <a href="#" class="level-item">
@@ -74,27 +77,30 @@
         </section>
     {% endif %}
 
-    {% if products %}
-        <h2 class="is-size-3">Newest products</h2>
+    <section class="section">
+        {% if products %}
+            <h2 class="is-size-3 has-text-centered has-text-weight-semibold">Discover unique hand-picked items</h2>
+            <br>
 
-        <div class="columns">
-        {% for product in products %}
-            <div class="column is-3 product-list-item">
-                <div class="box">
-                    <figure class="image is-4by3 mb-4">
-                        <img src="{{ product.thumbnail }}" alt="product thumbnail">
-                    </figure>
-                    <h2 class="subtitle">{{ product.title }}</h2>
-                    <h3 class="price is-size-6 mb-5">${{ product.price_in_cents/100 }}</h3>
-                    <hr>
-                    <a href="/product_page/{{ product.prod_id }}" class="button is-dark">View Product</a>
-                </div>
+            <div class="columns">
+                {% for product in products %}
+                    <div class="column is-3 product-list-item">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <a href="/product_page/{{ product.prod_id }}">
+                                        <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                                    </a>
+                                </figure>
+                            </div>
+                        </div>
+                        <h3 class="has-text-weight-semibold">${{ product.price_in_cents/100 }}</h3>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-        </div>
-        
-        <a href="{{ url_for('all_products') }}" class="button is-dark">Explore Products</a>
-    {% else %}
-        <p>There are no products yet...</p>
-    {% endif %}
+            
+        {% else %}
+            <p class="has-text-centered">There are no products yet...</p>
+        {% endif %}
+    </section>
 {% endblock %}
