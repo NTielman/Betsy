@@ -2,7 +2,28 @@
 {% block title %} 404 {% endblock %}
 
 {% block content %}
-  <h1 class="title">Page Not Found</h1>
-  <p>The page you were looking for doesn't exist.
-  <p><a href="{{ url_for('home') }}">go somewhere nice</a>
+  <div class="section">
+    <div class="container">
+      <div class="block">
+        <h1 class="title">Uh oh!</h1>
+      </div>
+      <div class="block">
+        <p class="subtitle">Sorry, the page you were looking for was not found.</p>
+        <div class="field">
+          <div class="control has-icons-right">
+              <form method="get" action="{{ url_for('search_products') }}">
+                  <input type="text" class="input is-medium is-rounded " placeholder="Search for items and shops"
+                      name="query">
+                  <span class="icon is-small is-right has-text-dark">
+                      <i class="fas fa-search"></i>
+                  </span>
+              </form>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <p class="subtitle"><a href="{{ url_for('home') }}">Go back to Betsy.com</a></p>
+      </div>
+    </div>
+  </div>
 {% endblock %}

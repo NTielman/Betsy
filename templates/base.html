@@ -166,6 +166,41 @@
         </nav>
     </header>
 
+    <!-- modal sign in -->
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content has-background-white py-5 px-5">
+            <h2 class="subtitle has-text-weight-semibold">Sign in</h2>
+
+            <form method="post" action="{{ url_for('login') }}">
+                <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control">
+                        <input class="input" type="text" name="username" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input class="input" type="password" name="password" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <input type="submit" class="button is-medium is-rounded is-fullwidth is-dark" value="Sign in">
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <p>
+                <a href="{{ url_for('sign_up') }}">Don't have an account yet?</a>
+            </p>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
     {% block content %}{% endblock %}
 
     <div class="section has-background-dark">
