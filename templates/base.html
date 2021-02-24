@@ -15,14 +15,6 @@
         <nav class="navbar is-spaced">
             <div class="navbar-brand">
                 <a href="/" class="navbar-item is-size-2" style="font-family: Georgia; color: rgb(243, 114, 67);">Betsy</a>
-
-                {% if "user" in session %}
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-                {% endif %}
             </div>
 
             <div class="navbar-menu" id="main-navbar">
@@ -41,9 +33,96 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="navbar-end">
                     {% if "user" in session %}
-                    <a class="has-text-dark has-text-weight-semibold navbar-item" href="{{ url_for('logout') }}">Sign out</a>
+                    <div class="navbar-item">
+                        <span class="icon">
+                            <i class="fas fa-heart"></i>
+                        </span>
+                    </div>
+                    <div class="navbar-item">
+                        <span class="icon">
+                            <i class="fas fa-bell"></i>
+                        </span>
+                    </div>
+                    <div class="dropdown is-hoverable is-right navbar-item">
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                            <span>You</span>
+                            <span class="icon is-small">
+                                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                            <div class="dropdown-content">
+                                <div class="dropdown-item">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        <span>{{ session['user']['full_name'] }}</span>
+                                        <p>
+                                            <a class="has-text-dark" href="{{ url_for('my_profile') }}">View your profile</a>
+                                        </p>
+                                    </span>
+                                </div>
+                                <div class="dropdown-item">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fas fa-gift"></i>
+                                        </span>
+                                        <span>Gift card balance: $0.00</span>
+                                    </span>
+                                </div>
+                                <div class="dropdown-item">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fas fa-comment-alt"></i>
+                                        </span>
+                                        <span>Messages</span>
+                                    </span>
+                                </div>
+                                <div class="dropdown-item">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fas fa-clipboard"></i>
+                                        </span>
+                                        <span>
+                                            <a class="has-text-dark" href="{{ url_for('my_purchases') }}">Purchases and reviews</a>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="dropdown-item">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fas fa-cog"></i>
+                                        </span>
+                                        <span>Account settings</span>
+                                    </span>
+                                </div>
+                                <div class="dropdown-item">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fas fa-store"></i>
+                                        </span>
+                                        <span>Sell on Betsy</span>
+                                    </span>
+                                </div>
+                                <div class="dropdown-item">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                        </span>
+                                        <span>
+                                            <a class="has-text-dark" href="{{ url_for('logout') }}">Sign out</a>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% else %}
                     <a class="has-text-dark has-text-weight-semibold navbar-item" href="{{ url_for('login') }}">Sign in</a>
                     {% endif %}
@@ -89,16 +168,66 @@
 
     {% block content %}{% endblock %}
 
-    <footer class="footer has-background-dark">
-        <h3 class="is-size-4 mb-4">Betsy</h3>
-        {% if "user" in session %}
-        <a href="{{ url_for('my_profile') }}">My profile</a>
-        {% else %}
-        <a href="{{ url_for('sign_up') }}">Sign up for Betsy</a>
-        {% endif %}
+    <div class="section has-background-dark">
+        <div class="columns">
+            <div class="column menu">
+                <p class="menu-label has-text-white">Shop</p>
+                <ul class="menu-list">
+                <li><a class="has-text-white">Gift cards</a></li>
+                <li><a class="has-text-white">Betsy blog</a></li>
+                </ul>
+            </div>
+            <div class="column menu">
+                <p class="menu-label has-text-white">Sell</p>
+                <ul class="menu-list">
+                <li>
+                    <a class="has-text-white" href="{{ url_for('sign_up') }}">Sell on Betsy</a>
+                </li>
+                <li><a class="has-text-white">Teams</a></li>
+                <li><a class="has-text-white">Forums</a></li>
+                <li><a class="has-text-white">Affiliates</a></li>
+                </ul>
+            </div>
+            <div class="column menu">
+                <p class="menu-label has-text-white">About</p>
+                <ul class="menu-list">
+                <li><a class="has-text-white">Betsy, Inc.</a></li>
+                <li><a class="has-text-white">Policies</a></li>
+                <li><a class="has-text-white">Investors</a></li>
+                <li><a class="has-text-white">Careers</a></li>
+                <li><a class="has-text-white">Press</a></li>
+                <li><a class="has-text-white">Impact</a></li>
+                <li><a class="has-text-white">Legal imprint</a></li>
+                </ul>
+            </div>
+            <div class="column menu">
+                <p class="menu-label has-text-white">Help</p>
+                <ul class="menu-list">
+                <li><a class="has-text-white">Help Center</a></li>
+                <li><a class="has-text-white">Trust and safety</a></li>
+                <li><a class="has-text-white">Privacy settings</a></li>
+                </ul>
+                <span class="icon is-medium has-text-white">
+                    <i class="fab fa-instagram"></i>
+                </span>
+                <span class="icon is-medium has-text-white">
+                    <i class="fab fa-facebook-square"></i>
+                </span>
+                <span class="icon is-medium has-text-white">
+                    <i class="fab fa-pinterest"></i>
+                </span>
+                <span class="icon is-medium has-text-white">
+                    <i class="fab fa-twitter"></i>
+                </span>
+                <span class="icon is-medium has-text-white">
+                    <i class="fab fa-youtube"></i>
+                </span>
+            </div>
+        </div>
+    </div>
 
         <!-- Main container -->
-        <nav class="level">
+        <footer class="footer has-background-black">
             <!-- Left side -->
             <div class="level-left">
                 <div class="level-item">
@@ -126,8 +255,7 @@
             <p class="level-item"><a class="has-text-white">Cookies</a></p>
             <p class="level-item"><a class="has-text-white">Interest-based ads</a></p>
             </div>
-        </nav>
-    </footer>
+        </footer>
 
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
