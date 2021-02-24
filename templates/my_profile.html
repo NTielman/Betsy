@@ -2,116 +2,164 @@
 {% block title %} My Profile {% endblock %}
 
 {% block content %}
-<div class="box">
-    <img src="{{ user.avatar_url }}" alt="user avatar">
-    <h1>{{ user.full_name }}</h1>
-    <p>{{ user.address }}</p>
-    <p>{{ user.bio }}</p>
-    <a href="{{ url_for('edit_profile') }}" class="button is-info">Edit profile</a>
-</div>
+<hr>
+<div class="section">
+    <div class="columns">
+        <div class="column is-two-fifths">
 
-<div class="box">
-    <h2 class="is-size-3 mb-4">My products</h2>
-
-    <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
-
-    {% if products %}
-        <a href="{{ url_for('my_products') }}" class="button is-dark">View products</a>
-
-        <table class="table is-fullwidth">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Title</th>
-                    <th>In stock</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
-                    <tr>
-                        <td>
-                            <figure class="image is-64x64">
-                                <img src="{{ product.thumbnail }}" alt="product thumbnail">
-                            </figure>
-                        </td>
-                        <td>
-                            <a href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
-                        </td>
-                        <td>{{ product.qty }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>You don't have any products yet...</p>
-    {% endif %}
+            <div class="media">
+                <figure class="image is-96x96 media-left">
+                    <img width="128" height="128" class="is-rounded" src="{{ user.avatar_url }}" alt="user avatar">
+                </figure>
+                <div class="media-content">
+                    <div class="content">
+                        <h1 class="has-text-weight-light" style="font-family: Georgia;">{{ user.full_name }}</h1>
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <span>{{ user.address }}</span>
+                        </span>
+                        <p>{{ user.bio }}</p>
+                    </div>
+                </div>
+                <div class="media-right">
+                    <a href="{{ url_for('edit_profile') }}" class="button is-dark is-rounded is-small">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-pen"></i>
+                            </span>
+                            <span>Edit profile</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="section">
-    <h2 class="is-size-3 mb-4">My orders</h2>
-    <div class="columns">
-        <div class="column box">
-            <p>Sales</p>
-            {% if sales %}
-                <a href="{{ url_for('my_sales') }}" class="button is-dark">View all sales</a>
+    <div class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <h2 class="is-size-4 mb-4">My products</h2>
+            </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <a href="{{ url_for('add_product') }}" class="button is-warning is-rounded">Add product</a>
+            </div>
+            <div class="level-item">
+                <a href="{{ url_for('my_products') }}" class="button is-dark is-rounded">View products</a>
+            </div>
+        </div>
+    </div>
 
-                <table class="table is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Qty</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for sale in sales %}
+        {% if products %}
+        <div class="columns">
+            {% for product in products %}
+                <div class="column is-2 product-list-item">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-1by1">
+                                <a href="/product_page/{{ product.prod_id }}">
+                                    <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                                </a>
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <a href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
+                            <p>In stock: {{ product.qty }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p>You don't have any products yet...</p>
+        {% endif %}
+</div>
+
+<div class="section">
+    <div class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <h2 class="is-size-4 mb-4">My orders</h2>
+            </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <a href="{{ url_for('my_sales') }}" class="button is-dark is-rounded">View all sales</a>
+            </div>
+            <div class="level-item">
+                <a href="{{ url_for('my_purchases') }}" class="button is-dark is-rounded">View all purchases</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <div class="box">
+                <p class="subtitle">Sales</p>
+                {% if sales %}
+                    <table class="table is-fullwidth">
+                        <thead>
                             <tr>
-                                {% if sale.product %}
-                                    <td>{{ sale.product.title }}</td>
-                                {% else %}
-                                    <td>{{ sale.prod_title }}</td>
-                                {% endif %}
-                                <td>{{ sale.qty }}</td>
-                                <td>{{ sale.date }}</td>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Date</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>You don't have any sales yet...</p>
-            {% endif %}
+                        </thead>
+                        <tbody>
+                            {% for sale in sales %}
+                                <tr>
+                                    {% if sale.product %}
+                                        <td>{{ sale.product.title }}</td>
+                                    {% else %}
+                                        <td>{{ sale.prod_title }}</td>
+                                    {% endif %}
+                                    <td>{{ sale.qty }}</td>
+                                    <td>{{ sale.date }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>You don't have any sales yet...</p>
+                {% endif %}
+            </div>
         </div>
 
-        <div class="column box">
-            <p>Purchases</p>
-            {% if purchases %}
-            <a href="{{ url_for('my_purchases') }}" class="button is-dark">View all purchases</a>
-
-                <table class="table is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Qty</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for purchase in purchases %}
+        <div class="column">
+            <div class="box">
+                <p class="subtitle">Purchases</p>
+                {% if purchases %}
+                    <table class="table is-fullwidth">
+                        <thead>
                             <tr>
-                                {% if purchase.product %}
-                                    <td>{{ purchase.product.title }}</td>
-                                {% else %}
-                                    <td>{{ purchase.prod_title }}</td>
-                                {% endif %}
-                                <td>{{ purchase.qty }}</td>
-                                <td>{{ purchase.date }}</td>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Date</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>You haven't made any purchases yet...</p>
-            {% endif %}
+                        </thead>
+                        <tbody>
+                            {% for purchase in purchases %}
+                                <tr>
+                                    {% if purchase.product %}
+                                        <td>{{ purchase.product.title }}</td>
+                                    {% else %}
+                                        <td>{{ purchase.prod_title }}</td>
+                                    {% endif %}
+                                    <td>{{ purchase.qty }}</td>
+                                    <td>{{ purchase.date }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>You haven't made any purchases yet...</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

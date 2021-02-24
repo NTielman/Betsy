@@ -124,7 +124,8 @@
                         </div>
                     </div>
                     {% else %}
-                    <a class="has-text-dark has-text-weight-semibold navbar-item" href="{{ url_for('login') }}">Sign in</a>
+                    <a id="sign_in" class="has-text-dark has-text-weight-semibold navbar-item">Sign in</a>
+                    <!-- {{ url_for('login') }} -->
                     {% endif %}
 
                     <a class="has-text-dark has-text-weight-semibold navbar-item" href="{{ url_for('view_cart') }}">
@@ -261,38 +262,54 @@
         </div>
     </div>
 
-        <!-- Main container -->
-        <footer class="footer has-background-black">
-            <!-- Left side -->
-            <div class="level-left">
-                <div class="level-item">
-                    <p class="has-text-white">
-                        &#x1F1F3;&#x1F1F1; The Netherlands |
-                    </p>
-                </div>
-                <div class="level-item">
-                    <p class="has-text-white">
-                    English (US) |
-                    </p>
-                </div>
-                <div class="level-item">
-                    <p class="has-text-white">
-                    $(USD)
-                    </p>
-                </div>
+    <!-- Main container -->
+    <footer class="footer has-background-black">
+        <!-- Left side -->
+        <div class="level-left">
+            <div class="level-item">
+                <p class="has-text-white">
+                    &#x1F1F3;&#x1F1F1; The Netherlands |
+                </p>
             </div>
-        
-            <!-- Right side -->
-            <div class="level-right">
-            <p class="level-item has-text-white">&copy2021 Betsy, Inc.</p>
-            <p class="level-item"><a class="has-text-white">Terms of Use</a></p>
-            <p class="level-item"><a class="has-text-white">Privacy</a></p>
-            <p class="level-item"><a class="has-text-white">Cookies</a></p>
-            <p class="level-item"><a class="has-text-white">Interest-based ads</a></p>
+            <div class="level-item">
+                <p class="has-text-white">
+                English (US) |
+                </p>
             </div>
-        </footer>
+            <div class="level-item">
+                <p class="has-text-white">
+                $(USD)
+                </p>
+            </div>
+        </div>
+    
+        <!-- Right side -->
+        <div class="level-right">
+        <p class="level-item has-text-white">&copy2021 Betsy, Inc.</p>
+        <p class="level-item"><a class="has-text-white">Terms of Use</a></p>
+        <p class="level-item"><a class="has-text-white">Privacy</a></p>
+        <p class="level-item"><a class="has-text-white">Cookies</a></p>
+        <p class="level-item"><a class="has-text-white">Interest-based ads</a></p>
+        </div>
+    </footer>
 
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <script>
+        // sign in modal
+        const signInButton = document.querySelector('#sign_in');
+        const modalBg = document.querySelector('.modal-background');
+        const modal = document.querySelector('.modal');
+        const modalButton = document.querySelector('.modal-close');
+
+        signInButton.addEventListener('click', () => {
+            modal.classList.add('is-active');
+        });
+        modalBg.addEventListener('click', () => {
+            modal.classList.remove('is-active');
+        });
+        modalButton.addEventListener('click', () => {
+            modal.classList.remove('is-active');
+        });
+    </script>
 </body>
 
 </html>
