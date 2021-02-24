@@ -7,7 +7,7 @@ from cart import Cart
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
-create_tables()  #if you make a py file to make fake accounrs add this line to the start of that file
+# create_tables()  #if you make a py file to make fake accounrs add this line to the start of that file
 # in readme to docenten when first running to initialise betsy db and create some fake users to test site functionality with the file run the make fake accounts file. and then run main.py
 
 @app.route('/')
@@ -104,8 +104,8 @@ def edit_product(product_id):
         if request.method == "POST":
             title = request.form["title"]
             description = request.form["description"]
-            price = float(request.form["price"]) * 100
-            qty = int(request.form["qty"])
+            price = request.form["price"]
+            qty = request.form["qty"]
             thumbnail = request.form["thumbnail"]
 
             edit_successful = queries.edit_product(product_id, title, description, price, qty, thumbnail)
@@ -153,7 +153,7 @@ def add_product():
                 "description": description,
                 "price_in_cents": float(price) * 100, #convert price to cents 
                 "qty": int(qty),
-                "user": user
+                "vendor": user
             }
 
             product_id = queries.add_product_to_catalog(product) #if succesfull returns a product_id
@@ -298,12 +298,12 @@ def all_products():
     products = queries.get_all_products()
     return render_template("products.html", query='All Products', products=products)
 
-@app.route('/products/tag=<tag>')
+@app.route('/products/<tag>')
 def search_products_by_tag(tag):
     tagged_products = queries.list_products_per_tag(tag)
-    return render_template("products.html", query=tag, products=tagged_products)
+    return render_template("products_page.html", query=tag, products=tagged_products)
 
-@app.route('/products/search')
+@app.route('/products/search/')
 def search_products():
     query = request.args.get("query")
     products = queries.search(query)

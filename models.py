@@ -33,10 +33,11 @@ class Product(BaseModel):
     date_added = DateField(default=date.today())
     thumbnail = CharField(null=True, default="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616")
 
+#when a product or user is deleted the transaction should still be able to access the prod title vendor username even if they dont exist anymore
 class Transaction(BaseModel):
-    vendor = ForeignKeyField(User, backref='sales')
-    buyer = ForeignKeyField(User, backref='purchases')
-    product = ForeignKeyField(Product, backref='orders')
+    vendor = ForeignKeyField(User, backref='sales') #on_delete='SET NULL' null=True
+    buyer = ForeignKeyField(User, backref='purchases') #on_delete='SET NULL' null=True
+    product = ForeignKeyField(Product, backref='orders') #on_delete='SET NULL' null=True
     qty = IntegerField(constraints=[Check('qty > 0')])
     date = DateField(default=date.today())
     trans_id = AutoField()

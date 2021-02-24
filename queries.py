@@ -1,7 +1,7 @@
 __winc_id__ = "d7b474e9b3a54d23bca54879a4f1855b"
 __human_name__ = "Betsy Webshop"
 
-from models import User, Product, Order, Product_image, Tag
+from models import User, Product, Transaction, ProductImage, Tag
 import peewee
 from peewee import fn
 from flask import flash
@@ -131,8 +131,9 @@ def add_product_tags(product_id, tag_list):
     product = Product.get_by_id(product_id)
 
     for tag in tag_list:
-        product_tag, created = Tag.get_or_create(name=tag.lower())
-        product.tags.add(Tag.get(Tag.name == tag.lower()))
+        if tag:
+            product_tag, created = Tag.get_or_create(name=tag.lower())
+            product.tags.add(Tag.get(Tag.name == tag.lower()))
 
 def list_products_per_tag(tag_name):
     '''returns a list of products associated with a given tag'''
@@ -180,9 +181,9 @@ def edit_product(product_id, title, description, price, qty, thumbnail):
         if description:
             product.description = description
         if price:
-            product.price_in_cents = price
+            product.price_in_cents = float(price) * 100
         if qty:
-            product.qty = qty
+            product.qty = int(qty)
         if thumbnail:
             product.thumbnail = thumbnail
 
@@ -196,6 +197,7 @@ def remove_product(user_id, product_id):
     user = User.get_by_id(user_id)
     product = Product.get_by_id(product_id)
     if product.vendor == user:
-        return product.delete_instance()
+        product_deleted = product.delete_instance()
+        return product_deleted
     else:
         return False
