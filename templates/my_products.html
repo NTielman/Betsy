@@ -15,8 +15,7 @@
                     <hr>
                     <a href="/product_page/{{ product.prod_id }}" class="button is-dark">View</a>
                     <a href="{{ url_for('edit_product', product_id=product.prod_id) }}" class="button is-info">Edit</a>
-                    <a href="#" class="button is-danger">Remove</a>
-                    <!-- add link to remove a product -->
+                    <a href="{{ url_for('remove_product', product_id=product.prod_id) }}" class="button is-danger">Remove</a>
                 </div>
             </div>
         {% endfor %}

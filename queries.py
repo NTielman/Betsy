@@ -191,7 +191,11 @@ def edit_product(product_id, title, description, price, qty, thumbnail):
     except peewee.PeeweeException:
         return False
 
-def remove_product(product_id):
+def remove_product(user_id, product_id):
     '''removes a product from database'''
+    user = User.get_by_id(user_id)
     product = Product.get_by_id(product_id)
-    return product.delete_instance()
+    if product.vendor == user:
+        return product.delete_instance()
+    else:
+        return False

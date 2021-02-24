@@ -2,9 +2,8 @@ import os
 from models import create_tables
 from flask import Flask, redirect, render_template, request, session, url_for, flash, abort
 from helpers import verify_password, verify_user
-from queries import *
+import queries
 from cart import Cart
-from playhouse.flask_utils import object_list
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -13,7 +12,7 @@ create_tables()  #if you make a py file to make fake accounrs add this line to t
 
 @app.route('/')
 def frontpage():
-    featured_products = get_newest_products()
+    featured_products = queries.get_newest_products()
     return render_template("home_page.html", products=featured_products)
 
 @app.route('/home/')
@@ -27,7 +26,7 @@ def login():
         password = request.form["password"]
         login_succesfull = verify_password(username, password)
         if login_succesfull:
-            user = get_user(username)
+            user = queries.get_user(username)
             session["user"] = user
             return redirect(url_for("frontpage"))
         else:
@@ -55,7 +54,7 @@ def sign_up():
         password = request.form["password"]
         user_is_valid = verify_user(username, fullname, address, bio, avatar_url, password)
         if user_is_valid:
-            user = get_user(username)
+            user = queries.get_user(username)
             session["user"] = user
             return redirect(url_for("frontpage"))
         else:
@@ -69,9 +68,9 @@ def sign_up():
 def my_profile():
     if "user" in session:
         user = session["user"]
-        user_products = list_user_products(user["user_id"])
-        user_sales = list_user_sales(user["user_id"])
-        user_purchases = list_user_purchases(user["user_id"])
+        user_products = queries.list_user_products(user["user_id"])
+        user_sales = queries.list_user_sales(user["user_id"])
+        user_purchases = queries.list_user_purchases(user["user_id"])
         return render_template('my_profile.html', user=user, products=user_products[:7], sales=user_sales[:7], purchases=user_purchases[:7])
     else:
         return redirect(url_for('login'))
@@ -85,7 +84,7 @@ def edit_profile():
             address = request.form["address"]
             bio = request.form["bio"]
             avatar_url = request.form["avatar_url"]
-            edit_successful = edit_user(user["user_id"], name, address, bio, avatar_url)
+            edit_successful = queries.edit_user(user["user_id"], name, address, bio, avatar_url)
 
             if edit_successful:
                 session["user"] = edit_successful
@@ -109,7 +108,7 @@ def edit_product(product_id):
             qty = int(request.form["qty"])
             thumbnail = request.form["thumbnail"]
 
-            edit_successful = edit_product(product_id, title, description, price, qty, thumbnail)
+            edit_successful = queries.edit_product(product_id, title, description, price, qty, thumbnail)
 
             if edit_successful:
                 return redirect(url_for("my_products"))
@@ -117,11 +116,24 @@ def edit_product(product_id):
                 flash("Something went wrong. Couldn't update product", 'error')
                 return redirect(url_for("edit_product", product_id=product_id, _method='GET'))
         else:  #method = "GET"
-            product = get_product(product_id)
+            product = queries.get_product(product_id)
             if product:
                 return render_template("edit_product.html", product=product)
             else:
                 abort(404)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/my_profile/remove_product/<product_id>')
+def remove_product(product_id):
+    if "user" in session:
+        user = session["user"]
+        prod_removed = queries.remove_product(user["user_id"], product_id)
+        if prod_removed:
+            flash("Product has been removed", 'info')
+        else:
+            flash("Could not remove product", 'error')
+        return redirect(url_for("my_products"))
     else:
         return redirect(url_for('login'))
 
@@ -144,7 +156,7 @@ def add_product():
                 "user": user
             }
 
-            product_id = add_product_to_catalog(product) #if succesfull returns a product_id
+            product_id = queries.add_product_to_catalog(product) #if succesfull returns a product_id
 
             if product_id:
                 # add product images
@@ -156,14 +168,14 @@ def add_product():
                 images = [image_1, image_2, image_3, image_4, image_5]
 
                 if images: # if image list isn't empty
-                    add_images_to_product(product_id, images)
+                    queries.add_images_to_product(product_id, images)
 
                 #add product tags
                 tags = request.form["tags"]
                 tag_list = tags.split(", ")
                 
                 if tag_list:
-                    add_product_tags(product_id, tag_list)
+                    queries.add_product_tags(product_id, tag_list)
 
                 return redirect(url_for("product_page", product_id=product_id, _method='GET'))
             else:
@@ -181,7 +193,7 @@ def view_cart():
 
         if request.method == "POST":
             buyer_id = session["user"]['user_id']
-            order = checkout(buyer_id, cart)
+            order = queries.checkout(buyer_id, cart)
 
             if order:
                 session.pop("cart", None)
@@ -227,19 +239,19 @@ def product_page(product_id):
         flash("Item added to cart", 'info')
         return redirect(url_for("product_page", product_id=product_id, _method='GET'))
     else: # GET request
-        product = get_product(product_id)
+        product = queries.get_product(product_id)
         if product:
-            product_tags = get_product_tags(product_id)
-            product_images = get_product_images(product_id)
+            product_tags = queries.get_product_tags(product_id)
+            product_images = queries.get_product_images(product_id)
             return render_template("product_page.html", product=product, product_images=product_images, product_tags=product_tags)
         else:
             abort(404)
 
 @app.route('/user_page/<username>')
 def user_page(username):
-    betsy_user = get_user(username)
+    betsy_user = queries.get_user(username)
     if betsy_user:
-        user_products = list_user_products(betsy_user['user_id'])
+        user_products = queries.list_user_products(betsy_user['user_id'])
         return render_template("user_page.html", betsy_user=betsy_user, products=user_products[:7])
     else:
         abort(404)
@@ -248,7 +260,7 @@ def user_page(username):
 def my_products():
     if "user" in session:
         user = session["user"]
-        products = list_user_products(user["user_id"])
+        products = queries.list_user_products(user["user_id"])
         return render_template("my_products.html", products=products)
     else:
         return redirect(url_for('login'))
@@ -257,7 +269,7 @@ def my_products():
 def my_sales():
     if "user" in session:
         user = session["user"]
-        sales = list_user_sales(user["user_id"])
+        sales = queries.list_user_sales(user["user_id"])
         return render_template("my_sales.html", sales=sales)
     else:
         return redirect(url_for('login'))
@@ -266,16 +278,16 @@ def my_sales():
 def my_purchases():
     if "user" in session:
         user = session["user"]
-        purchases = list_user_purchases(user["user_id"])
+        purchases = queries.list_user_purchases(user["user_id"])
         return render_template("my_purchases.html", purchases=purchases)
     else:
         return redirect(url_for('login'))
 
 @app.route('/user_page/<username>/products/')
 def user_products(username):
-    betsy_user = get_user(username)
+    betsy_user = queries.get_user(username)
     if betsy_user:
-        user_products = list_user_products(betsy_user['user_id'])
+        user_products = queries.list_user_products(betsy_user['user_id'])
         tag = f"{username}'s products"
         return render_template("products_page.html", tag=tag, products=user_products)
     else:
@@ -283,18 +295,18 @@ def user_products(username):
 
 @app.route('/products/')
 def all_products(): 
-    products = get_all_products()
+    products = queries.get_all_products()
     return render_template("products.html", query='All Products', products=products)
 
 @app.route('/products/tag=<tag>')
 def search_products_by_tag(tag):
-    tagged_products = list_products_per_tag(tag)
+    tagged_products = queries.list_products_per_tag(tag)
     return render_template("products.html", query=tag, products=tagged_products)
 
 @app.route('/products/search')
 def search_products():
     query = request.args.get("query")
-    products = search(query)
+    products = queries.search(query)
     return render_template("products_page.html", query=query, products=products)
 
 @app.errorhandler(404)
@@ -302,7 +314,6 @@ def page_not_found(e):
     return render_template("404.html"), 404
 
 # make a login_required decorator
-# remove a product similar to def logout it does something and redirects you
 
 if __name__ == "__main__":
     app.run(debug=True)
