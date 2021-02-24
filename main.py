@@ -253,6 +253,24 @@ def my_products():
     else:
         return redirect(url_for('login'))
 
+@app.route('/my_profile/my_sales/')
+def my_sales():
+    if "user" in session:
+        user = session["user"]
+        sales = list_user_sales(user["user_id"])
+        return render_template("my_sales.html", sales=sales)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/my_profile/my_purchases/')
+def my_purchases():
+    if "user" in session:
+        user = session["user"]
+        purchases = list_user_purchases(user["user_id"])
+        return render_template("my_purchases.html", purchases=purchases)
+    else:
+        return redirect(url_for('login'))
+
 @app.route('/user_page/<username>/products/')
 def user_products(username):
     betsy_user = get_user(username)
@@ -264,15 +282,9 @@ def user_products(username):
         abort(404)
 
 @app.route('/products/')
-def all_products():
+def all_products(): 
     products = get_all_products()
-    return object_list("products_page.html", products, paginate_by=20)
-
-# BACKUP
-# @app.route('/products/')
-# def all_products(): 
-#     products = get_all_products() #change in queries to return a model to dict
-#     return render_template("products.html", query='All Products', products=products)
+    return render_template("products.html", query='All Products', products=products)
 
 @app.route('/products/tag=<tag>')
 def search_products_by_tag(tag):
@@ -289,10 +301,8 @@ def search_products():
 def page_not_found(e):
     return render_template("404.html"), 404
 
-# view all my sales
-#view all my purchases
 # make a login_required decorator
-# remove a product
+# remove a product similar to def logout it does something and redirects you
 
 if __name__ == "__main__":
     app.run(debug=True)

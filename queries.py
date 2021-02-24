@@ -82,25 +82,26 @@ def get_newest_products():
 
 def get_all_products():
     '''returns all products from database'''
-    all_products = Product.select()
-    return all_products
+    query = Product.select()
+    products = [model_to_dict(product) for product in query]
+    return products
 
 def list_user_products(user_id):
     '''returns a list of products a user is selling'''
     user = User.get_by_id(user_id)
-    products = [model_to_dict(product) for product in user.products]
+    products = [model_to_dict(product, backrefs=True) for product in user.products]
     return products
 
 def list_user_sales(user_id):
     '''returns a list of sales for a given user'''
     user = User.get_by_id(user_id)
-    sales = [model_to_dict(sale) for sale in user.sales]
+    sales = [model_to_dict(sale, backrefs=True) for sale in user.sales]
     return sales
 
 def list_user_purchases(user_id):
     '''returns a list of purchases made by a given user'''
     user = User.get_by_id(user_id)
-    purchases = [model_to_dict(purchase) for purchase in user.purchases]
+    purchases = [model_to_dict(purchase, backrefs=True) for purchase in user.purchases]
     return purchases
 
 def add_product_to_catalog(product_info):

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %} My Sales {% endblock %}
+
+{% block content %}
+    {% if sales %}
+        {% for sale in sales %}
+            <div class="column is-3 product-list-item">
+                <div class="box">
+                    <figure class="image is-4by3 mb-4">
+                        <img src="{{ sale.product.thumbnail }}" alt="product thumbnail">
+                    </figure>
+                    <h2 class="subtitle">
+                        <a href="/product_page/{{ sale.product.prod_id }}">{{ sale.product.title }}</a>
+                    </h2>
+                    <h3 class="is-size-6 mb-5">Buyer: 
+                        <a href="/user_page/{{ sale.buyer.username }}">{{ sale.buyer.username }}</a>
+                    </h3>
+                    <h3 class="is-size-6 mb-5">Qty: {{ sale.qty }}</h3>
+                    <h3 class="is-size-6 mb-5">sold on: {{ sale.date }}</h3>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You don't have any sales yet...</p>
+    {% endif %}
+{% endblock %}

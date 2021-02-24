@@ -51,8 +51,7 @@
     <h2 class="is-size-3 mb-4">My orders</h2>
     <p>Sales</p>
     {% if sales %}
-        <a href="#" class="button is-dark">View all sales</a>
-        <!-- insert url to view all sales -->
+        <a href="{{ url_for('my_sales') }}" class="button is-dark">View all sales</a>
 
         <table class="table is-fullwidth">
             <thead>
@@ -79,9 +78,8 @@
     <br>
     <p>Purchases</p>
     {% if purchases %}
-    <a href="#" class="button is-dark">View all purchases</a>
-        <!-- insert url to view all purchases -->
-        
+    <a href="{{ url_for('my_purchases') }}" class="button is-dark">View all purchases</a>
+
         <table class="table is-fullwidth">
             <thead>
                 <tr>
