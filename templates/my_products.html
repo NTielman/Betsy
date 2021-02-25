@@ -9,27 +9,52 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
-    <div class="columns">
-    {% if products %}
-        {% for product in products %}
-            <div class="column is-3 product-list-item">
-                <div class="box">
-                    <figure class="image is-4by3 mb-4">
-                        <img src="{{ product.thumbnail }}" alt="product thumbnail">
-                    </figure>
-                    <h2 class="subtitle">{{ product.title }}</h2>
-                    <h3 class="price is-size-6 mb-5">${{ product.price_in_cents/100 }}</h3>
-                    <hr>
-                    <a href="/product_page/{{ product.prod_id }}" class="button is-dark">View</a>
-                    <a href="{{ url_for('edit_product', product_id=product.prod_id) }}" class="button is-info">Edit</a>
-                    <a href="{{ url_for('remove_product', product_id=product.prod_id) }}" class="button is-danger">Remove</a>
+
+    <hr>
+    <div class="section">
+        <div class="container">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h2 class="is-size-3 mb-4">My products</h2>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
+                    </div>
                 </div>
             </div>
-        {% endfor %}
-    {% else %}
-        <p>You don't have any products yet...</p>
-        <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
-    {% endif %}
+            
+            <div class="columns">
+            {% if products %}
+                {% for product in products %}
+                    <div class="column is-3 product-list-item">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-1by1">
+                                    <a href="/product_page/{{ product.prod_id }}">
+                                        <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <a class="has-text-dark" href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
+                            <p class="has-text-weight-bold">${{ product.price_in_cents/100 }}</p>
+                            </div>
+                            <footer class="card-footer">
+                                <a href="/product_page/{{ product.prod_id }}" class="card-footer-item has-background-dark has-text-white">View</a>
+                                <a href="{{ url_for('edit_product', product_id=product.prod_id) }}" class="card-footer-item has-background-info has-text-white">Edit</a>
+                            <a href="{{ url_for('remove_product', product_id=product.prod_id) }}" class="card-footer-item has-background-danger has-text-white">Remove</a>
+                            </footer>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You don't have any products yet...</p>
+                <a href="{{ url_for('add_product') }}" class="button is-dark mb-6">Add product</a>
+            {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}
