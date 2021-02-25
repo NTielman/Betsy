@@ -3,39 +3,80 @@
 
 {% block content %}
 <hr>
-<div class="columns">
-    {% if purchases %}
-        {% for purchase in purchases %}
-            <div class="column is-3 product-list-item">
-                <div class="box">
-                    <figure class="image is-4by3 mb-4">
-                        {% if purchase.product %}
-                            <img src="{{ purchase.product.thumbnail }}" alt="product thumbnail">
-                        {% else %}
-                            <img src="{{ purchase.product_thumb_url }}" alt="product thumbnail">
-                        {% endif %}
-                    </figure>
-                    <h2 class="subtitle">
-                        {% if purchase.product %}
-                            <a href="/product_page/{{ purchase.product.prod_id }}">{{ purchase.product.title }}</a>
-                        {% else %}
-                            {{ purchase.prod_title }}
-                        {% endif %}
-                    </h2>
-                    <h3 class="is-size-6 mb-5">Vendor: 
-                        {% if purchase.vendor %}
-                            <a href="/user_page/{{ purchase.vendor.username }}">{{ purchase.vendor.username }}</a>
-                        {% else %}
-                            {{ purchase.vendor_name }}
-                        {% endif %}
-                    </h3>
-                    <h3 class="is-size-6 mb-5">Qty: {{ purchase.qty }}</h3>
-                    <h3 class="is-size-6 mb-5">Purchased on: {{ purchase.date }}</h3>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            {% if purchases %}
+                {% for purchase in purchases %}
+                    <div class="column is-two-thirds">
+                        <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Purchased from
+                                    <span class="icon">
+                                        <i class="fas fa-store"></i>
+                                    </span>
+                                    {% if purchase.vendor %}
+                                        <a href="/user_page/{{ purchase.vendor.username }}">{{ purchase.vendor.username }} ,</a>
+                                    {% else %}
+                                        <span>{{ purchase.vendor_name }} ,</span>
+                                    {% endif %}
+                                    on {{ purchase.date }}
+                                </p>
+                            </header>
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-128x128">
+                                            {% if purchase.product %}
+                                                <img src="{{ purchase.product.thumbnail }}" alt="product thumbnail">
+                                            {% else %}
+                                                <img src="{{ purchase.product_thumb_url }}" alt="product thumbnail">
+                                            {% endif %}
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <h2 class="subtitle has-text-weight-semibold">
+                                            {% if purchase.product %}
+                                                <a href="/product_page/{{ purchase.product.prod_id }}">{{ purchase.product.title }}</a>
+                                            {% else %}
+                                                {{ purchase.prod_title }}
+                                            {% endif %}
+                                        </h2>
+                                        <h3 class="is-size-6 mb-5">Qty: {{ purchase.qty }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <div class="card-footer-item">
+                                    <p>Shop Note: </p>
+                                    <p class="has-text-weight-light is-italic"> Thank you for your order!</p>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                    <div class="column is-3">
+                        <div class="block">
+                            <p class="subtitle has-text-weight-semibold">Delivered</p>
+                            <p class="has-text-weight-semibold">On {{ purchase.date }}</p>
+                            {% if purchase.vendor %}
+                                <p>From {{ purchase.vendor.address }} To {{ purchase.buyer.address }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="block">
+                            <a href="" class="button is-fullwidth is-black has-text-weight-semibold">Help with order</a>
+                        </div>
+                        <div class="block">
+                            <a href="" class="button is-fullwidth has-text-weight-semibold">View Receipt</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="column is-two-thirds">
+                    <p>You don't have any purchases yet...</p>
                 </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>You don't have any purchases yet...</p>
-    {% endif %}
-</div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}
