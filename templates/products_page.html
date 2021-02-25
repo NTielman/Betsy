@@ -2,23 +2,128 @@
 {% block title %} {{ query }} {% endblock %}
 
 {% block content %}
-<div class="columns">
+<hr>
+<div class="section">
     {% if products %}
-        {% for product in products %}
-            <div class="column is-3 product-list-item">
-                <div class="box">
-                    <figure class="image is-4by3 mb-4">
-                        <img src="{{ product.thumbnail }}" alt="product thumbnail">
-                    </figure>
-                    <h2 class="subtitle">{{ product.title }}</h2>
-                    <h3 class="price is-size-6 mb-5">${{ product.price_in_cents/100 }}</h3>
-                    <hr>
-                    <a href="/product_page/{{ product.prod_id }}" class="button is-dark">View Product</a>
-                </div>
+        <div class="columns">
+            <div class="column is-3">
+                <nav class="panel is-white">
+                    <p class="panel-heading">
+                        {{ query }}
+                    </p>
+                    <a class="panel-block is-active" href="{{ url_for('all_products') }}">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-arrow-left"></i>
+                            </span>
+                            <span>All items</span>
+                        </span>
+                    </a>
+                    <div class="panel-block">
+                        <div class="block">
+                            <p class="has-text-weight-semibold">Size</p>
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                S
+                            </label>
+                            <br>
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                M
+                            </label>
+                            <br>
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                L
+                            </label>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <div class="block">
+                            <p class="has-text-weight-semibold">Price</p>
+                            <label class="radio">
+                                <input type="radio" name="price">
+                                Under $20
+                            </label>
+                            <br>
+                            <label class="radio">
+                                <input type="radio" name="price">
+                                $20 to $50
+                            </label>
+                            <br>
+                            <label class="radio">
+                                <input type="radio" name="price">
+                                $50 to $100
+                            </label>
+                            <br>
+                            <label class="radio">
+                                <input type="radio" name="price">
+                                Over $100
+                            </label>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <div class="block">
+                            <p class="has-text-weight-semibold">Color</p>
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                Beige
+                            </label>
+                            <br>
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                Black
+                            </label>
+                            <br>
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                Blue
+                            </label>
+                            <br>
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                Brown
+                            </label>
+                            <br>
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                Bronze
+                            </label>
+                        </div>
+                    </div>
+                </nav>
             </div>
-        {% endfor %}
+            <div class="column">
+                    <div class="columns">
+                        {% for product in products %}
+                            <div class="column is-3 product-list-item">
+                                <div class="card">
+                                    <div class="card-image">
+                                        <figure class="image is-1by1">
+                                            <a href="/product_page/{{ product.prod_id }}">
+                                                <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                                            </a>
+                                        </figure>
+                                    </div>
+                                </div>
+                                <a class="has-text-dark" href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
+                                <br>
+                                <a class="has-text-dark has-text-weight-light is-size-7" href="/user_page/{{ product.vendor.username }}">{{ product.vendor.username }}</a>
+                                <p class="has-text-weight-bold">${{ product.price_in_cents/100 }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+            </div>
+        </div>
     {% else %}
-        <p>No products found for "{{ query }}"...</p>
+    <div class="container">
+        <div class="block">
+            <p class="title is-size-1 has-text-weight-light" style="font-family: Georgia;">We couldn't find any results for {{ query }}</p>
+        </div>
+        <div class="block mb-6">
+            <p class="subtitle">Try searching for something else instead?</p>
+        </div>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
