@@ -2,59 +2,166 @@
 {% block title %} {{ product.title }} {% endblock %}
 
 {% block content %}
-<hr>
-    {% if product_images %}
-        {% for image_url in product_images %}
-            <figure class="image is-2by2 mb-6">
-                <img src="{{ image_url }}" alt="product thumbnail">
-            </figure>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="notification is-success is-toast">{{msg}}</div>
         {% endfor %}
-    {% else %}
-        <figure class="image is-2by2 mb-6">
-            <img src="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616" alt="product thumbnail">
-        </figure>
     {% endif %}
+{% endwith %}
+<hr>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-two-thirds">
+                {% if product_images %}
+                    <figure class="image is-1by1">
+                        <img src="{{ product_images[0] }}" alt="product thumbnail">
+                    </figure>
+                    <br>
+                    <div class="columns">
+                        {% for image_url in product_images %}
+                        <div class="column">
+                            <figure class="image is-128x128">
+                                <img src="{{ image_url }}" alt="product thumbnail">
+                            </figure>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <figure class="image is-1by1">
+                        <img src="http://cdn.shopify.com/s/files/1/0169/2660/5412/collections/placeholder-images-collection-1_large_807560ab-9024-46ea-ab0a-bb49df2b3bb8_1200x1200.png?v=1551259616" alt="product thumbnail">
+                    </figure>
+                {% endif %}
+            </div>
 
-    <p class="mb-6">
-        <a href="/user_page/{{ product.vendor.username }}">{{ product.vendor.username }}</a>
-    </p>
-    <h1 class="title">{{ product.title }}</h1>
-    <h2>${{ product.price_in_cents/100 }}</h2>
-    <span>{{ product.qty }} in stock</span>
+            <div class="column ml-6">
+                <div class="block">
+                    <a class="subtitle has-text-weight-light has-text-dark" href="/user_page/{{ product.vendor.username }}">{{ product.vendor.username }}</a>
+                    <br>
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </span>
+                        <span>Local seller</span>
+                    </span>
+                    <h1 class="title has-text-weight-light my-3">{{ product.title }}</h1>
+                    <p class="tag is-warning is-rounded">Betsy's Pick</p>
+                    <h2 class="title has-text-weight-bold my-3">${{ product.price_in_cents/100 }}</h2>
+                    <form method="post">
+                        <div class="field">
+                            <div class="field">
+                                <div class="control">
+                                    <input type="number" name="quantity" value="1" class="input is-rounded has-text-centered" min="1" max="{{ product.qty }}">
+                                </div>
+                            </div>
+                        </div>
 
-    <h3>Description</h3>
-    <p>{{ product.description }}</p>
+                        <div class="field">
+                            <div class="control">
+                                <input type="submit" class="button is-rounded is-dark is-fullwidth is-medium" value="Add to cart">
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </span>
+                        <span><strong>Other people want this.</strong> Over 20 people have this in their carts right now.</span>
+                    </span>
+                    <br>
+                    <br>
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-gifts"></i>
+                        </span>
+                        <span><strong>Gift wrapping available</strong></span>
+                    </span>
+                </div>
 
-    <br>
-    <form method="post">
-        <div class="control">
-            <input type="number" name="quantity" value="1" class="input" min="1" max="{{ product.qty }}">
+                <br>
+                <br>
+
+                <div class="block">
+                    <h2 class="has-text-weight-semibold">Highlights</h2>
+                    <br>
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-hand-paper"></i>
+                        </span>
+                        <span>Handmade</span>
+                    </span>
+                    <br>
+                    <br>
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-seedling"></i>
+                        </span>
+                        <span>Materials: natural</span>
+                    </span>
+                    <br>
+                    <br>
+
+                    <h2 class="has-text-weight-semibold">Description</h2>
+                    <br>
+                    <p>{{ product.description }}</p>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="block">
+                    <h2 class="has-text-weight-semibold">Meet your seller</h2>
+                    <br>
+
+                    <div class="media">
+                        <figure class="image is-96x96 media-left">
+                            <img width="128" height="128" class="is-rounded" src="{{ product.vendor.avatar_url }}" alt="user avatar">
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <h1 class="has-text-weight-light is-size-3" style="font-family: Georgia;">{{ product.vendor.username }}</h1>
+                                <a class="has-text-dark" href="/user_page/{{ product.vendor.username }}">Owner of {{ product.vendor.username }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <a href="" class="button has-text-weight-bold is-fullwidth is-outlined is-rounded">Message {{ product.vendor.username }}</a>
+                </div>
+            </div>
         </div>
 
-        <div class="control">
-            <button class="button is-dark">Add to cart</button>
-        </div>
-    </form>
-    <br>
-    <hr>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
-            <div class="notification is-success is-toast">{{msg}}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        <hr>
 
-    <div class="block">
-        <h3>Explore related tags</h3>
-        <div class="box">
+        <div class="block">
+            <h3 class="subtitle has-text-weight-light is-size-3" style="font-family: Georgia;">Explore related tags</h3>
             {% if product_tags %}
                 {% for tag in product_tags %}
-                <a href="/products/{{ tag }}" class="button is-dark">{{ tag }}</a>
+                <a href="/products/{{ tag }}" class="button is-dark is-rounded">{{ tag }}</a>
                 {% endfor %}
             {% else %}
                 <p>no tags associated with {{ product.title }}</p>
             {% endif %}
         </div>
+
+        <br>
+
+        <!-- Main container -->
+        <div class="level">
+            <!-- Left side -->
+            <div class="level-left">
+                <div class="level-item">
+                    <p class="is-size-7">Listed on {{ product.date_added }}</p>
+                </div>
+            </div>
+        
+            <!-- Right side -->
+            <div class="level-right">
+                <p class="level-item is-size-7">Report this item to Betsy</p>
+            </div>
+        </div>
+
     </div>
+</section>
 {% endblock %}
