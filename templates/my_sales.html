@@ -3,39 +3,85 @@
 
 {% block content %}
 <hr>
-<div class="columns">
-    {% if sales %}
-        {% for sale in sales %}
-            <div class="column is-3 product-list-item">
-                <div class="box">
-                    <figure class="image is-4by3 mb-4">
-                        {% if sale.product %}
-                            <img src="{{ sale.product.thumbnail }}" alt="product thumbnail">
-                        {% else %}
-                            <img src="{{ sale.product_thumb_url }}" alt="product thumbnail">
-                        {% endif %}
-                    </figure>
-                    <h2 class="subtitle">
-                        {% if sale.product %}
-                            <a href="/product_page/{{ sale.product.prod_id }}">{{ sale.product.title }}</a>
-                        {% else %}
-                            {{ sale.prod_title }}
-                        {% endif %}
-                    </h2>
-                    <h3 class="is-size-6 mb-5">Buyer: 
-                        {% if sale.buyer %}
-                            <a href="/user_page/{{ sale.buyer.username }}">{{ sale.buyer.username }}</a>
-                        {% else %}
-                            {{ sale.buyer_name }}
-                        {% endif %}
-                    </h3>
-                    <h3 class="is-size-6 mb-5">Qty: {{ sale.qty }}</h3>
-                    <h3 class="is-size-6 mb-5">sold on: {{ sale.date }}</h3>
-                </div>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            {% if sales %}
+                {% for sale in sales %}
+                <div class="column is-two-thirds">
+                        <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Sold to
+                                    <span class="icon">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    {% if sale.buyer %}
+                                    <a href="/user_page/{{ sale.buyer.username }}">{{ sale.buyer.username }} ,</a>
+                                {% else %}
+                                <span>
+                                    {{ sale.buyer_name }} ,
+                                </span>
+                                {% endif %}
+                                    on {{ sale.date }}
+                                </p>
+                            </header>
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-128x128">
+                                            {% if sale.product %}
+                                                <img src="{{ sale.product.thumbnail }}" alt="product thumbnail">
+                                            {% else %}
+                                                <img src="{{ sale.product_thumb_url }}" alt="product thumbnail">
+                                            {% endif %}
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <h2 class="subtitle has-text-weight-semibold">
+                                            {% if sale.product %}
+                                                <a href="/product_page/{{ sale.product.prod_id }}">{{ sale.product.title }}</a>
+                                            {% else %}
+                                                {{ sale.prod_title }}
+                                            {% endif %}
+                                        </h2>
+                                        <h3 class="is-size-6 mb-5">Qty: {{ sale.qty }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <div class="card-footer-item">
+                                    <p>Note to buyer: </p>
+                                    <p class="has-text-weight-light is-italic"> Thank you for your order!</p>
+                                </div>
+                            </footer>    
+                        </div>
+                    </div>
+                    <div class="column is-3">
+                        <div class="block">
+                            <p class="subtitle has-text-weight-semibold">Delivered</p>
+                            <p class="has-text-weight-semibold">On {{ sale.date }}</p>
+                            {% if sale.buyer %}
+                                <p>From {{ sale.vendor.address }} To {{ sale.buyer.address }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="block">
+                            <a href="" class="button is-fullwidth has-text-weight-semibold">View Receipt</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <div class="column is-two-thirds">
+                <p>You don't have any sales yet...</p>
             </div>
-        {% endfor %}
-    {% else %}
-        <p>You don't have any sales yet...</p>
-    {% endif %}
-</div>
+            {% endif %}
+        </div>
+
+
+
+
+
+
+    </div>
+</section>
 {% endblock %}
