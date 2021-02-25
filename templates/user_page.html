@@ -2,45 +2,92 @@
 {% block title %} {{ betsy_user.username }} Profile {% endblock %}
 
 {% block content %}
-<div class="box">
-    <img src="{{ betsy_user.avatar_url }}" alt="user avatar">
-    <h1>{{ betsy_user.full_name }}</h1>
-    <p>{{ betsy_user.address }}</p>
-    <p>{{ betsy_user.bio }}</p>
+<hr>
+<div class="section has-background-warning-light">
+    <div class="columns">
+        <div class="column is-two-fifths">
+
+            <div class="media">
+                <figure class="image is-96x96 media-left">
+                    <img width="128" height="128" class="is-rounded" src="{{ betsy_user.avatar_url }}"  alt="user avatar">
+                </figure>
+                <div class="media-content">
+                    <div class="content">
+                        <h1 class="has-text-weight-light title mb-5" style="font-family: Georgia;">{{ betsy_user.username }}</h1>
+                        <p class="subtitle mb-3">{{ betsy_user.bio }}</p>
+                        <p class="has-text-weight-light">{{ betsy_user.address }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="box">
-    <h2 class="is-size-3 mb-4">{{ betsy_user.username }}'s products</h2>
-
-    {% if products %}
-        <a href="/user_page/{{ betsy_user.username }}/products/" class="button is-dark">View products</a>
-
-        <table class="table is-fullwidth">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Title</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
+<div class="section">
+    <div class="columns">
+        <div class="column is-3">
+            <nav class="panel is-white">
+                <p class="panel-heading">
+                Items
+                </p>
+                <div class="panel-block">
+                <p class="control has-icons-right">
+                    <input class="input is-rounded" type="text" placeholder="Search items">
+                    <span class="icon is-right">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    </span>
+                </p>
+                </div>
+                <a class="panel-block is-active">
+                All ({{ products|length }})
+                </a>
+                <div class="panel-block">
+                    <button class="button is-dark is-fullwidth">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </span>
+                            <span class="has-text-weight-semibold">Request Custom Order</span>
+                        </span>
+                    </button>
+                </div>
+                <div class="panel-block">
+                    <button class="button is-outlined is-fullwidth">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fas fa-comment-dots"></i>
+                            </span>
+                            <span class="has-text-weight-semibold">Contact shop owner</span>
+                        </span>
+                    </button>
+                </div>
+                <br>
+                <a href="" class="panel-block">Report this shop to Betsy</a>
+            </nav>
+        </div>
+        <div class="column">
+            {% if products %}
+                <div class="columns">
                 {% for product in products %}
-                    <tr>
-                        <td>
-                            <figure class="image is-64x64">
-                                <img src="{{ product.thumbnail }}" alt="product thumbnail">
-                            </figure>
-                        </td>
-                        <td>
-                            <a href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
-                        </td>
-                        <td>${{ product.price_in_cents/100 }}</td>
-                    </tr>
+                    <div class="column is-3 product-list-item">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-1by1">
+                                    <a href="/product_page/{{ product.prod_id }}">
+                                        <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                                    </a>
+                                </figure>
+                            </div>
+                        </div>
+                        <a class="has-text-dark" href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
+                        <p class="has-text-weight-bold">${{ product.price_in_cents/100 }}</p>
+                    </div>
                 {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>{{ betsy_user.username }} doesn't have any products yet...</p>
-    {% endif %}
+                </div>
+            {% else %}
+                <p>{{ betsy_user.username }} doesn't have any products yet...</p>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
