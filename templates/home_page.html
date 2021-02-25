@@ -2,105 +2,113 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
+
+<!----------------  flashed messages and notifications  ---------------->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
             <div class="notification is-success is-toast">{{msg}}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    {% if "user" in session %}
-    <hr>
-    <div class="section py-1">
-        <h1 class="is-size-3" style="font-family: Georgia;">Welcome back, {{ session['user']['username'] }}!</h1>
-    </div>
-    {% else %}
-        <section class="hero is-warning">
-            <div class="hero-body">
-                <h1 class="title has-text-centered has-text-weight-light">
-                    Find things you'll love. Support independent sellers. Only on Betsy.
-                </h1>
-                <h2 class="subtitle has-text-centered has-text-weight-semibold">Everyday finds</h2>
-
-                <nav class="level">
-                    <a href="#" class="level-item">
-                        <figure class="image is-128x128">
-                            <img width="128" height="128" class="is-rounded" src="./static/hero_images/beauty.jpg">
-                            <figcaption class="has-text-centered">Beauty
-                                <i class="fas fa-arrow-right"></i>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="level-item">
-                        <figure class="image is-128x128">
-                            <img width="128" height="128" class="is-rounded" src="./static/hero_images/office.jpg">
-                            <figcaption class="has-text-centered">Office
-                                <i class="fas fa-arrow-right"></i>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="level-item">
-                        <figure class="image is-128x128">
-                            <img class="is-rounded" src="./static/hero_images/plant.jpg">
-                            <figcaption class="has-text-centered">Garden
-                                <i class="fas fa-arrow-right"></i>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="level-item">
-                        <figure class="image is-128x128">
-                            <img class="is-rounded" src="https://images.unsplash.com/photo-1535157412991-2ef801c1748b?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1100&q=80">
-                            <figcaption class="has-text-centered">Tech
-                                <i class="fas fa-arrow-right"></i>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="level-item">
-                        <figure class="image is-128x128">
-                            <img class="is-rounded" src="./static/hero_images/jewelry.jpg">
-                            <figcaption class="has-text-centered">Jewelry
-                                <i class="fas fa-arrow-right"></i>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="level-item">
-                        <figure class="image is-128x128">
-                            <img class="is-rounded" src="./static/hero_images/food.jpg">
-                            <figcaption class="has-text-centered">Kitchen
-                                <i class="fas fa-arrow-right"></i>
-                            </figcaption>
-                        </figure>
-                    </a>
-                </nav>
-            </div>
-        </section>
+        {% endfor %}
     {% endif %}
+{% endwith %}
 
-    <section class="section">
-        {% if products %}
-            <h2 class="is-size-3 has-text-centered has-text-weight-semibold">Discover unique hand-picked items</h2>
-            <br>
+{% if "user" in session %}
+<!----------------  personal greeting  ---------------->
+    <hr>
 
-            <div class="columns is-multiline">
-                {% for product in products %}
-                    <div class="column is-3 product-list-item">
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-4by3">
-                                    <a href="/product_page/{{ product.prod_id }}">
-                                        <img src="{{ product.thumbnail }}" alt="product thumbnail">
-                                    </a>
-                                </figure>
-                            </div>
-                        </div>
-                        <h3 class="has-text-weight-semibold">${{ product.price_in_cents/100 }}</h3>
-                    </div>
-                {% endfor %}
-            </div>
-            
-        {% else %}
-            <p class="has-text-centered">There are no products yet...</p>
-        {% endif %}
+    <section class="section py-1">
+        <h1 class="is-size-3" style="font-family: Georgia;">Welcome back, {{ session['user']['username'] }}!</h1>
     </section>
+{% else %}
+<!----------------  hero image and categories  ---------------->
+    <section class="hero is-warning">
+        <div class="hero-body">
+            <h1 class="title has-text-centered has-text-weight-light">
+                Find things you'll love. Support independent sellers. Only on Betsy.
+            </h1>
+            <h2 class="subtitle has-text-centered has-text-weight-semibold">Everyday finds</h2>
+
+            <nav class="level">
+                <a class="level-item">
+                    <figure class="image is-128x128">
+                        <img width="128" height="128" class="is-rounded" src="{{ url_for('static', filename='images/beauty.jpg') }}">
+                        <figcaption class="has-text-centered">Beauty
+                            <i class="fas fa-arrow-right"></i>
+                        </figcaption>
+                    </figure>
+                </a>
+                <a class="level-item">
+                    <figure class="image is-128x128">
+                        <img width="128" height="128" class="is-rounded" src="{{ url_for('static', filename='images/office.jpg') }}">
+                        <figcaption class="has-text-centered">Office
+                            <i class="fas fa-arrow-right"></i>
+                        </figcaption>
+                    </figure>
+                </a>
+                <a class="level-item">
+                    <figure class="image is-128x128">
+                        <img class="is-rounded" src="{{ url_for('static', filename='images/plant.jpg') }}">
+                        <figcaption class="has-text-centered">Garden
+                            <i class="fas fa-arrow-right"></i>
+                        </figcaption>
+                    </figure>
+                </a>
+                <a class="level-item">
+                    <figure class="image is-128x128">
+                        <img class="is-rounded"
+                            src="https://images.unsplash.com/photo-1535157412991-2ef801c1748b?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1100&q=80">
+                        <figcaption class="has-text-centered">Tech
+                            <i class="fas fa-arrow-right"></i>
+                        </figcaption>
+                    </figure>
+                </a>
+                <a class="level-item">
+                    <figure class="image is-128x128">
+                        <img class="is-rounded" src="{{ url_for('static', filename='images/jewelry.jpg') }}">
+                        <figcaption class="has-text-centered">Jewelry
+                            <i class="fas fa-arrow-right"></i>
+                        </figcaption>
+                    </figure>
+                </a>
+                <a class="level-item">
+                    <figure class="image is-128x128">
+                        <img class="is-rounded" src="{{ url_for('static', filename='images/food.jpg') }}">
+                        <figcaption class="has-text-centered">Kitchen
+                            <i class="fas fa-arrow-right"></i>
+                        </figcaption>
+                    </figure>
+                </a>
+            </nav>
+        </div>
+    </section>
+{% endif %}
+
+<!----------------  featured products  ---------------->
+<section class="section">
+    {% if products %}
+        <h2 class="is-size-3 has-text-centered has-text-weight-semibold">Discover unique hand-picked items</h2>
+
+        <br>
+
+        <div class="columns is-multiline">
+            {% for product in products %}
+                <div class="column is-3 product-list-item">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <a href="{{ url_for('product_page', product_id=product.prod_id) }}">
+                                    <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                                </a>
+                            </figure>
+                        </div>
+                    </div>
+                    <h3 class="has-text-weight-semibold">${{ product.price_in_cents/100 }}</h3>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <p class="has-text-centered">There are no products yet...</p>
+    {% endif %}
+</section>
 {% endblock %}

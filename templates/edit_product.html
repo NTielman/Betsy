@@ -2,62 +2,69 @@
 {% block title %} Edit Product {% endblock %}
 
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
+
+<!----------------  flashed messages and notifications  ---------------->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
             <div class="notification is-danger">{{msg}}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-    <hr>
-    <div class="section">
-        <div class="container">
-            <h1 class="title">Edit Product</h1>
-            <div class="box">
-                <form action="" method="post">
-                    <div class="field">
-                        <label class="label">Title</label>
-                        <div class="control">
-                            <input id="title" class="input" type="text" placeholder="{{ product.title }}" name="title">
-                        </div>
-                    </div>
-                    
-                    <div class="field">
-                        <label class="label">Description</label>
-                        <div class="control">
-                            <textarea id="description" class="textarea" placeholder="{{ product.description }}" name="description"></textarea>
-                        </div>
-                    </div>
+<hr>
 
-                    <div class="field">
-                        <label class="label">Price $</label>
-                        <div class="control">
-                            <input id="price" class="input" placeholder="{{ product.price_in_cents/100 }}" type="number" min="0.00" step="0.01" name="price">
-                        </div>
+<!----------------  edit product - form  ---------------->
+<section class="section">
+    <div class="container">
+        <h1 class="title">Edit Product</h1>
+        <div class="box">
+            <form action="{{ url_for('edit_product', product_id=product.prod_id) }}" method="post">
+                <div class="field">
+                    <label class="label">Title</label>
+                    <div class="control">
+                        <input id="title" class="input" type="text" placeholder="{{ product.title }}" name="title">
                     </div>
+                </div>
 
-                    <div class="field">
-                        <label class="label">Quantity available</label>
-                        <div class="control">
-                            <input id="qty" class="input" placeholder="{{ product.qty }}" type="number" min="1" name="qty">
-                        </div>
+                <div class="field">
+                    <label class="label">Description</label>
+                    <div class="control">
+                        <textarea id="description" class="textarea" placeholder="{{ product.description }}"
+                            name="description"></textarea>
                     </div>
+                </div>
 
-                    <div class="field">
-                        <label class="label">Thumbnail url</label>
-                        <div class="control">
-                            <input id="thumbnail" class="input" type="url" placeholder="{{ product.thumbnail }}" name="thumbnail">
-                        </div>
+                <div class="field">
+                    <label class="label">Price $</label>
+                    <div class="control">
+                        <input id="price" class="input" placeholder="{{ product.price_in_cents/100 }}" type="number"
+                            min="0.00" step="0.01" name="price">
                     </div>
-                
-                    <div class="field">
-                        <div class="control">
-                            <input type="submit" class="button is-dark is-fullwidth is-medium" value="Save changes">
-                        </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Quantity available</label>
+                    <div class="control">
+                        <input id="qty" class="input" placeholder="{{ product.qty }}" type="number" min="1" name="qty">
                     </div>
-                </form>
-            </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Thumbnail url</label>
+                    <div class="control">
+                        <input id="thumbnail" class="input" type="url" placeholder="{{ product.thumbnail }}"
+                            name="thumbnail">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <input type="submit" class="button is-dark is-fullwidth is-medium" value="Save changes">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+</section>
 {% endblock %}

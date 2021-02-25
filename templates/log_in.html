@@ -2,41 +2,45 @@
 {% block title %} Sign In {% endblock %}
 
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
+
+<!----------------  flashed messages and notifications  ---------------->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
             <div class="notification is-danger">{{msg}}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-    <hr>
-    <section class="section">
-        <div class="container">
-            <h2 class="title has-text-centered">Sign In</h2>
-            <div class="box">
-                <form action="" method="post">
-                    <div class="field">
-                        <label class="label">Username</label>
-                        <div class="control">
-                            <input id="username" class="input" type="text" name="username" required>
-                        </div>
-                    </div>
+<hr>
 
-                    <div class="field">
-                        <label class="label">Password</label>
-                        <div class="control">
-                            <input id="password" class="input" type="password" name="password" required>
-                        </div>
+<!----------------  sign in - form  ---------------->
+<section class="section">
+    <div class="container">
+        <h2 class="title has-text-centered">Sign In</h2>
+        <div class="box">
+            <form action="{{ url_for('login') }}" method="post">
+                <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control">
+                        <input id="username" class="input" type="text" name="username" required>
                     </div>
+                </div>
 
-                    <div class="field">
-                        <div class="control">
-                            <input type="submit" class="button is-dark is-fullwidth is-medium" value="Sign in">
-                        </div>
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input id="password" class="input" type="password" name="password" required>
                     </div>
-                </form>
-            </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <input type="submit" class="button is-dark is-fullwidth is-medium" value="Sign in">
+                    </div>
+                </div>
+            </form>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}

@@ -2,29 +2,46 @@
 {% block title %} 404 {% endblock %}
 
 {% block content %}
+
+<!----------------  flashed messages and notifications  ---------------->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="notification is-danger">{{msg}}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <hr>
-  <div class="section">
-    <div class="container">
-      <div class="block">
-        <h1 class="title">Uh oh!</h1>
-      </div>
-      <div class="block">
-        <p class="subtitle">Sorry, the page you were looking for was not found.</p>
-        <div class="field">
-          <div class="control has-icons-right">
-              <form method="get" action="{{ url_for('search_products') }}">
-                  <input type="text" class="input is-medium is-rounded " placeholder="Search for items and shops"
-                      name="query">
-                  <span class="icon is-small is-right has-text-dark">
-                      <i class="fas fa-search"></i>
-                  </span>
-              </form>
-          </div>
+
+<section class="section">
+  <div class="container">
+    <div class="block">
+      <h1 class="title">Uh oh!</h1>
+    </div>
+
+    <!-----------------  content and search field  ----------------->
+    <div class="block">
+      <p class="subtitle">Sorry, the page you were looking for was not found.</p>
+      <div class="field">
+        <div class="control has-icons-right">
+          <form method="get" action="{{ url_for('search_products') }}">
+            <input type="text" class="input is-medium is-rounded" placeholder="Search for items and shops" name="query">
+            <span class="icon is-small is-right has-text-dark">
+              <i class="fas fa-search"></i>
+            </span>
+          </form>
         </div>
       </div>
-      <div class="block">
-        <p class="subtitle"><a href="{{ url_for('home') }}">Go back to Betsy.com</a></p>
-      </div>
     </div>
+
+    <!---------------------  link to homepage  --------------------->
+    <div class="block">
+      <h2 class="subtitle">
+        <a href="{{ url_for('home') }}">Go back to Betsy.com</a>
+      </h2>
+    </div>
+
   </div>
+</section>
 {% endblock %}

@@ -2,77 +2,87 @@
 {% block title %} Edit Profile {% endblock %}
 
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
+
+<!----------------  flashed messages and notifications  ---------------->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
             <div class="notification is-danger">{{msg}}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-    <hr>
-    <div class="section">
-        <div class="columns">
-            <div class="column is-3">
-                <nav class="panel is-white">
-                    <a href="{{ url_for('my_purchases') }}" class="panel-block">Purchases & Reviews</a>
-                    <a href="{{ url_for('edit_profile') }}" class="panel-block is-active">Public Profile</a>
-                    <a class="panel-block">Settings</a>
-                    <a class="panel-block">Apps</a>
-                    <a class="panel-block">Prototypes</a>
-                    <a href="{{ url_for('logout') }}" class="panel-block">Sign Out</a>
-                </nav>
-            </div>
-            <div class="column">
-                <div class="container">
-                    <h1 class="title">Your Public Profile</h1>
-                    <h2 class="subtitle has-text-weight-light">Everything on this page can be seen by anyone</h2>
-                    <div class="box">
-                        <form action="" method="post">
-                            <div class="field">
-                                <label class="label">Profile Picture</label>
-                                <figure class="image is-128x128">
-                                    <img width="128" height="128" class="is-rounded" src="{{ user.avatar_url }}" alt="user avatar">
-                                </figure>
-                            </div>
+<hr>
 
-                            <div class="field">
-                                <label class="label">Your Name</label>
-                                <div class="control">
-                                    <input id="full_name" class="input" type="text" placeholder="{{ user.full_name }}"  name="full_name">
-                                </div>
-                            </div>
-            
-                            <div class="field">
-                                <label class="label">Address</label>
-                                <div class="control">
-                                    <input id="address" class="input" type="text" placeholder="{{ user.address }}" name="address">
-                                </div>
-                            </div>
-                            
-                            <div class="field">
-                                <label class="label">About</label>
-                                <div class="control">
-                                    <textarea id="bio" class="textarea" placeholder="{{ user.bio }}" name="bio"></textarea>
-                                </div>
-                            </div>
-            
-                            <div class="field">
-                                <label class="label">Avatar Url</label>
-                                <div class="control">
-                                    <input id="avatar_url" class="input" type="url" name="avatar_url">
-                                </div>
-                            </div>
+<section class="section">
+    <div class="columns">
+        <!----------------  side navbar menu ---------------->
+        <div class="column is-3">
+            <nav class="panel is-white">
+                <a href="{{ url_for('my_purchases') }}" class="panel-block">Purchases & Reviews</a>
+                <a href="{{ url_for('edit_profile') }}" class="panel-block is-active">Public Profile</a>
+                <a class="panel-block">Settings</a>
+                <a class="panel-block">Apps</a>
+                <a class="panel-block">Prototypes</a>
+                <a href="{{ url_for('logout') }}" class="panel-block">Sign Out</a>
+            </nav>
+        </div>
+
+        <!----------------  edit user - form ---------------->
+        <div class="column">
+            <div class="container">
+                <h1 class="title">Your Public Profile</h1>
+                <h2 class="subtitle has-text-weight-light">Everything on this page can be seen by anyone</h2>
+                <div class="box">
+                    <form action="{{ url_for('edit_profile') }}" method="post">
                         
-                            <div class="field">
-                                <div class="control">
-                                    <input type="submit" class="button is-dark is-fullwidth is-medium" value="Save changes">
-                                </div>
+                        <div class="field">
+                            <label class="label">Profile Picture</label>
+                            <figure class="image is-128x128">
+                                <img width="128" height="128" class="is-rounded" src="{{ user.avatar_url }}"
+                                    alt="user avatar">
+                            </figure>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Your Name</label>
+                            <div class="control">
+                                <input id="full_name" class="input" type="text" placeholder="{{ user.full_name }}"
+                                    name="full_name">
                             </div>
-                        </form>
-                    </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Address</label>
+                            <div class="control">
+                                <input id="address" class="input" type="text" placeholder="{{ user.address }}"
+                                    name="address">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">About</label>
+                            <div class="control">
+                                <textarea id="bio" class="textarea" placeholder="{{ user.bio }}" name="bio"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Avatar Url</label>
+                            <div class="control">
+                                <input id="avatar_url" class="input" type="url" name="avatar_url">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <input type="submit" class="button is-dark is-fullwidth is-medium" value="Save changes">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</section>
 {% endblock %}

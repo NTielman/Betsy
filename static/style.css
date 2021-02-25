@@ -1,23 +1,9 @@
-.product-list-item .box .subtitle {
-    margin-bottom: 0;
-}
-
-.product-list-item .box .price {
-    color: dimgrey;
-}
-
+/* notification animation */
 @keyframes show-toast {
     0% {bottom: -100%;}
     20% {bottom: 50px;}
     80% {bottom: 50px;}
     100% {bottom: -100%;}
-}
-
-.dot {
-    height: 20px;
-    width: 20px;
-    background-color: rgb(243, 114, 67);
-    border-radius: 50%;
 }
 
 .notification.is-toast {
@@ -27,7 +13,3 @@
     animation-name: show-toast;
     animation-duration: 4s;
 }
-
-/* compare etsy website styling for each html page */
-/* add a orange floating dot after Cart when there's items in cart */
-/* on product page, make featured image stand out */

@@ -3,101 +3,113 @@
 
 {% block content %}
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
+<!----------------  flashed messages and notifications  ---------------->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
             <div class="notification is-danger">{{msg}}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-    <hr>
-    <div class="section">
-        <div class="container">
-            <h1 class="title">Add product info</h1>
-            <div class="box">
-                <form action="" method="post">
-                    <div class="field pb-2">
-                        <label class="label">Title</label>
-                        <div class="control">
-                            <input id="title" class="input" type="text" placeholder="Hand-Painted Wall Tapestry" name="title" required>
-                        </div>
+<hr>
+
+<!-------------------------  add product - form  ------------------------->
+<section class="section">
+    <div class="container">
+        <h1 class="title">Add product info</h1>
+
+        <!----------------------  product title  ----------------------->
+        <div class="box">
+            <form action="{{ url_for('add_product') }}" method="post">
+                <div class="field pb-2">
+                    <label class="label">Title</label>
+                    <div class="control">
+                        <input id="title" class="input" type="text" placeholder="Hand-Painted Wall Tapestry" name="title" required>
                     </div>
+                </div>
 
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">Price $</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input id="price" class="input" placeholder="0.00" type="number" min="0.00" step="0.01" name="price" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field-label is-normal">
-                            <label class="label">Qty</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input id="qty" class="input" type="number" min="1" name="qty" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field-label is-normal">
-                            <label class="label">Tags</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input id="tags" class="input" placeholder="Seperate by comma: tapestry, vintage, cotton, sweater" name="tags">
-                                </div>
+                <!------------  price quantity and tags  ------------>
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Price $</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input id="price" class="input" placeholder="0.00" type="number" min="0.00" step="0.01"
+                                    name="price" required>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="field">
-                        <label class="label">Description</label>
-                        <div class="control">
-                            <textarea id="description" class="textarea"  placeholder="This brightly colored tapestry is made of cotton and will brighten up your room" name="description"></textarea>
+                    <div class="field-label is-normal">
+                        <label class="label">Qty</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input id="qty" class="input" type="number" min="1" name="qty" required>
+                            </div>
                         </div>
                     </div>
+                    <div class="field-label is-normal">
+                        <label class="label">Tags</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input id="tags" class="input"
+                                    placeholder="Seperate by comma: tapestry, vintage, cotton, sweater" name="tags">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                    <div class="field">
-                        <label class="label">Image urls</label>
-                        <div class="control">
-                            <input id="image_1" class="input" type="url" placeholder="image url 1" name="image_1">
-                        </div>
+                <!----------------  product description  ---------------->
+                <div class="field">
+                    <label class="label">Description</label>
+                    <div class="control">
+                        <textarea id="description" class="textarea"
+                            placeholder="This brightly colored tapestry is made of cotton and will brighten up your room" name="description"></textarea>
                     </div>
-                    <div class="field">
-                        <div class="control">
-                            <input id="image_2" class="input" type="url" placeholder="image url 2" name="image_2">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input id="image_3" class="input" type="url" placeholder="image url 3" name="image_3">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input id="image_4" class="input" type="url" placeholder="image url 4" name="image_4">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input id="image_5" class="input" type="url" placeholder="image url 5" name="image_5">
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="field">
-                        <div class="control">
-                            <input type="submit" class="button is-dark is-fullwidth is-medium" value="Add Product">
-                        </div>
+                <!----------------  up to 5 image urls  ---------------->
+                <div class="field">
+                    <label class="label">Image urls</label>
+                    <div class="control">
+                        <input id="image_1" class="input" type="url" placeholder="image url 1" name="image_1">
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input id="image_2" class="input" type="url" placeholder="image url 2" name="image_2">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input id="image_3" class="input" type="url" placeholder="image url 3" name="image_3">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input id="image_4" class="input" type="url" placeholder="image url 4" name="image_4">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input id="image_5" class="input" type="url" placeholder="image url 5" name="image_5">
+                    </div>
+                </div>
+
+                <!---------------------  submit button  --------------------->
+                <div class="field">
+                    <div class="control">
+                        <input type="submit" class="button is-dark is-fullwidth is-medium" value="Add Product">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+</section>
 {% endblock %}
