@@ -10,18 +10,33 @@
         {% endif %}
     {% endwith %}
 
-<h2 class="title">Sign In</h2>
+    <hr>
+    <section class="section">
+        <div class="container">
+            <h2 class="title has-text-centered">Sign In</h2>
+            <div class="box">
+                <form action="" method="post">
+                    <div class="field">
+                        <label class="label">Username</label>
+                        <div class="control">
+                            <input id="username" class="input" type="text" name="username" required>
+                        </div>
+                    </div>
 
-<form method="post">
-    <label for="username">Username</label>
-    <input id="username" type="text" name="username" required>
-    <label for="password">Password</label>
-    <input id="password" type="password" name="password" required>
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <div class="control">
+                            <input id="password" class="input" type="password" name="password" required>
+                        </div>
+                    </div>
 
-    <div class="field">
-        <div class="control">
-            <input type="submit" class="button is-dark" value="Sign in">
+                    <div class="field">
+                        <div class="control">
+                            <input type="submit" class="button is-dark is-fullwidth is-medium" value="Sign in">
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</form>
+    </section>
 {% endblock %}

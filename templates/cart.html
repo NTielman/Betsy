@@ -2,72 +2,198 @@
 {% block title %} Cart {% endblock %}
 
 {% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="notification is-danger">{{msg}}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 <hr>
-    <h1 class="title">Cart</h1>
-    {% if cart %}
-        <div class="box mb-6">
-            <div class="table">
-                <table class="table is-fullwidth is-striped">
-                    <thead>
-                        <th></th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th></th>
-                    </thead>
-                    <tbody>
-                        {% for item in cart %}
-                            <tr>
-                                <td>
-                                    <figure class="image is-64x64">
-                                        <img src="{{ item.product.thumbnail }}" alt="product thumbnail">
-                                    </figure>
-                                </td>
-                                <td>
-                                    <a href="/product_page/{{ item.product.prod_id }}">{{ item.product.title }}</a>
-                                </td>
-                                <td>{{ item.quantity }}
-                                    <a href="?change_quantity={{ item.id }}&quantity=-1">-</a>
-                                    <a href="?change_quantity={{ item.id }}&quantity=1">+</a>
-                                </td>
-                                <td>${{ item.total_price/100 }}</td>
-                                <td>
-                                    <a href="?remove_from_cart={{ item.id }}" class="delete">Remove</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
+    <section class="section">
+        <div class="container">
+            {% if cart %}
+                {% if cart|length > 1 %}
+                    <h1 class="title has-text-weight-light">{{ cart|length }} items in your cart</h1>
+                {% else %}
+                    <h1 class="title has-text-weight-light">{{ cart|length }} item in your cart</h1>
+                {% endif %}
 
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td><strong>Total cost</strong></td>
-                            <td><strong>{{ cart|length }}</strong></td>
-                            <td colspan="2"><strong>${{ cart.get_total_cost()/100 }}</strong></td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <div class="columns">
+                    <div class="column">
+                        {% for item in cart %}
+                            <div class="level">
+                                <div class="level-left">
+                                    <div class="level-item">
+                                        <figure class="image is-48x48">
+                                            <img src="{{ item.product.vendor.avatar_url }}" class="is-rounded" alt="vendor thumbnail">
+                                        </figure>
+                                    </div>
+                                    <div class="level-left">
+                                        <p class="has-text-weight-semibold">{{ item.product.vendor.username }}</p>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <p class="is-size-7 has-text-weight-light">Contact shop</p>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <article class="media">
+                                <figure class="media-left">
+                                    <p class="image is-128x128">
+                                        <img src="{{ item.product.thumbnail }}" alt="product thumbnail">
+                                    </p>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <a class="has-text-dark is-size-5 pr-5" href="/product_page/{{ item.product.prod_id }}">{{ item.product.title }}</a>
+                                        <span class="button">{{ item.quantity }}
+                                            <a class="px-3" href="?change_quantity={{ item.id }}&quantity=1">+</a>
+                                            <a href="?change_quantity={{ item.id }}&quantity=-1">-</a>
+                                        </span>
+                                    </div>
+                                    <div class="content">
+                                        <span class="has-text-weight-semibold">Save for later</span>
+                                        <a href="?remove_from_cart={{ item.id }}" class="pl-4 has-text-dark has-text-weight-semibold">Remove</a>
+                                    </div>
+                                </div>
+                                <div class="media-right">
+                                    <p class="has-text-weight-semibold">${{ item.total_price/100 }}</p>
+                                </div>
+                            </article>
+
+                            <div class="level py-5">
+                                <div class="level-left">
+                                    <div class="level-item">
+                                        <label class="checkbox">
+                                            <input type="checkbox"> This order is a gift
+                                            <p class="has-text-weight-light is-size-7">Prices will not be shown on packing slip</p>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fas fa-tag"></i>
+                                            </span>
+                                            <span>Apply shop coupon codes</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="level">
+                                <div class="level-left">
+                                    <div class="level-item">
+                                        <div class="field">
+                                            <p class="control">
+                                            <textarea class="textarea" placeholder="Add a note to {{ item.product.vendor.username }} (optional)"></textarea>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <div class="block">
+                                            <p class="has-text-right">Shipping: <span class="has-text-success">FREE</span></p>
+                                            <p class="has-text-weight-light has-text-right">Estimated delivery: </p>
+                                            <p class="has-text-weight-light has-text-right">from {{ item.product.vendor.address }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}    
+                    </div>
+                    
+                    <div class="column is-4">
+                        <div class="box">
+                            <p class="subtitle has-text-weight-semibold">How you'll pay</p>
+
+                            <div class="field">
+                                <div class="control">
+                                    <label class="radio">
+                                        <input type="radio" name="payment">
+                                        <span class="icon">
+                                            <i class="fab fa-ideal"></i>
+                                        </span>
+                                        iDEAL
+                                    </label>
+                                </div>
+                                <div class="control">
+                                    <label class="radio">
+                                        <input type="radio" name="payment">
+                                        <span class="icon">
+                                            <i class="fab fa-cc-mastercard"></i>
+                                        </span>
+                                        <span class="icon">
+                                            <i class="fab fa-cc-visa"></i>
+                                        </span>
+                                        <span class="icon">
+                                            <i class="fab fa-cc-amex"></i>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="control">
+                                    <label class="radio">
+                                        <input type="radio" name="payment">
+                                        <span class="icon">
+                                            <i class="fab fa-cc-paypal"></i>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <table class="table is-hoverable is-fullwidth">
+                                <tbody>
+                                    <tr>
+                                        <td>Item(s) total</td>
+                                        <td>${{ cart.get_total_cost()/100 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Discount</td>
+                                        <td>-$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Subtotal</strong></td>
+                                        <td>${{ cart.get_total_cost()/100 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping</td>
+                                        <td class="has-text-success">FREE</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td><strong>Total ({{ cart|length }} item)</strong></td>
+                                        <td><strong>${{ cart.get_total_cost()/100 }}</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <form method="post" id="payment-form">
+                                <div class="field">
+                                    <div class="control">
+                                        <button class="button is-dark is-rounded is-fullwidth">Checkout</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+            <div class="block has-text-centered">
+                <p class="subtitle is-size-3" style="font-family: Georgia;">Your cart is empty.</p>
+            </div>
+            {% endif %}
+
+            <div class="pt-5 icon-text has-text-centered">
+                <span class="icon">
+                    <i class="fas fa-leaf"></i>
+                </span>
+                <span>Betsy offsets carbon emissions from every delivery</span>
             </div>
         </div>
-
-        <h2 class="subtitle">Payment information</h2>
-
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for msg in messages %}
-                <div class="notification is-danger">{{msg}}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <form method="post" id="payment-form">
-            <div class="field">
-                <div class="control">
-                    <button class="button is-dark mt-4">Checkout</button>
-                </div>
-            </div>
-        </form>
-    {% else %}
-        <p>You don't have any items in your cart!</p>
-    {% endif %}
+    </section>
 {% endblock %}
