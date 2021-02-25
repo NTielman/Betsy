@@ -10,24 +10,68 @@
         {% endif %}
     {% endwith %}
 
-    <h1 class="title">Edit Profile</h1>
-    <form method="post">
-        <label for="full_name">Name</label>
-        <input id="full_name" type="text" placeholder="{{ user.full_name }}" name="full_name">
+<div class="section">
+    <div class="columns">
+        <div class="column is-3">
+            <nav class="panel is-white">
+                <a href="{{ url_for('my_purchases') }}" class="panel-block">Purchases & Reviews</a>
+                <a href="{{ url_for('edit_profile') }}" class="panel-block is-active">Public Profile</a>
+                <a class="panel-block">Settings</a>
+                <a class="panel-block">Apps</a>
+                <a class="panel-block">Prototypes</a>
+                <a href="{{ url_for('logout') }}" class="panel-block">Sign Out</a>
+            </nav>
+        </div>
+        <div class="column">
+            <div class="container">
+                <h1 class="title">Your Public Profile</h1>
+                <h2 class="subtitle has-text-weight-light">Everything on this page can be seen by anyone</h2>
+                <div class="box">
+                    <form action="" method="post">
+                        <div class="field">
+                            <label class="label">Profile Picture</label>
+                            <figure class="image is-128x128">
+                                <img width="128" height="128" class="is-rounded" src="{{ user.avatar_url }}" alt="user avatar">
+                            </figure>
+                        </div>
 
-        <label for="address">Address</label>
-        <input id="address" type="text" placeholder="{{ user.address }}" name="address">
-
-        <label for="bio">Bio description</label>
-        <textarea id="bio" placeholder="{{ user.bio }}" name="bio"></textarea>
-
-        <label for="avatar_url">Avatar Url</label>
-        <input id="avatar_url" type="url" name="avatar_url">
-
-        <div class="field">
-            <div class="control">
-                <input type="submit" class="button is-dark" value="Save changes">
+                        <div class="field">
+                            <label class="label">Your Name</label>
+                            <div class="control">
+                                <input id="full_name" class="input" type="text" placeholder="{{ user.full_name }}"  name="full_name">
+                            </div>
+                        </div>
+        
+                        <div class="field">
+                            <label class="label">Address</label>
+                            <div class="control">
+                                <input id="address" class="input" type="text" placeholder="{{ user.address }}" name="address">
+                            </div>
+                        </div>
+                        
+                        <div class="field">
+                            <label class="label">About</label>
+                            <div class="control">
+                                <textarea id="bio" class="textarea" placeholder="{{ user.bio }}" name="bio"></textarea>
+                            </div>
+                        </div>
+        
+                        <div class="field">
+                            <label class="label">Avatar Url</label>
+                            <div class="control">
+                                <input id="avatar_url" class="input" type="url" name="avatar_url">
+                            </div>
+                        </div>
+                    
+                        <div class="field">
+                            <div class="control">
+                                <input type="submit" class="button is-dark is-fullwidth is-medium" value="Save changes">
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </form>
+    </div>
+</div>
 {% endblock %}

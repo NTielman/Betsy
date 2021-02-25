@@ -10,35 +10,67 @@
         {% endif %}
     {% endwith %}
 
-<h2 class="title">Sign up for Betsy</h2>
+<div class="section">
+    <div class="container">
+        <h2 class="title">Sign up for Betsy</h2>
+        <div class="box">
+            <form action="" method="post">
+                <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control">
+                        <input id="username" class="input" type="text" placeholder="AgentBetsy007" name="username" required>
+                    </div>
+                </div>
 
-<form method="post">
-    <label for="username">Username</label>
-    <input id="username" type="text" placeholder="AgentBetsy007" name="username" required>
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control">
+                        <input id="full_name" class="input" type="text" placeholder="Betsy Johnson" name="full_name" required>
+                    </div>
+                </div>
 
-    <label for="full_name">Name</label>
-    <input id="full_name" type="text" placeholder="Betsy Johnson" name="full_name" required>
+                <div class="field">
+                    <label class="label">Address</label>
+                    <div class="control">
+                        <input id="address" class="input" type="text" placeholder="Betsybackstreet 67" name="address" required>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Bio description</label>
+                    <div class="control">
+                        <textarea id="bio" class="textarea" placeholder="Hi, i'm a happy Betsy user." name="bio"></textarea>
+                    </div>
+                </div>
 
-    <label for="address">Address</label>
-    <input id="address" type="text" placeholder="Betsybackstreet 67" name="address" required>
+                <div class="field">
+                    <label class="label">Avatar Url</label>
+                    <div class="control">
+                        <input id="avatar_url" class="input" type="url" name="avatar_url">
+                    </div>
+                </div>
 
-    <label for="bio">Bio description</label>
-    <textarea id="bio" placeholder="Hi, i'm a happy Betsy user." name="bio"></textarea>
-
-    <label for="avatar_url">Avatar Url</label>
-    <input id="avatar_url" type="url" name="avatar_url">
-
-    <label for="password">Password</label>
-    <input id="password" type="password" name="password" required>
-    
-    <div class="field">
-        <div class="control">
-            <input type="submit" class="button is-dark" value="Create Account">
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input id="password" class="input" type="password" name="password" required>
+                    </div>
+                </div>
+            
+                <div class="field">
+                    <div class="control">
+                        <input type="submit" class="button is-dark is-fullwidth is-medium" value="Create Account">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
 
-<hr>
-<h2 class="subtitle">Already have an account?</h2>
-<a href="{{ url_for('login') }}">Sign in</a>
+<div class="section">
+    <div class="container">
+        <h2 class="subtitle">Already have an account?</h2>
+        <a href="{{ url_for('login') }}">Sign in</a>
+    </div>
+</div>
 {% endblock %}
