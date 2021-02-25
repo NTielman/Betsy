@@ -2,7 +2,19 @@
 {% block title %} My Purchases {% endblock %}
 
 {% block content %}
+
+<!----------------  flashed messages and notifications  ---------------->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="notification is-danger">{{msg}}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <hr>
+
+<!----------------  card with transaction info  ---------------->
 <section class="section">
     <div class="container">
         <div class="columns is-multiline">
@@ -17,14 +29,14 @@
                                         <i class="fas fa-store"></i>
                                     </span>
                                     {% if purchase.vendor %}
-                                        <a href="/user_page/{{ purchase.vendor.username }}">{{ purchase.vendor.username }} ,</a>
+                                        <a href="{{ url_for('user_page', username=purchase.vendor.username) }}">{{ purchase.vendor.username }} ,</a>
                                     {% else %}
                                         <span>{{ purchase.vendor_name }} ,</span>
                                     {% endif %}
                                     on {{ purchase.date }}
                                 </p>
                             </header>
-                            
+
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-left">
@@ -39,7 +51,8 @@
                                     <div class="media-content">
                                         <h2 class="subtitle has-text-weight-semibold">
                                             {% if purchase.product %}
-                                                <a href="/product_page/{{ purchase.product.prod_id }}">{{ purchase.product.title }}</a>
+                                                <a href="{{ url_for('product_page', product_id=purchase.product.prod_id) }}">{{ purchase.product.title
+                                                }}</a>
                                             {% else %}
                                                 {{ purchase.prod_title }}
                                             {% endif %}
@@ -48,6 +61,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <footer class="card-footer">
                                 <div class="card-footer-item">
                                     <p>Shop Note: </p>
@@ -56,19 +70,21 @@
                             </footer>
                         </div>
                     </div>
+
+                    <!----------------  shipment info  ---------------->
                     <div class="column is-3">
                         <div class="block">
-                            <p class="subtitle has-text-weight-semibold">Delivered</p>
+                            <h2 class="subtitle has-text-weight-semibold">Delivered</h2>
                             <p class="has-text-weight-semibold">On {{ purchase.date }}</p>
                             {% if purchase.vendor %}
                                 <p>From {{ purchase.vendor.address }} To {{ purchase.buyer.address }}</p>
                             {% endif %}
                         </div>
                         <div class="block">
-                            <a href="" class="button is-fullwidth is-black has-text-weight-semibold">Help with order</a>
+                            <a class="button is-fullwidth is-black has-text-weight-semibold">Help with order</a>
                         </div>
                         <div class="block">
-                            <a href="" class="button is-fullwidth has-text-weight-semibold">View Receipt</a>
+                            <a class="button is-fullwidth has-text-weight-semibold">View Receipt</a>
                         </div>
                     </div>
                 {% endfor %}

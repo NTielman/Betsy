@@ -2,9 +2,21 @@
 {% block title %} {{ query }} {% endblock %}
 
 {% block content %}
+
+<!----------------  flashed messages and notifications  ---------------->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="notification is-success is-toast">{{msg}}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <hr>
-<div class="section">
+
+<section class="section">
     {% if products %}
+    <!----------------  sidebar filter options  ---------------->
         <div class="columns">
             <div class="column is-3">
                 <nav class="panel is-white">
@@ -19,6 +31,8 @@
                             <span>All items</span>
                         </span>
                     </a>
+
+                    <!----------------  size filters  ---------------->
                     <div class="panel-block">
                         <div class="block">
                             <p class="has-text-weight-semibold">Size</p>
@@ -38,6 +52,8 @@
                             </label>
                         </div>
                     </div>
+
+                    <!----------------  price filters  ---------------->
                     <div class="panel-block">
                         <div class="block">
                             <p class="has-text-weight-semibold">Price</p>
@@ -62,6 +78,8 @@
                             </label>
                         </div>
                     </div>
+
+                    <!----------------  color filters  ---------------->
                     <div class="panel-block">
                         <div class="block">
                             <p class="has-text-weight-semibold">Color</p>
@@ -93,37 +111,43 @@
                     </div>
                 </nav>
             </div>
+
+            <!---------------------  products  ---------------------->
             <div class="column">
-                    <div class="columns is-multiline">
-                        {% for product in products %}
-                            <div class="column is-3 product-list-item">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-1by1">
-                                            <a href="/product_page/{{ product.prod_id }}">
-                                                <img src="{{ product.thumbnail }}" alt="product thumbnail">
-                                            </a>
-                                        </figure>
-                                    </div>
+                <div class="columns is-multiline">
+                    {% for product in products %}
+                        <div class="column is-3 product-list-item">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-1by1">
+                                        <a href="/product_page/{{ product.prod_id }}">
+                                            <img src="{{ product.thumbnail }}" alt="product thumbnail">
+                                        </a>
+                                    </figure>
                                 </div>
-                                <a class="has-text-dark" href="/product_page/{{ product.prod_id }}">{{ product.title }}</a>
-                                <br>
-                                <a class="has-text-dark has-text-weight-light is-size-7" href="/user_page/{{ product.vendor.username }}">{{ product.vendor.username }}</a>
-                                <p class="has-text-weight-bold">${{ product.price_in_cents/100 }}</p>
                             </div>
-                        {% endfor %}
-                    </div>
+                            <a class="has-text-dark" href="{{ url_for('product_page', product_id=product.prod_id) }}">{{ product.title }}</a>
+
+                            <br>
+
+                            <a class="has-text-dark has-text-weight-light is-size-7"
+                                href="{{ url_for('user_page', username=product.vendor.username) }}">{{ product.vendor.username }}</a>
+                            <p class="has-text-weight-bold">${{ product.price_in_cents/100 }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
+
     {% else %}
-    <div class="container">
-        <div class="block">
-            <p class="title is-size-1 has-text-weight-light" style="font-family: Georgia;">We couldn't find any results for {{ query }}</p>
+        <div class="container">
+            <div class="block">
+                <h1 class="title is-size-1 has-text-weight-light" style="font-family: Georgia;">We couldn't find any results for {{ query }}</h1>
+            </div>
+            <div class="block mb-6">
+                <h2 class="subtitle">Try searching for something else instead?</h2>
+            </div>
         </div>
-        <div class="block mb-6">
-            <p class="subtitle">Try searching for something else instead?</p>
-        </div>
-    </div>
     {% endif %}
-</div>
+</section>
 {% endblock %}
