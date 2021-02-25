@@ -252,7 +252,7 @@ def user_page(username):
     betsy_user = queries.get_user(username)
     if betsy_user:
         user_products = queries.list_user_products(betsy_user['user_id'])
-        return render_template("user_page.html", betsy_user=betsy_user, products=user_products[:7])
+        return render_template("user_page.html", betsy_user=betsy_user, products=user_products)
     else:
         abort(404)
 

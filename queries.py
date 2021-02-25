@@ -76,7 +76,7 @@ def get_newest_products():
     query = (Product
              .select()
              .order_by(Product.date_added.desc())
-             .limit(10))
+             .limit(12))
     products = [model_to_dict(product) for product in query]
     return products
 
@@ -107,7 +107,13 @@ def list_user_purchases(user_id):
 def add_product_to_catalog(product_info):
     '''creates and adds a product to user's profile'''
     try:
-        product = dict_to_model(Product, product_info)
+        user = User.get(User.username == product_info['vendor']['username'])
+
+        product = Product.create(title=product_info["title"], description=product_info['description'], price_in_cents=product_info['price_in_cents'], qty=product_info['qty'], vendor=user)
+
+        # product_info['vendor'] = user
+
+        # product = dict_to_model(Product, product_info)
         product.save()
         return product.prod_id
     except peewee.PeeweeException:
