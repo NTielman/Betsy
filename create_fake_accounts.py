@@ -1,4 +1,8 @@
-from queries import create_user, add_product_to_catalog, add_images_to_product, add_product_tags, checkout
+from models import create_tables
+from queries import create_user, add_product_to_catalog, add_images_to_product, add_product_tags
+
+##################################### users ##############################################
+# possible to use any of these user details to log in, or create your own account
 
 yuki = {
     "full_name": 'Yukine Masashi',
@@ -6,7 +10,7 @@ yuki = {
     "password": 'BTSistheBest',
     "address": 'San Fransokyo 1234',
     "bio": "Hi i'm yuki, i'm 23 and i love crafting cute things. If you're into kawaii culture, unicorns, and love pink you're going to love my handcrafted goodies. Have a look at my shop, you won't regret it. Nyaaa :3",
-    "avatar_url": '../static/hero_images/yuki.jpg'
+    "avatar_url": '../static/images/yuki.jpg'
 }
 
 sam = {
@@ -15,7 +19,7 @@ sam = {
     "password": 'sam.dams26',
     "address": 'The middle of nowhere 43',
     "bio": "Love relaxing at home with a good spell book, and deck of tarot cards. I'm a moon child and believe in the power of mysticism. Also love indulging into my more creepy fascinations every so often. If you like what you see, consider adding my store to your ghouly favorite list ",
-    "avatar_url": '../static/hero_images/sam.jpg'
+    "avatar_url": '../static/images/sam.jpg'
 }
 
 alaska = {
@@ -24,11 +28,12 @@ alaska = {
     "password": 'RickIsA-Morty',
     "address": 'Brooklyntown 168',
     "bio": "Hey, welcome to my profile. I'm more of a collector of vintage items, than a creator. Though sometimes i enjoy making jewelry in my free time. I especially love crafting with gems and crystals. If you're into that sort of thing, you may want to keep an occasional eye on this profile ;)",
-    "avatar_url": '../static/hero_images/aska.jpg'
+    "avatar_url": '../static/images/aska.jpg'
 }
 
 
-################################### products #####################################
+##################################### products ##############################################
+# possible to edit, modify and update any of these products, or create your own
 
 unicorn = {
     'title': 'Unicorn Plush Toy Handmade',
@@ -68,7 +73,7 @@ earrings = {
     'vendor': yuki,
     'tags': ['earrings', 'cute', 'candy', 'lolipop'],
     'images': ['https://ae01.alicdn.com/kf/H19ff8bc035d04d789ea5354c5b7a7cce0.jpg', 'https://ae01.alicdn.com/kf/Hbf0d8e3e71b14e12b9c255b3e36365f15.jpg', 'https://ae01.alicdn.com/kf/H4d11e7eb58394ab1a3f5285b2e546fe3h.jpg', 'https://ae01.alicdn.com/kf/H804d808811c64c548bd0b7963578490aA.jpg'
-    ]
+               ]
 }
 
 plush_bacpack = {
@@ -79,7 +84,7 @@ plush_bacpack = {
     'vendor': yuki,
     'tags': ['bag', 'kawaii', 'pink'],
     'images': ['https://ae01.alicdn.com/kf/H3a50d08ae4b44f409839045c6a862feb9.jpg', 'https://ae01.alicdn.com/kf/H0b405fe77bfd4f3a91be5fe369965fadK.jpg', 'https://ae01.alicdn.com/kf/H34f47f54400e47799f70a625462833bcA.jpg', 'https://ae01.alicdn.com/kf/Haf899a3278824a02a2dfc05e659dabb4R.jpg'
-    ]
+               ]
 }
 
 sailor_skirt = {
@@ -202,7 +207,7 @@ bath_bomb = {
     'images': ['https://ae01.alicdn.com/kf/H56325c2497da4e6f9f956661f51dc288b.jpg', 'https://ae01.alicdn.com/kf/Hfaf1d9919a0047af8d181ec004888e0ag.jpg', 'https://ae01.alicdn.com/kf/H06dc40fc03404d68a4fb9b056efec9f9N.jpg']
 }
 
-crystal_gem= {
+crystal_gem = {
     'title': 'Crystal Gems Jewelry',
     'description': "They say Gems and Crystal have magical healing powers. If your interrested to know which gem to choose based on your birthsign, contact me. These are great as gifts to loved ones",
     'price_in_cents': 1560,
@@ -262,18 +267,23 @@ make_up_brush = {
     'images': ['https://ae01.alicdn.com/kf/H7d6554c930b54b73b2c66685c7cefb25o.jpg?width=1920&height=1920&hash=3840', 'https://ae01.alicdn.com/kf/H7892ca1040ad46da824202f13e105a9eb.jpg?width=1920&height=1920&hash=3840', 'https://ae01.alicdn.com/kf/H18ddcdb04acf41819eb3605cb723188aN.jpg?width=1920&height=1920&hash=3840', 'https://ae01.alicdn.com/kf/H745f3374fcac423591a450590df8a3bc8.jpg?width=1920&height=1920&hash=3840']
 }
 
-yuki_products = [unicorn, avocado_keychain, cat_ears, earrings, plush_bacpack, sailor_skirt, cosplay_wig, harajuku_socks, totoro]
-
-sam_products = [garter_belt, spiked_boots, choker, shades, skull, goth_skirt, scented_candles]
-
-alaska_products = [bath_bomb, crystal_gem, bracelet, cacti_plant, jewelry, phonecase, make_up_brush]
+##################################### functions ##############################################
+yuki_products = [unicorn, avocado_keychain, cat_ears, earrings,
+                 plush_bacpack, sailor_skirt, cosplay_wig, harajuku_socks, totoro]
+sam_products = [garter_belt, spiked_boots, choker,
+                shades, skull, goth_skirt, scented_candles]
+alaska_products = [bath_bomb, crystal_gem, bracelet,
+                   cacti_plant, jewelry, phonecase, make_up_brush]
 
 betsy_users = [yuki, sam, alaska]
 user_products = [yuki_products, sam_products, alaska_products]
 
+
 def create_users(users):
     for user in users:
-        create_user(user_name=user['username'], user_full_name=user['full_name'], user_address=user['address'], user_bio=user['bio'], user_avatar=user['avatar_url'], user_password=user['password'])
+        create_user(user_name=user['username'], user_full_name=user['full_name'], user_address=user['address'],
+                    user_bio=user['bio'], user_avatar=user['avatar_url'], user_password=user['password'])
+
 
 def create_products(product_list):
     for products in product_list:
@@ -285,5 +295,10 @@ def create_products(product_list):
                 image_list = product['images']
                 add_images_to_product(prod_id, image_list)
 
-create_users(betsy_users)
-create_products(user_products)
+
+def create_fake_db_accounts():
+    '''creates 3 users with around 10 products each 
+    for testing site functionality with'''
+    create_tables()
+    create_users(betsy_users)
+    create_products(user_products)

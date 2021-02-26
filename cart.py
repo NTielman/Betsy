@@ -1,5 +1,6 @@
 from queries import get_product
 
+
 class Cart(object):
 
     def __init__(self, session):
@@ -16,7 +17,8 @@ class Cart(object):
         for product_id in self.cart.keys():
             self.cart[str(product_id)]['product'] = get_product(product_id)
         for cart_item in self.cart.values():
-            cart_item['total_price'] = cart_item['product']['price_in_cents'] * cart_item['quantity']
+            cart_item['total_price'] = cart_item['product']['price_in_cents'] * \
+                cart_item['quantity']
             yield cart_item
 
     def __len__(self):
