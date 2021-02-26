@@ -1,5 +1,6 @@
 from models import create_tables
-from queries import create_user, add_product_to_catalog, add_images_to_product, add_product_tags
+from helpers import verify_signup
+from queries import add_product_to_catalog, add_images_to_product, add_product_tags
 
 ##################################### users ##############################################
 # possible to use any of these user details to log in, or create your own account
@@ -66,7 +67,7 @@ cat_ears = {
 }
 
 earrings = {
-    'title': 'Candy Earrings Cute and Funny Eaaring Gifts',
+    'title': 'Candy Earrings Cute and Funny Earing Gifts',
     'description': "These miniature food eaarings are not only cute to look at they were handcrafted using epoch resin and food coloring. These cute accessories look good enough to eat, and will make your style absolutely flavorful",
     'price_in_cents': 381,
     'qty': 5,
@@ -281,8 +282,8 @@ user_products = [yuki_products, sam_products, alaska_products]
 
 def create_users(users):
     for user in users:
-        create_user(user_name=user['username'], user_full_name=user['full_name'], user_address=user['address'],
-                    user_bio=user['bio'], user_avatar=user['avatar_url'], user_password=user['password'])
+        verify_signup(user_name=user['username'], full_name=user['full_name'], address=user['address'],
+                      bio=user['bio'], avatar_url=user['avatar_url'], password=user['password'])
 
 
 def create_products(product_list):

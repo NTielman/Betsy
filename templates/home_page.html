@@ -7,7 +7,7 @@
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for msg in messages %}
-            <div class="notification is-success is-toast">{{msg}}</div>
+            <div class="notification is-success">{{msg}}</div>
         {% endfor %}
     {% endif %}
 {% endwith %}

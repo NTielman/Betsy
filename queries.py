@@ -63,7 +63,7 @@ def add_product_to_catalog(product_info):
 
         product = Product.create(title=product_info["title"], description=product_info['description'],
                                  price_in_cents=product_info['price_in_cents'], qty=product_info['qty'], vendor=user)
-        product.save()
+        # product.save()
         return product.prod_id
     except peewee.PeeweeException:
         return False
@@ -118,12 +118,18 @@ def edit_product(product_id, title, description, price, qty, thumbnail):
 
 def remove_product(user_id, product_id):
     '''removes a product from database'''
-    user = User.get_by_id(user_id)
-    product = Product.get_by_id(product_id)
-    if product.vendor == user:
-        product_deleted = product.delete_instance()
-        return product_deleted
-    else:
+    try:
+        user = User.get_by_id(user_id)
+        product = Product.get_by_id(product_id)
+
+        # ensure user deleting product is product's vendor
+        if user == product.vendor:
+            product_deleted = product.delete_instance()
+            return product_deleted
+        else:
+            return False
+    except peewee.IntegrityError:
+        flash("Could not remove product.", 'error')
         return False
 
 

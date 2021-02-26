@@ -64,7 +64,7 @@ class ProductImage(BaseModel):
 
 class Tag(BaseModel):
     name = CharField(max_length=50, unique=True)
-    products = ManyToManyField(Product, backref='tags')
+    products = ManyToManyField(Product, backref='tags', on_delete='CASCADE')
 
 
 ProductTag = Tag.products.get_through_model()
