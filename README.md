@@ -32,9 +32,6 @@ You should now see a 'betsy.db' file appear in the current directory. You can no
 https://youtu.be/gcu0Do8sEho
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gcu0Do8sEho" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
 ## Usage & Details 
 A nearly identical copy of Etsy. This multivendor marketplace was built as practice for modelling and querying a database, as well as grasping how an ecommerce store may function on the backend. 
 
