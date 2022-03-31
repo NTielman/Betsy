@@ -16,7 +16,7 @@ A multi-vendor marketplace modeled after Etsy
 
 
 ## Setup 
-1. Clone the repository and with Python3 create a virtual environment in the directory.
+1. Clone the repository and with Python3 create a virtual environment in the directory. `python3 -m venv <your_env_name>`
 2. Activate the environment `source <your_env_name>/bin/activate`
 3. Install the necessary dependencies `pip install -r requirements.txt`
 4. Run `python main.py`. 
